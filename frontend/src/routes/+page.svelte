@@ -1,2 +1,13 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+    import LoginForm from './Login_form.svelte'
+</script>
+
+<div class="h-screen flex items-center justify-center">
+    <LoginForm></LoginForm>  
+</div>
+
+<style lang="postcss">
+    :global(html) {
+      background-color: theme(colors.gray.600);
+    }
+</style>
