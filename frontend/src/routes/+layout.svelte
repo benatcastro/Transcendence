@@ -1,19 +1,18 @@
 <script lang="ts">
     import "../input.css";
 
-    let bgcolor: string = "dark";
+    let bgcolor: string = "cyberpunk_dark";
 
     const changeTheme = () => {
-        bgcolor = bgcolor == "cupcake" ? "dark" : "cupcake";
+        bgcolor = bgcolor == "cupcake" ? "cyberpunk_dark" : "cupcake";
         document.querySelector("html")?.setAttribute("data-theme", bgcolor);
     };
 </script>
 
-<div class="navbar justify-end">
+<!-- <div class="navbar justify-end bg-primary">
     <label class="swap swap-rotate">
         <input type="checkbox" on:click={changeTheme} />
 
-        <!-- Sun -->
         <svg
             class="swap-on fill-current w-10 h-10"
             xmlns="http://www.w3.org/2000/svg"
@@ -23,7 +22,6 @@
             /></svg
         >
 
-        <!-- Moon -->
         <svg
             class="swap-off fill-current w-10 h-10"
             xmlns="http://www.w3.org/2000/svg"
@@ -33,5 +31,17 @@
             /></svg
         >
     </label>
+</div > -->
+<div class="w-screen h-screen bg-black ">
+    <!-- <div class="w-screen h-screen bg-[url('/app/src/transcendence-bg-test.gif')]"> -->
+        <div class="trans-bg-image">
+        <span>
+            <div class="h-screen flex items-center justify-center">
+                <div class="box-content w-80 h-96 bg-primary rounded-3xl"></div>
+            </div>
+        </span>
+    </div>
+
 </div>
+
 <slot />

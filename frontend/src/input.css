@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    .trans-bg-image {
+        @apply bg-no-repeat bg-cover bg-[center_center] bg-fixed relative;
+        background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(20, 21, 30, 0.7)),
+        url(/app/src/transcendence-bg-test.gif);
+    }
+}
