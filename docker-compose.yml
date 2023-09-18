@@ -5,13 +5,12 @@ services:
     container_name: frontend
     depends_on:
       - backend
-    image: frontend
     restart: on-failure
     build:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - 5173:5173
+      - "5173:5173"
     volumes:
       - ./frontend:/app
       - /app/node_modules
@@ -20,13 +19,12 @@ services:
     container_name: backend
     depends_on:
       - db
-    image: backend 
     restart: on-failure
     build:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - 3000:3000
+      - "3000:3000"
     volumes:
       - ./backend:/app
       - /app/node_modules
@@ -37,8 +35,7 @@ services:
       restart: always
       env_file:
         - .env
-      container_name: postgres
       volumes:
         - ./pgdata:/var/lib/postgresql/data
       ports:
-        - 5432:5432
+        - "5432:5432"
