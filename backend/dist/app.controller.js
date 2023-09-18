@@ -17,8 +17,7 @@ let AppController = class AppController {
         this.appService = appService;
     }
     getHello() {
-        let hey = process.env.DATABASE_URL;
-        return process.env.TEST;
+        return this.appService.getHello();
     }
     testLogin() {
     }

@@ -8,8 +8,7 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    let hey: string = process.env.DATABASE_URL;
-    return process.env.TEST;
+    return this.appService.getHello();
   }
 
   @Get("login")
