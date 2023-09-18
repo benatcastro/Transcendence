@@ -1,4 +1,7 @@
+import { HttpService } from '@nestjs/axios';
 export declare class AuthService {
-    test: string;
+    private readonly httpService;
+    constructor(httpService: HttpService);
     getLoginRedirectURI(): string;
+    postUserAuth(code: string, state: string): void;
 }

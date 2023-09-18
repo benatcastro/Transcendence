@@ -13,6 +13,7 @@ const app_service_1 = require("./app.service");
 const config_1 = require("@nestjs/config");
 const auth_service_1 = require("./auth/auth.service");
 const auth_controller_1 = require("./auth/auth.controller");
+const axios_1 = require("@nestjs/axios");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -21,7 +22,7 @@ exports.AppModule = AppModule = __decorate([
         imports: [config_1.ConfigModule.forRoot({
                 envFilePath: '.env.backend',
                 isGlobal: true,
-            })],
+            }), axios_1.HttpModule],
         controllers: [app_controller_1.AppController, auth_controller_1.AuthController],
         providers: [app_service_1.AppService, auth_service_1.AuthService],
     })

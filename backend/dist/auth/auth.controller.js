@@ -19,11 +19,10 @@ let AuthController = class AuthController {
     constructor(AuthService) {
         this.AuthService = AuthService;
     }
-    customRedirect(req, res) {
+    redirectToIntraApi(req, res) {
         res.redirect(this.AuthService.getLoginRedirectURI());
     }
-    dothings() {
-        return "hey im the response page";
+    postUserAuthorization(params) {
     }
 };
 exports.AuthController = AuthController;
@@ -34,13 +33,14 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
-], AuthController.prototype, "customRedirect", null);
+], AuthController.prototype, "redirectToIntraApi", null);
 __decorate([
-    (0, common_1.Get)("response"),
+    (0, common_1.Get)("api_response"),
+    __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", String)
-], AuthController.prototype, "dothings", null);
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "postUserAuthorization", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
