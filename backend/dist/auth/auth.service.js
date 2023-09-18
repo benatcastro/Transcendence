@@ -8,11 +8,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const axios_1 = require("@nestjs/axios");
 const common_1 = require("@nestjs/common");
+const rxjs_1 = require("rxjs");
+const console_1 = require("console");
 let AuthService = class AuthService {
     constructor(httpService) {
         this.httpService = httpService;
@@ -27,12 +28,31 @@ let AuthService = class AuthService {
             "&response_type=code&scope=public" +
             "&state=a_very_long_random_string_witchmust_be_unguessable'");
     }
-    postUserAuth(code, state) {
+    async PostUserAuth(code, state) {
+        const endpoint = "https://api.intra.42.fr/oauth/token";
+        const client_id = process.env.API_UID;
+        const client_secret = process.env.API_SECRET;
+        const redirect_uri = process.env.REDIRECT_URL;
+        const grant_type = "authorization_code";
+        const queryParams = {
+            grant_type,
+            client_id,
+            client_secret,
+            code,
+            redirect_uri,
+        };
+        (0, console_1.log)(queryParams);
+        const { data } = await (0, rxjs_1.firstValueFrom)(this.httpService.post(endpoint, {}, { params: queryParams }).pipe((0, rxjs_1.catchError)((error) => {
+            (0, console_1.log)(error.toJSON());
+            (0, console_1.log)(error.response.data);
+            throw 500;
+        })));
+        return data;
     }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [typeof (_a = typeof axios_1.HttpService !== "undefined" && axios_1.HttpService) === "function" ? _a : Object])
+    __metadata("design:paramtypes", [axios_1.HttpService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const auth_service_1 = require("./auth.service");
 const common_1 = require("@nestjs/common");
+const console_1 = require("console");
 let AuthController = class AuthController {
     constructor(AuthService) {
         this.AuthService = AuthService;
@@ -23,6 +24,13 @@ let AuthController = class AuthController {
         res.redirect(this.AuthService.getLoginRedirectURI());
     }
     postUserAuthorization(params) {
+        (0, console_1.log)("params.code: " + params.code);
+        try {
+            this.AuthService.PostUserAuth(params.code, params.state);
+        }
+        catch (error) {
+            (0, console_1.log)(error);
+        }
     }
 };
 exports.AuthController = AuthController;
