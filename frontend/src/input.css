@@ -4,8 +4,7 @@
 
 @layer base {
     .trans-bg-image {
-
         background-size: cover;
-        background-image: radial-gradient(circle, rgba(70,0,50,0.65) 0%, rgba(10,0,80,0.6) 60%, rgba(0, 0, 0, 0.7) 100%), url(./src/lib/transcendence-bg-test.gif);
+        background-image: radial-gradient(circle, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.7) 60%, rgba(0, 0, 0, 0.5) 100%), url(./src/lib/transcendence-bg-test.gif);
     }
 }

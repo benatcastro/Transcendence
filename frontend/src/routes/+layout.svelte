@@ -31,16 +31,13 @@
         >
     </label>
 </div > -->
-<div class="w-screen h-screen bg-black ">
-    <!-- <div class="w-screen h-screen bg-[url('/app/src/transcendence-bg-test.gif')]"> -->
-        <div class="trans-bg-image">
-        <span>
-            <div class="h-screen flex items-center justify-center">
-                <div class="box-content w-80 h-96 bg-primary rounded-3xl"></div>
-            </div>
-        </span>
-    </div>
 
-</div>
+<style lang="postcss">
+    :global(body) {
+        background-size: cover;
+        background-image: radial-gradient(circle, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.7) 60%, rgba(0, 0, 0, 0.5) 100%), url(./src/lib/transcendence-bg-test.gif);
+    }
+
+</style>
 
 <slot />
