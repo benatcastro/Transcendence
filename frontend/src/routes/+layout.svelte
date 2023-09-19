@@ -1,6 +1,5 @@
 <script lang="ts">
     import "../input.css";
-
     let bgcolor: string = "cyberpunk_dark";
 
     const changeTheme = () => {
