@@ -10,19 +10,19 @@
 
 <div class="background-decorations">
     <div class="neon">
-    <div class="pink-neon">
-        <div class="text-center text-3xl capitalize mt-10 pt-10">
-            <p>P</p>
+    <div class="neon-pink glowing-btn" style="width: 3.5vw; height:30.5vh; position: absolute; margin-left: 72%; margin-top: 13vh;">
+        <span class="glowing-txt capitalize mt-[5rem]">
+            <p class="faulty-letter">P</p>
             <p>o</p>
             <p>n</p>
             <p>g</p>
-        </div>
+        </span>
     </div>
 
-    <div class="blue-neon">
-        <div class="text-center text-2xl capitalize mt-14 pt-1">
+    <div class="neon-blue" style="width: 3.5vw; height:23vh; position: absolute; margin-left: 23%; margin-top: 59vh;">
+        <div class="glowing-txt capitalize">
             <p>c</p>
-            <p>y</p>
+            <p class="faulty-letter">y</p>
             <p>b</p>
             <p>e</p>
             <p>r</p>
@@ -65,27 +65,11 @@
 
     .background-decorations {}
     .neon {
+        width: 100vw;
+        height: 100vh;
         position: absolute;
 
     }
-    .pink-neon {
-        width: 3.5vw;
-        height: 33.5vh;
-        background-color: rgba(100, 0, 100, .5);
-        margin-left: 72vw;
-        margin-top: 14vh;
-        animation: glow 3s ease-in-out infinite alternate;
-    }
-
-    .blue-neon {
-        width: 3.5vw;
-        height: 25vh;
-        background-color: rgba(20, 50, 100, 1);
-        margin-left: 23vw;
-        margin-top: 17vh;
-        animation: glow-blue 3s ease-in-out infinite alternate;
-    }
-
 
 @-webkit-keyframes glow {
   from {
