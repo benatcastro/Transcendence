@@ -8,6 +8,31 @@
     };
 </script>
 
+<div class="background-decorations">
+    <div class="neon">
+    <div class="pink-neon">
+        <div class="text-center text-3xl capitalize mt-10 pt-10">
+            <p>P</p>
+            <p>o</p>
+            <p>n</p>
+            <p>g</p>
+        </div>
+    </div>
+
+    <div class="blue-neon">
+        <div class="text-center text-2xl capitalize mt-14 pt-1">
+            <p>c</p>
+            <p>y</p>
+            <p>b</p>
+            <p>e</p>
+            <p>r</p>
+        </div>
+    </div>
+
+    </div>
+
+</div>
+
 <!-- <div class="navbar justify-end bg-primary">
     <label class="swap swap-rotate">
         <input type="checkbox" on:click={changeTheme} />
@@ -37,6 +62,50 @@
         background-size: cover;
         background-image: radial-gradient(circle, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.7) 60%, rgba(0, 0, 0, 0.5) 100%), url(./src/lib/transcendence-bg-test.gif);
     }
+
+    .background-decorations {}
+    .neon {
+        position: absolute;
+
+    }
+    .pink-neon {
+        width: 3.5vw;
+        height: 33.5vh;
+        background-color: rgba(100, 0, 100, .5);
+        margin-left: 72vw;
+        margin-top: 14vh;
+        animation: glow 3s ease-in-out infinite alternate;
+    }
+
+    .blue-neon {
+        width: 3.5vw;
+        height: 25vh;
+        background-color: rgba(20, 50, 100, 1);
+        margin-left: 23vw;
+        margin-top: 17vh;
+        animation: glow-blue 3s ease-in-out infinite alternate;
+    }
+
+
+@-webkit-keyframes glow {
+  from {
+    box-shadow: 0 0 5px #eee, 0 0 10px #eee, 0 0 15px #e60073, 0 0 20px #e60073, 0 0 25px #e60073, 0 0 30px #e60073, 0 0 30px #e60073;
+  }
+
+ to {
+    text-shadow: 0 0 20px #fff, 0 0 30px #e400eb, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+  }
+}
+
+@-webkit-keyframes glow-blue {
+  from {
+    box-shadow: 0 0 5px #eee, 0 0 10px #eee, 0 0 15px #1477a1, 0 0 20px #2a26a0, 0 0 25px #005ce6, 0 0 30px #3907d1, 0 0 30px #0026e6;
+  }
+
+ to {
+    text-shadow: 0 0 20px #fff, 0 0 30px #3700eb, 0 0 40px #504dff, 0 0 50px #130e64, 0 0 60px #4d9aff, 0 0 70px #af4dff, 0 0 80px #4d7aff;
+  }
+}
 
 </style>
 
