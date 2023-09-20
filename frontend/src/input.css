@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,5 +8,8 @@
     .trans-bg-image {
         background-size: cover;
         background-image: radial-gradient(circle, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.7) 60%, rgba(0, 0, 0, 0.5) 100%), url(./src/lib/transcendence-bg-test.gif);
+    }
+    html {
+        font-family: 'Orbitron', sans-serif;
     }
 }
