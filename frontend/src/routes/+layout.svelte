@@ -10,8 +10,8 @@
 
 <div class="background-decorations">
     <div class="neon">
-    <div class="neon-pink glowing-btn" style="width: 3.5vw; height:30.5vh; position: absolute; margin-left: 72%; margin-top: 13vh;">
-        <span class="glowing-txt capitalize mt-[5rem]">
+    <div class="neon-pink glowing-btn w-[3.7vw] h-[31.2vh] mt-[12.5vh] ml-[72%]" style="position: absolute;">
+        <span class="glowing-txt capitalize mt-[5rem] text-4xl">
             <p class="faulty-letter">P</p>
             <p>o</p>
             <p>n</p>
@@ -19,8 +19,8 @@
         </span>
     </div>
 
-    <div class="neon-blue" style="width: 3.5vw; height:23vh; position: absolute; margin-left: 23%; margin-top: 59vh;">
-        <div class="glowing-txt capitalize">
+    <div class="neon-blue w-[3.7vw] h-[21.5vh] mt-[60vh]" style="position: absolute; margin-left: 23%;">
+        <div class="glowing-txt capitalize text-4xl ">
             <p>c</p>
             <p class="faulty-letter">y</p>
             <p>b</p>
@@ -32,6 +32,7 @@
     </div>
 
 </div>
+<slot />
 
 <!-- <div class="navbar justify-end bg-primary">
     <label class="swap swap-rotate">
@@ -60,7 +61,7 @@
 <style lang="postcss">
     :global(body) {
         background-size: cover;
-        background-image: radial-gradient(circle, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.7) 60%, rgba(0, 0, 0, 0.5) 100%), url(./src/lib/transcendence-bg-test.gif);
+        background-image: radial-gradient(circle, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.7) 60%, rgba(0, 0, 0, 0.5) 100%), url(./src/lib/transcendence-bg-final.gif);
     }
 
     .background-decorations {}
@@ -93,4 +94,3 @@
 
 </style>
 
-<slot />

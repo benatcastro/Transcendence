@@ -21,7 +21,7 @@
 
     .trans-bg-image {
         background-size: cover;
-        background-image: radial-gradient(circle, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.7) 60%, rgba(0, 0, 0, 0.5) 100%), url(./src/lib/transcendence-bg-test.gif);
+        background-image: radial-gradient(circle, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.7) 60%, rgba(0, 0, 0, 0.5) 100%), url(./src/lib/transcendence-no-pink-neon.gif);
     }
 
     .faulty-letter {
@@ -49,7 +49,6 @@
         border-radius: 0.45em;
         background: none;
         perspective: 2em;
-        font-family: "Raleway", sans-serif;
         font-size: 2em;
         font-weight: 900;
         letter-spacing: 1em;
