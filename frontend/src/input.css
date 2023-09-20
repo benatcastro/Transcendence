@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -191,4 +193,7 @@
           opacity: 1;
         }
       }
+    html {
+        font-family: 'Orbitron', sans-serif;
+    }
 }

@@ -2,7 +2,12 @@
 export default {
   content: ["./src/**/*.{html,js,svelte,ts}"],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+      },
+      animation: {
+      }
+    },
   },
   plugins: [require("daisyui")],
   daisyui: {
