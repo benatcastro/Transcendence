@@ -1,13 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="input" href="../input.css">
-		%sveltekit.head%
-	</head>
-	<body data-sveltekit-preload-data="hover">
-		<div style="display: contents">%sveltekit.body%</div>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%sveltekit.assets%/favicon.png" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="input" href="../input.css" />
+    %sveltekit.head%
+  </head>
+  <body
+    data-sveltekit-preload-data="hover"
+    style="
+      background-image: radial-gradient(
+          circle,
+          rgba(0, 0, 0, 0.7) 0%,
+          rgba(0, 0, 0, 0.7) 60%,
+          rgba(0, 0, 0, 0.5) 100%
+        ),
+        url(./src/lib/transcendence-bg-final.gif);
+    "
+  >
+    <div style="display: contents">%sveltekit.body%</div>
+  </body>
 </html>
