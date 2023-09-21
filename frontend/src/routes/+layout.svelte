@@ -8,10 +8,9 @@
     };
 </script>
 
-<div class="background-decorations">
-    <div class="neon">
-    <div class="neon-pink glowing-btn absolute bg-[rgba(50,21,43,1)] bg-resize:w-[calc(3.7vw+5px)] bg-resize:h-[calc(12vh+11vw)] bg-resize:mt-[6.5%] bg-resize:ml-[72%]">
-        <span class="glowing-txt capitalize mt-[5rem] text-4xl">
+<div class="sm:hidd">
+    <div class="neon-pink glowing-btn absolute rounded-lg bg-[rgba(50,21,43,1)] bg-resize:w-[calc(3.7vw+5px)] bg-resize:h-[calc(12vh+11vw)] bg-resize:mt-[6.5%] bg-resize:ml-[72%] flex items-center justify-center">
+        <span class="grid gap-y-6 glowing-txt capitalize text-[calc(1vh+1vw)]">
             <p class="faulty-letter">P</p>
             <p>o</p>
             <p>n</p>
@@ -19,16 +18,14 @@
         </span>
     </div>
 
-    <div class="neon-blue glowing-btn absolute bg-[rgba(11,60,71,1)] bg-resize:w-[calc(3.7vw+5px)] bg-resize:h-[calc(8vh+8vw)] bg-resize:mt-[31.5%] bg-resize:ml-[22.7%]">
-        <div class="glowing-txt capitalize text-4xl ">
+    <div class="neon-blue glowing-btn absolute rounded-lg bg-[rgba(11,60,71,1)] bg-resize:w-[calc(3.7vw+5px)] bg-resize:h-[calc(8vh+8vw)] bg-resize:mt-[31.5%] bg-resize:ml-[22.7%] flex items-center justify-center">
+        <div class="grid gap-y-1 glowing-txt capitalize text-[calc(0.8vh+0.8vw)] ">
             <p>c</p>
             <p class="faulty-letter">y</p>
             <p>b</p>
             <p>e</p>
             <p>r</p>
         </div>
-    </div>
-
     </div>
 
 </div>
@@ -64,10 +61,6 @@
         background-image: radial-gradient(circle, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.7) 60%, rgba(0, 0, 0, 0.5) 100%), url(./src/lib/transcendence-bg-final.gif);
     }
 
-    .background-decorations {}
-    .neon {
-
-    }
 
 @-webkit-keyframes glow {
   from {

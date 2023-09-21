@@ -46,7 +46,6 @@
         cursor: pointer;
         padding: 0.35em 1em;
         border: 0.15em solid var(--glow-color);
-        border-radius: 0.45em;
         background: none;
         perspective: 2em;
         font-size: 2em;
@@ -95,36 +94,7 @@
         opacity: 1;
       }
       
-      @keyframes faulty-flicker {
-        0% {
-          opacity: 0.1;
-        }
-        2% {
-          opacity: 0.1;
-        }
-        4% {
-          opacity: 0.5;
-        }
-        19% {
-          opacity: 0.5;
-        }
-        21% {
-          opacity: 0.1;
-        }
-        23% {
-          opacity: 1;
-        }
-        80% {
-          opacity: 0.5;
-        }
-        83% {
-          opacity: 0.4;
-        }
       
-        87% {
-          opacity: 1;
-        }
-      }
       
       @keyframes text-flicker {
         0% {
