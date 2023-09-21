@@ -10,7 +10,7 @@
 
 <div class="background-decorations">
     <div class="neon">
-    <div class="neon-pink glowing-btn w-[3.7vw] h-[31.2vh] mt-[12.5vh] ml-[72%]" style="position: absolute;">
+    <div class="neon-pink glowing-btn absolute bg-[rgba(50,21,43,1)] bg-resize:w-[calc(3.7vw+5px)] bg-resize:h-[calc(12vh+11vw)] bg-resize:mt-[6.5%] bg-resize:ml-[72%]">
         <span class="glowing-txt capitalize mt-[5rem] text-4xl">
             <p class="faulty-letter">P</p>
             <p>o</p>
@@ -19,7 +19,7 @@
         </span>
     </div>
 
-    <div class="neon-blue w-[3.7vw] h-[21.5vh] mt-[60vh]" style="position: absolute; margin-left: 23%;">
+    <div class="neon-blue glowing-btn absolute bg-[rgba(11,60,71,1)] bg-resize:w-[calc(3.7vw+5px)] bg-resize:h-[calc(8vh+8vw)] bg-resize:mt-[31.5%] bg-resize:ml-[22.7%]">
         <div class="glowing-txt capitalize text-4xl ">
             <p>c</p>
             <p class="faulty-letter">y</p>
@@ -66,9 +66,6 @@
 
     .background-decorations {}
     .neon {
-        width: 100vw;
-        height: 100vh;
-        position: absolute;
 
     }
 
