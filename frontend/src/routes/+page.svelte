@@ -4,7 +4,7 @@
                 <div class="w-full h-full ">
                     <h1 class="text-center text-3xl">42O</h1>
                     <h3 class="text-center text-1xl mt-10">Continue with</h3>
-                    <button class="btn-menu">Test</button>
+                    <button class="btn-menu align-middle">Test</button>
                 </div>
 
 
