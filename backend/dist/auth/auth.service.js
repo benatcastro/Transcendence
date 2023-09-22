@@ -28,7 +28,7 @@ let AuthService = class AuthService {
             "&response_type=code&scope=public" +
             "&state=a_very_long_random_string_witchmust_be_unguessable'");
     }
-    PostUserAuth(code, state) {
+    async PostUserAuth(code, state) {
         let endpoint = "https://api.intra.42.fr/oauth/token";
         const client_id = process.env.API_UID;
         const client_secret = process.env.API_SECRET;
@@ -52,8 +52,10 @@ let AuthService = class AuthService {
             code,
             redirect_uri,
         };
-        (0, console_1.log)(endpoint);
-        return this.httpService.post(endpoint).pipe((0, rxjs_1.map)((response) => response.data));
+        const access_token = await (0, rxjs_1.firstValueFrom)(this.httpService.post(endpoint).pipe((0, rxjs_1.map)((resp) => resp.data?.access_token), (0, rxjs_1.tap)((access_token) => (0, console_1.log)("token %s", access_token))));
+        return access_token;
+    }
+    getUserAccessToken(code, state) {
     }
     getUserFromApi(access_token) {
         const endpoint = "https://api.intra.42.fr/v2/me";

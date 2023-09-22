@@ -3,6 +3,7 @@ import { Controller, Get, Query, Redirect, Req, Res } from '@nestjs/common';
 import { AxiosError } from 'axios';
 import { log } from 'console';
 import { Request, Response } from 'express';
+import { map } from 'rxjs';
 
 @Controller('auth')
 export class AuthController {
@@ -14,10 +15,11 @@ export class AuthController {
   }
 
   @Get("api_response")
-  postUserAuthorization(@Query() params: any) {
-      const access_token = this.AuthService.PostUserAuth(params.code, params.state);
-      log("response %s", access_token);
+  async postUserAuthorization(@Query() params: any) {
+      let access_token = await this.AuthService.PostUserAuth(params.code, params.state);
+    
+
+      log("access_token %s", access_token);
       return access_token;
     }
-  }
 }

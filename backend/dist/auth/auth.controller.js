@@ -23,9 +23,9 @@ let AuthController = class AuthController {
     redirectToIntraApi(req, res) {
         res.redirect(this.AuthService.getLoginRedirectURI());
     }
-    postUserAuthorization(params) {
-        const access_token = this.AuthService.PostUserAuth(params.code, params.state);
-        (0, console_1.log)("response %s", access_token);
+    async postUserAuthorization(params) {
+        let access_token = await this.AuthService.PostUserAuth(params.code, params.state);
+        (0, console_1.log)("access_token %s", access_token);
         return access_token;
     }
 };
@@ -43,7 +43,7 @@ __decorate([
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], AuthController.prototype, "postUserAuthorization", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),

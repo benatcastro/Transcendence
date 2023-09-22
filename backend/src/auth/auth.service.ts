@@ -1,8 +1,9 @@
 import { HttpService } from "@nestjs/axios";
 import { Injectable } from "@nestjs/common";
 import { AxiosError, AxiosResponse } from "axios";
-import { Observable, catchError, firstValueFrom, map } from "rxjs";
+import { Observable, catchError, firstValueFrom, map, tap } from "rxjs";
 import { error, log } from "console";
+import { access } from "fs";
 
 @Injectable()
 export class AuthService {
@@ -21,7 +22,7 @@ export class AuthService {
     );
   }
 
-  PostUserAuth(code: string, state: string): Observable<string> {
+    async PostUserAuth(code: string, state: string): Promise<any> {
 
     let endpoint = "https://api.intra.42.fr/oauth/token";
 
@@ -51,11 +52,17 @@ export class AuthService {
       // state,
     };
 
-    log(endpoint);
+    // log(endpoint);
+    const access_token = await firstValueFrom(
+      this.httpService.post(endpoint).pipe(
+        map((resp) => resp.data?.access_token),
+        tap((access_token) => log("token %s", access_token)),
+      ));
+    return access_token;
+  }
 
-    return this.httpService.post<string>(endpoint).pipe(
-      map((response: AxiosResponse<string>) => response.data), // Extract and return the response data directly
-    );
+  getUserAccessToken(code: string, state: string)  {
+
   }
 
   getUserFromApi(access_token: string): any {

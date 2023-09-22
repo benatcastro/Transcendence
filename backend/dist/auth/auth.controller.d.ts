@@ -4,5 +4,5 @@ export declare class AuthController {
     private readonly AuthService;
     constructor(AuthService: AuthService);
     redirectToIntraApi(req: Request, res: Response): void;
-    postUserAuthorization(params: any): import("rxjs").Observable<string>;
+    postUserAuthorization(params: any): Promise<any>;
 }
