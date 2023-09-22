@@ -39,3 +39,13 @@ services:
         - ./pgdata:/var/lib/postgresql/data
       ports:
         - "5432:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: nest-pgadmin4
+    env_file:
+      - .env
+    ports:
+      - '5050:80'
+    depends_on:
+      - db
