@@ -21,7 +21,8 @@ export class AuthService {
     );
   }
 
-  PostUserAuth(code: string, state: string): Observable<AxiosResponse<string>> {
+  PostUserAuth(code: string, state: string): Observable<string> {
+
     let endpoint = "https://api.intra.42.fr/oauth/token";
 
     const client_id = process.env.API_UID;
@@ -52,12 +53,21 @@ export class AuthService {
 
     log(endpoint);
 
-      return (this.httpService.post(endpoint).pipe( 
-        map((res) => res.data),
-        catchError((error: AxiosError) => {
-          log("ERROR");
-          throw 500;
-        })
-      ))
+    return this.httpService.post<string>(endpoint).pipe(
+      map((response: AxiosResponse<string>) => response.data), // Extract and return the response data directly
+    );
   }
+
+  getUserFromApi(access_token: string): any {
+    const endpoint = "https://api.intra.42.fr/v2/me";
+
+    const config = {
+      headers: {
+        Authorization: "Bearer " + access_token,
+      }
+    }    
+
+    return (this.httpService.get(endpoint, config));
+  }
+
 }

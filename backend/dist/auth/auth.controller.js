@@ -24,15 +24,9 @@ let AuthController = class AuthController {
         res.redirect(this.AuthService.getLoginRedirectURI());
     }
     postUserAuthorization(params) {
-        (0, console_1.log)("params.code: " + params.code);
-        try {
-            const response = this.AuthService.PostUserAuth(params.code, params.state);
-            (0, console_1.log)("LLEGA" + response);
-            return response;
-        }
-        catch (error) {
-            (0, console_1.log)(error);
-        }
+        const access_token = this.AuthService.PostUserAuth(params.code, params.state);
+        (0, console_1.log)("response %s", access_token);
+        return access_token;
     }
 };
 exports.AuthController = AuthController;

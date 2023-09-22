@@ -53,10 +53,16 @@ let AuthService = class AuthService {
             redirect_uri,
         };
         (0, console_1.log)(endpoint);
-        return (this.httpService.post(endpoint).pipe((0, rxjs_1.map)((res) => res.data), (0, rxjs_1.catchError)((error) => {
-            (0, console_1.log)("ERROR");
-            throw 500;
-        })));
+        return this.httpService.post(endpoint).pipe((0, rxjs_1.map)((response) => response.data));
+    }
+    getUserFromApi(access_token) {
+        const endpoint = "https://api.intra.42.fr/v2/me";
+        const config = {
+            headers: {
+                Authorization: "Bearer " + access_token,
+            }
+        };
+        return (this.httpService.get(endpoint, config));
     }
 };
 exports.AuthService = AuthService;

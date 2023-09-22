@@ -15,13 +15,9 @@ export class AuthController {
 
   @Get("api_response")
   postUserAuthorization(@Query() params: any) {
-    log("params.code: " + params.code);
-    try {
-      const response = this.AuthService.PostUserAuth(params.code, params.state);
-      log("LLEGA" + response);
-      return response;
-    } catch (error: any) {
-     log(error) ;
+      const access_token = this.AuthService.PostUserAuth(params.code, params.state);
+      log("response %s", access_token);
+      return access_token;
     }
   }
 }
