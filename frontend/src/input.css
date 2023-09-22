@@ -42,6 +42,7 @@
       }
 
     .glow-border {
+        --glow-step: var(--glow-color);
         position: relative;
         color: var(--glow-color);
         cursor: pointer;
@@ -53,12 +54,12 @@
         font-weight: 900;
         letter-spacing: 1em;
       
-        -webkit-box-shadow: inset 0px 0px 0.5em 0px var(--glow-color),
-          0px 0px 0.5em 0px var(--glow-color);
-        -moz-box-shadow: inset 0px 0px 0.5em 0px var(--glow-color),
-          0px 0px 0.5em 0px var(--glow-color);
-        box-shadow: inset 0px 0px 0.5em 0px var(--glow-color),
-          0px 0px 0.5em 0px var(--glow-color);
+        -webkit-box-shadow: inset 0px 0px 0.5em 0px var(--glow-step),
+          0px 0px 0.5em 0px var(--glow-step);
+        -moz-box-shadow: inset 0px 0px 0.5em 0px var(--glow-step),
+          0px 0px 0.5em 0px var(--glow-step);
+        box-shadow: inset 0px 0px 0.5em 0px var(--glow-step),
+          0px 0px 0.5em 0px var(--glow-step);
         animation: border-flicker 2s linear infinite;
     }
 

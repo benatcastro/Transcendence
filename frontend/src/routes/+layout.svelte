@@ -33,7 +33,7 @@
       </div>
     </div>
 
-    <div class="navbar justify-">
+    <div class="navbar">
       <span class="btn-ghost">Contact</span>
       <label class="swap swap-rotate">
         <input type="checkbox" on:click={changeTheme} />
