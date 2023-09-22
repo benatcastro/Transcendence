@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .pixel-border-sm {
+    clip-path: polygon(
+      0px calc(100% - 8px),
+      2px calc(100% - 8px),
+      2px calc(100% - 4px),
+      4px calc(100% - 4px),
+      4px calc(100% - 2px),
+      8px calc(100% - 2px),
+      8px 100%,
+      calc(100% - 8px) 100%,
+      calc(100% - 8px) calc(100% - 2px),
+      calc(100% - 4px) calc(100% - 2px),
+      calc(100% - 4px) calc(100% - 4px),
+      calc(100% - 2px) calc(100% - 4px),
+      calc(100% - 2px) calc(100% - 8px),
+      100% calc(100% - 8px),
+      100% 8px,
+      calc(100% - 2px) 8px,
+      calc(100% - 2px) 4px,
+      calc(100% - 4px) 4px,
+      calc(100% - 4px) 2px,
+      calc(100% - 8px) 2px,
+      calc(100% - 8px) 0px,
+      8px 0px,
+      8px 2px,
+      4px 2px,
+      4px 4px,
+      2px 4px,
+      2px 8px,
+      0px 8px
+    );
+  }
+
+
+    .pixel-border {
+        clip-path: polygon(
+          0px calc(100% - 36px),
+          4px calc(100% - 36px),
+          4px calc(100% - 32px),
+          4px calc(100% - 24px),
+          8px calc(100% - 24px),
+          8px calc(100% - 20px),
+          12px calc(100% - 20px),
+          12px calc(100% - 16px),
+          16px calc(100% - 12px),
+          20px calc(100% - 12px),
+          20px calc(100% - 8px),
+          24px calc(100% - 8px),
+          24px calc(100% - 4px),
+          32px calc(100% - 4px),
+          36px calc(100% - 4px),
+          36px 100%,
+          calc(100% - 36px) 100%,
+          calc(100% - 36px) calc(100% - 4px),
+          calc(100% - 32px) calc(100% - 4px),
+          calc(100% - 24px) calc(100% - 4px),
+          calc(100% - 24px) calc(100% - 8px),
+          calc(100% - 20px) calc(100% - 8px),
+          calc(100% - 20px) calc(100% - 12px),
+          calc(100% - 16px) calc(100% - 12px),
+          calc(100% - 12px) calc(100% - 16px),
+          calc(100% - 12px) calc(100% - 20px),
+          calc(100% - 8px) calc(100% - 20px),
+          calc(100% - 8px) calc(100% - 24px),
+          calc(100% - 4px) calc(100% - 24px),
+          calc(100% - 4px) calc(100% - 32px),
+          calc(100% - 4px) calc(100% - 36px),
+          100% calc(100% - 36px),
+          100% 36px,
+          calc(100% - 4px) 36px,
+          calc(100% - 4px) 32px,
+          calc(100% - 4px) 24px,
+          calc(100% - 8px) 24px,
+          calc(100% - 8px) 20px,
+          calc(100% - 12px) 20px,
+          calc(100% - 12px) 16px,
+          calc(100% - 16px) 12px,
+          calc(100% - 20px) 12px,
+          calc(100% - 20px) 8px,
+          calc(100% - 24px) 8px,
+          calc(100% - 24px) 4px,
+          calc(100% - 32px) 4px,
+          calc(100% - 36px) 4px,
+          calc(100% - 36px) 0px,
+          36px 0px,
+          36px 4px,
+          32px 4px,
+          24px 4px,
+          24px 8px,
+          20px 8px,
+          20px 12px,
+          16px 12px,
+          12px 16px,
+          12px 20px,
+          8px 20px,
+          8px 24px,
+          4px 24px,
+          4px 32px,
+          4px 36px,
+          0px 36px
+        );
+      }
+
+      .pixel-button {
+        @apply bg-gray-500;
+        @apply pixel-border-sm;
+        font-family: theme(fontFamily.pixel);
+        font-size: theme(fontSize.3xl);
+        width: theme(width.28);
+        text-align: center;
+        letter-spacing: theme(letterSpacing.wider);
+        transition: 0.5s;
+      }
+      .pixel-button:hover {
+        background: #ff1d4e url(pixelated_base.png);
+        background-size: 120px;
+        animation: animate 0.8s steps(8) infinite;
+        transition-delay: 0.8s;
+      }
+      @keyframes animate {
+        0% {
+          background-position-y: 0;
+        }
+        100% {
+          background-position-y: -900px;
+        }
+      }
+}

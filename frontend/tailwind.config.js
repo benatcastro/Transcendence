@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+<<<<<<< HEAD
   content: ["./src/**/*.{html,js,svelte,ts}"],
   theme: {
     extend: {
@@ -34,3 +35,14 @@ export default {
   },
 }
 
+=======
+  content: ['./src/**/*.{html,js,svelte,ts}'],
+  theme: {
+    fontFamily: {
+      'pixel': ['VT323', 'monospace'],
+    },
+    extend: {}
+  },
+  plugins: []
+};
+>>>>>>> login-api-implementation
