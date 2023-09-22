@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       screens: {
-        'bg-resize': '2000px',
+        'bg-resize': '1500px',
       },
       keyframes: {
       },
@@ -16,7 +16,7 @@ export default {
   daisyui: {
     themes: [
       {
-      cyberpunk_dark: {    
+      cyberpunk_dark: {
             "primary": "#0c4383",
             "secondary": "#21a1b6",
             "accent": "#cb0c59",
