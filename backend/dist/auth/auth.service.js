@@ -20,20 +20,31 @@ let AuthService = class AuthService {
     }
     getLoginRedirectURI() {
         const RedirectUrl = process.env.REDIRECT_URL;
-        ;
         const API_UID = process.env.API_UID;
-        ;
-        return ("https://api.intra.42.fr/oauth/authorize?client_id=" + API_UID +
-            "&redirect_uri=" + RedirectUrl +
+        return ("https://api.intra.42.fr/oauth/authorize?client_id=" +
+            API_UID +
+            "&redirect_uri=" +
+            RedirectUrl +
             "&response_type=code&scope=public" +
             "&state=a_very_long_random_string_witchmust_be_unguessable'");
     }
-    async PostUserAuth(code, state) {
-        const endpoint = "https://api.intra.42.fr/oauth/token";
+    PostUserAuth(code, state) {
+        let endpoint = "https://api.intra.42.fr/oauth/token";
         const client_id = process.env.API_UID;
         const client_secret = process.env.API_SECRET;
         const redirect_uri = process.env.REDIRECT_URL;
         const grant_type = "authorization_code";
+        endpoint +=
+            "?grant_type=" +
+                grant_type +
+                "&client_id=" +
+                client_id +
+                "&client_secret=" +
+                client_secret +
+                "&redirect_url" +
+                redirect_uri +
+                "&code=" +
+                code;
         const queryParams = {
             grant_type,
             client_id,
@@ -41,13 +52,11 @@ let AuthService = class AuthService {
             code,
             redirect_uri,
         };
-        (0, console_1.log)(queryParams);
-        const { data } = await (0, rxjs_1.firstValueFrom)(this.httpService.post(endpoint, {}, { params: queryParams }).pipe((0, rxjs_1.catchError)((error) => {
-            (0, console_1.log)(error.toJSON());
-            (0, console_1.log)(error.response.data);
+        (0, console_1.log)(endpoint);
+        return (this.httpService.post(endpoint).pipe((0, rxjs_1.map)((res) => res.data), (0, rxjs_1.catchError)((error) => {
+            (0, console_1.log)("ERROR");
             throw 500;
         })));
-        return data;
     }
 };
 exports.AuthService = AuthService;

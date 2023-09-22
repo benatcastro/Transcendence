@@ -26,7 +26,9 @@ let AuthController = class AuthController {
     postUserAuthorization(params) {
         (0, console_1.log)("params.code: " + params.code);
         try {
-            this.AuthService.PostUserAuth(params.code, params.state);
+            const response = this.AuthService.PostUserAuth(params.code, params.state);
+            (0, console_1.log)("LLEGA" + response);
+            return response;
         }
         catch (error) {
             (0, console_1.log)(error);
