@@ -3,7 +3,6 @@ import { Injectable } from "@nestjs/common";
 import { AxiosError, AxiosResponse } from "axios";
 import { Observable, catchError, firstValueFrom, map, tap } from "rxjs";
 import { error, log } from "console";
-import { access } from "fs";
 
 @Injectable()
 export class AuthService {

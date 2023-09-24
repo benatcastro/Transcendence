@@ -8,6 +8,7 @@ import { HttpModule } from '@nestjs/axios';
 import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
 import { UserModule } from './user/user.module';
+import { PrismaService } from './prisma/prisma.service';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -15,6 +16,6 @@ import { UserModule } from './user/user.module';
     isGlobal: true,
   }), HttpModule, UserModule],
   controllers: [AppController, AuthController, UserController],
-  providers: [AppService, AuthService, UserService],
+  providers: [AppService, AuthService, UserService, PrismaService],
 })
 export class AppModule {}

@@ -17,6 +17,7 @@ const axios_1 = require("@nestjs/axios");
 const user_controller_1 = require("./user/user.controller");
 const user_service_1 = require("./user/user.service");
 const user_module_1 = require("./user/user.module");
+const prisma_service_1 = require("./prisma/prisma.service");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -27,7 +28,7 @@ exports.AppModule = AppModule = __decorate([
                 isGlobal: true,
             }), axios_1.HttpModule, user_module_1.UserModule],
         controllers: [app_controller_1.AppController, auth_controller_1.AuthController, user_controller_1.UserController],
-        providers: [app_service_1.AppService, auth_service_1.AuthService, user_service_1.UserService],
+        providers: [app_service_1.AppService, auth_service_1.AuthService, user_service_1.UserService, prisma_service_1.PrismaService],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map
