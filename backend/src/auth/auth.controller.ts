@@ -7,12 +7,12 @@ import { Request, Response } from 'express';
 export class AuthController {
   constructor(private readonly AuthService: AuthService) {}
 
-  @Get("login")
+  @Get("42/login")
   redirectToIntraApi(@Req() req: Request, @Res() res: Response) {
     res.redirect(this.AuthService.getLoginRedirectURI());
   }
 
-  @Get("api_response")
+  @Get("42/callback")
   async postUserAuthorization(@Query() params: any) {
       let access_token = await this.AuthService.getAccessToken(params.code, params.state);
     

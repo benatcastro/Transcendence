@@ -21,8 +21,7 @@ export class AuthService {
     );
   }
 
-    async getAccessToken(code: string, state: string): Promise<any> {
-
+  async getAccessToken(code: string, state: string): Promise<any> {
     let endpoint = "https://api.intra.42.fr/oauth/token";
 
     const client_id = process.env.API_UID;
@@ -55,8 +54,9 @@ export class AuthService {
     const access_token = await firstValueFrom(
       this.httpService.post(endpoint).pipe(
         map((resp) => resp.data?.access_token),
-        tap((access_token) => log("token %s", access_token)),
-      ));
+        tap((access_token) => log("token %s", access_token))
+      )
+    );
     return access_token;
   }
 
@@ -66,14 +66,18 @@ export class AuthService {
     const config = {
       headers: {
         Authorization: "Bearer " + access_token,
-      }
-    }    
-    const user = await firstValueFrom(
+      },
+    };
+    const user: { email; username } = await firstValueFrom(
       this.httpService.get(endpoint, config).pipe(
-        map((res) => { return res.data })
+        map((res) => res?.data),
+        map((data) => {
+          const email = data?.email;
+          const username = data?.login;
+          return {email, username};
+        })
       )
-    )
+    );
     return user;
   }
-
 }

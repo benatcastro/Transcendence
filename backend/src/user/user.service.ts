@@ -9,4 +9,5 @@ export class UserService {
     async all(): Promise<User[]> {
         return this.prisma.user.findMany();
     }
+
 }
