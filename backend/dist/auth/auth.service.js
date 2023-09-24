@@ -60,9 +60,14 @@ let AuthService = class AuthService {
         const config = {
             headers: {
                 Authorization: "Bearer " + access_token,
-            }
+            },
         };
-        const user = await (0, rxjs_1.firstValueFrom)(this.httpService.get(endpoint, config).pipe((0, rxjs_1.map)((res) => { return res.data; })));
+        const user = await (0, rxjs_1.firstValueFrom)(this.httpService.get(endpoint, config).pipe((0, rxjs_1.map)((res) => res?.data), (0, rxjs_1.map)((data) => {
+            const email = data?.email;
+            const username = data?.login;
+            const auth_type = "42auth";
+            return { email, username, auth_type };
+        })));
         return user;
     }
 };

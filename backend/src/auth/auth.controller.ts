@@ -2,10 +2,11 @@ import { AuthService } from './auth.service';
 import { Controller, Get, Query, Redirect, Req, Res } from '@nestjs/common';
 import { log } from 'console';
 import { Request, Response } from 'express';
+import { UserService } from 'src/user/user.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly AuthService: AuthService) {}
+  constructor(private readonly AuthService: AuthService, private readonly UserService: UserService) {}
 
   @Get("42/login")
   redirectToIntraApi(@Req() req: Request, @Res() res: Response) {
@@ -19,6 +20,7 @@ export class AuthController {
 
       log("access_token %s", access_token);
       let user = await this.AuthService.getUserFromApi(access_token);
-      return user;
+
+      return this.UserService.create(user);
     }
 }

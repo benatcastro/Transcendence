@@ -19,6 +19,9 @@ let UserService = class UserService {
     async all() {
         return this.prisma.user.findMany();
     }
+    async create(data) {
+        return this.prisma.user.create({ data });
+    }
 };
 exports.UserService = UserService;
 exports.UserService = UserService = __decorate([

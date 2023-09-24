@@ -4,5 +4,5 @@ export declare class AuthService {
     constructor(httpService: HttpService);
     getLoginRedirectURI(): string;
     getAccessToken(code: string, state: string): Promise<any>;
-    getUserFromApi(access_token: string): Promise<any>;
+    getUserFromApi(access_token: any): Promise<any>;
 }

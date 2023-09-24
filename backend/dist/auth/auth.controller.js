@@ -16,9 +16,11 @@ exports.AuthController = void 0;
 const auth_service_1 = require("./auth.service");
 const common_1 = require("@nestjs/common");
 const console_1 = require("console");
+const user_service_1 = require("../user/user.service");
 let AuthController = class AuthController {
-    constructor(AuthService) {
+    constructor(AuthService, UserService) {
         this.AuthService = AuthService;
+        this.UserService = UserService;
     }
     redirectToIntraApi(req, res) {
         res.redirect(this.AuthService.getLoginRedirectURI());
@@ -27,12 +29,12 @@ let AuthController = class AuthController {
         let access_token = await this.AuthService.getAccessToken(params.code, params.state);
         (0, console_1.log)("access_token %s", access_token);
         let user = await this.AuthService.getUserFromApi(access_token);
-        return user;
+        return this.UserService.create(user);
     }
 };
 exports.AuthController = AuthController;
 __decorate([
-    (0, common_1.Get)("login"),
+    (0, common_1.Get)("42/login"),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -40,7 +42,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "redirectToIntraApi", null);
 __decorate([
-    (0, common_1.Get)("api_response"),
+    (0, common_1.Get)("42/callback"),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -48,6 +50,6 @@ __decorate([
 ], AuthController.prototype, "postUserAuthorization", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
-    __metadata("design:paramtypes", [auth_service_1.AuthService])
+    __metadata("design:paramtypes", [auth_service_1.AuthService, user_service_1.UserService])
 ], AuthController);
 //# sourceMappingURL=auth.controller.js.map

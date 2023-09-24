@@ -8,7 +8,7 @@ import { error, log } from "console";
 export class AuthService {
   constructor(private readonly httpService: HttpService) {}
 
-  getLoginRedirectURI(): string {
+   getLoginRedirectURI(): string {
     const RedirectUrl: string = process.env.REDIRECT_URL;
     const API_UID: string = process.env.API_UID;
     return (
@@ -60,7 +60,7 @@ export class AuthService {
     return access_token;
   }
 
-  async getUserFromApi(access_token: string): Promise<any> {
+  async getUserFromApi(access_token): Promise<any> {
     const endpoint = "https://api.intra.42.fr/v2/me";
 
     const config = {
@@ -68,16 +68,18 @@ export class AuthService {
         Authorization: "Bearer " + access_token,
       },
     };
-    const user: { email; username } = await firstValueFrom(
+
+    const user: { email; username, auth_type } = await firstValueFrom(
       this.httpService.get(endpoint, config).pipe(
         map((res) => res?.data),
         map((data) => {
           const email = data?.email;
           const username = data?.login;
-          return {email, username};
+          const auth_type = "42auth";
+          return { email, username, auth_type };
         })
       )
-    );
+    )
     return user;
   }
 }
