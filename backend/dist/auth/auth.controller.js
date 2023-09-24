@@ -24,9 +24,10 @@ let AuthController = class AuthController {
         res.redirect(this.AuthService.getLoginRedirectURI());
     }
     async postUserAuthorization(params) {
-        let access_token = await this.AuthService.PostUserAuth(params.code, params.state);
+        let access_token = await this.AuthService.getAccessToken(params.code, params.state);
         (0, console_1.log)("access_token %s", access_token);
-        return access_token;
+        let user = await this.AuthService.getUserFromApi(access_token);
+        return user;
     }
 };
 exports.AuthController = AuthController;

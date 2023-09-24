@@ -16,10 +16,11 @@ export class AuthController {
 
   @Get("api_response")
   async postUserAuthorization(@Query() params: any) {
-      let access_token = await this.AuthService.PostUserAuth(params.code, params.state);
+      let access_token = await this.AuthService.getAccessToken(params.code, params.state);
     
 
       log("access_token %s", access_token);
-      return access_token;
+      let user = await this.AuthService.getUserFromApi(access_token);
+      return user;
     }
 }

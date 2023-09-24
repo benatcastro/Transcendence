@@ -22,7 +22,7 @@ export class AuthService {
     );
   }
 
-    async PostUserAuth(code: string, state: string): Promise<any> {
+    async getAccessToken(code: string, state: string): Promise<any> {
 
     let endpoint = "https://api.intra.42.fr/oauth/token";
 
@@ -61,11 +61,7 @@ export class AuthService {
     return access_token;
   }
 
-  getUserAccessToken(code: string, state: string)  {
-
-  }
-
-  getUserFromApi(access_token: string): any {
+  async getUserFromApi(access_token: string): Promise<any> {
     const endpoint = "https://api.intra.42.fr/v2/me";
 
     const config = {
@@ -73,8 +69,12 @@ export class AuthService {
         Authorization: "Bearer " + access_token,
       }
     }    
-
-    return (this.httpService.get(endpoint, config));
+    const user = await firstValueFrom(
+      this.httpService.get(endpoint, config).pipe(
+        map((res) => { return res.data })
+      )
+    )
+    return user;
   }
 
 }
