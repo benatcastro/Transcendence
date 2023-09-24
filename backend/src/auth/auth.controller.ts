@@ -1,9 +1,7 @@
 import { AuthService } from './auth.service';
 import { Controller, Get, Query, Redirect, Req, Res } from '@nestjs/common';
-import { AxiosError } from 'axios';
 import { log } from 'console';
 import { Request, Response } from 'express';
-import { map } from 'rxjs';
 
 @Controller('auth')
 export class AuthController {

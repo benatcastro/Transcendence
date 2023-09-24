@@ -5,13 +5,16 @@ import { ConfigModule } from '@nestjs/config'
 import { AuthService } from './auth/auth.service';
 import { AuthController } from './auth/auth.controller';
 import { HttpModule } from '@nestjs/axios';
+import { UserController } from './user/user.controller';
+import { UserService } from './user/user.service';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
-    envFilePath: '.env.backend',
+    envFilePath: '.env',
     isGlobal: true,
-  }), HttpModule],
-  controllers: [AppController, AuthController],
-  providers: [AppService, AuthService],
+  }), HttpModule, UserModule],
+  controllers: [AppController, AuthController, UserController],
+  providers: [AppService, AuthService, UserService],
 })
 export class AppModule {}
