@@ -8,7 +8,7 @@ import { error, log } from "console";
 export class AuthService {
   constructor(private readonly httpService: HttpService) {}
 
-   getLoginRedirectURI(): string {
+  getLoginRedirectURI(): string {
     const RedirectUrl: string = process.env.REDIRECT_URL;
     const API_UID: string = process.env.API_UID;
     return (
@@ -54,8 +54,8 @@ export class AuthService {
     const access_token = await firstValueFrom(
       this.httpService.post(endpoint).pipe(
         map((resp) => resp.data?.access_token),
-        tap((access_token) => log("token %s", access_token))
-      )
+        tap((access_token) => log("token %s", access_token)),
+      ),
     );
     return access_token;
   }
@@ -69,7 +69,7 @@ export class AuthService {
       },
     };
 
-    const user: { email; username, auth_type } = await firstValueFrom(
+    const user: { email; username; auth_type } = await firstValueFrom(
       this.httpService.get(endpoint, config).pipe(
         map((res) => res?.data),
         map((data) => {
@@ -77,9 +77,9 @@ export class AuthService {
           const username = data?.login;
           const auth_type = "42auth";
           return { email, username, auth_type };
-        })
-      )
-    )
+        }),
+      ),
+    );
     return user;
   }
 }

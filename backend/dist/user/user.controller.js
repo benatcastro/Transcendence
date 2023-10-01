@@ -26,6 +26,9 @@ let UserController = class UserController {
     async returnAll() {
         return await this.userService.all();
     }
+    async updateEmail(id, newEmail) {
+        return await this.userService.updateEmailById(Number(id), newEmail);
+    }
 };
 exports.UserController = UserController;
 __decorate([
@@ -41,6 +44,14 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "returnAll", null);
+__decorate([
+    (0, common_2.Put)("email/:id"),
+    __param(0, (0, common_1.Param)("id")),
+    __param(1, (0, common_1.Body)("newEmail")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "updateEmail", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)("user"),
     __metadata("design:paramtypes", [user_service_1.UserService])

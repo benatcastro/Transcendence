@@ -26,9 +26,9 @@ let AuthController = class AuthController {
         res.redirect(this.AuthService.getLoginRedirectURI());
     }
     async postUserAuthorization(params) {
-        let access_token = await this.AuthService.getAccessToken(params.code, params.state);
+        const access_token = await this.AuthService.getAccessToken(params.code, params.state);
         (0, console_1.log)("access_token %s", access_token);
-        let user = await this.AuthService.getUserFromApi(access_token);
+        const user = await this.AuthService.getUserFromApi(access_token);
         return this.UserService.create(user);
     }
 };
@@ -49,7 +49,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "postUserAuthorization", null);
 exports.AuthController = AuthController = __decorate([
-    (0, common_1.Controller)('auth'),
-    __metadata("design:paramtypes", [auth_service_1.AuthService, user_service_1.UserService])
+    (0, common_1.Controller)("auth"),
+    __metadata("design:paramtypes", [auth_service_1.AuthService,
+        user_service_1.UserService])
 ], AuthController);
 //# sourceMappingURL=auth.controller.js.map

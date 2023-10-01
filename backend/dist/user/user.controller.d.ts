@@ -14,4 +14,10 @@ export declare class UserController {
         username: string;
         auth_type: string;
     }[]>;
+    updateEmail(id: string, newEmail: string): Promise<{
+        id: number;
+        email: string;
+        username: string;
+        auth_type: string;
+    }>;
 }

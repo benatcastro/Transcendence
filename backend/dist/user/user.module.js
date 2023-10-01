@@ -20,7 +20,7 @@ exports.UserModule = UserModule = __decorate([
         imports: [],
         controllers: [user_controller_1.UserController],
         providers: [prisma_service_1.PrismaService, user_service_1.UserService],
-        exports: [user_service_1.UserService]
+        exports: [user_service_1.UserService],
     })
 ], UserModule);
 //# sourceMappingURL=user.module.js.map

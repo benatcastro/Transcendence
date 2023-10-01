@@ -13,4 +13,11 @@ export class UserService {
   async create(data: Prisma.UserCreateInput): Promise<User> {
     return this.prisma.user.create({ data });
   }
+
+  async updateEmailById(req_id: number, newEmail: string) {
+    return this.prisma.user.update({
+      where: { id: req_id },
+      data: { email: newEmail },
+    });
+  }
 }

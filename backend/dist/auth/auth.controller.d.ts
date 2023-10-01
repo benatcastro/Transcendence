@@ -1,6 +1,6 @@
-import { AuthService } from './auth.service';
-import { Request, Response } from 'express';
-import { UserService } from 'src/user/user.service';
+import { AuthService } from "./auth.service";
+import { Request, Response } from "express";
+import { UserService } from "src/user/user.service";
 export declare class AuthController {
     private readonly AuthService;
     private readonly UserService;

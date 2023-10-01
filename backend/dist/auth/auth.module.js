@@ -21,11 +21,7 @@ exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [user_module_1.UserModule, axios_1.HttpModule],
         controllers: [auth_controller_1.AuthController],
-        providers: [
-            auth_service_1.AuthService,
-            user_service_1.UserService,
-            prisma_service_1.PrismaService,
-        ],
+        providers: [auth_service_1.AuthService, user_service_1.UserService, prisma_service_1.PrismaService],
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map
