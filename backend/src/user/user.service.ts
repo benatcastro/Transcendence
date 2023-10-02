@@ -20,4 +20,10 @@ export class UserService {
             data: { email: newEmail },
         });
     }
+
+    async findById(id: number) {
+        return this.prisma.user.findUnique({
+            where: { id: id }
+        })
+    }
 }
