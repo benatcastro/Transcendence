@@ -39,21 +39,21 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "createUser", null);
 __decorate([
-    (0, common_2.Get)("all"),
+    (0, common_2.Get)('all'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "returnAll", null);
 __decorate([
-    (0, common_2.Put)("email/:id"),
-    __param(0, (0, common_1.Param)("id")),
-    __param(1, (0, common_1.Body)("newEmail")),
+    (0, common_2.Put)('email/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)('newEmail')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "updateEmail", null);
 exports.UserController = UserController = __decorate([
-    (0, common_1.Controller)("user"),
+    (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])
 ], UserController);
 //# sourceMappingURL=user.controller.js.map

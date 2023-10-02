@@ -21,29 +21,29 @@ let AuthService = class AuthService {
     getLoginRedirectURI() {
         const RedirectUrl = process.env.REDIRECT_URL;
         const API_UID = process.env.API_UID;
-        return ("https://api.intra.42.fr/oauth/authorize?client_id=" +
+        return ('https://api.intra.42.fr/oauth/authorize?client_id=' +
             API_UID +
-            "&redirect_uri=" +
+            '&redirect_uri=' +
             RedirectUrl +
-            "&response_type=code&scope=public" +
-            "&state=a_very_long_random_string_witchmust_be_unguessable'");
+            '&response_type=code&scope=public' +
+            '&state=a_very_long_random_string_witchmust_be_unguessable\'');
     }
     async getAccessToken(code, state) {
-        let endpoint = "https://api.intra.42.fr/oauth/token";
+        let endpoint = 'https://api.intra.42.fr/oauth/token';
         const client_id = process.env.API_UID;
         const client_secret = process.env.API_SECRET;
         const redirect_uri = process.env.REDIRECT_URL;
-        const grant_type = "authorization_code";
+        const grant_type = 'authorization_code';
         endpoint +=
-            "?grant_type=" +
+            '?grant_type=' +
                 grant_type +
-                "&client_id=" +
+                '&client_id=' +
                 client_id +
-                "&client_secret=" +
+                '&client_secret=' +
                 client_secret +
-                "&redirect_url" +
+                '&redirect_url' +
                 redirect_uri +
-                "&code=" +
+                '&code=' +
                 code;
         const queryParams = {
             grant_type,
@@ -52,20 +52,20 @@ let AuthService = class AuthService {
             code,
             redirect_uri,
         };
-        const access_token = await (0, rxjs_1.firstValueFrom)(this.httpService.post(endpoint).pipe((0, rxjs_1.map)((resp) => resp.data?.access_token), (0, rxjs_1.tap)((access_token) => (0, console_1.log)("token %s", access_token))));
+        const access_token = await (0, rxjs_1.firstValueFrom)(this.httpService.post(endpoint).pipe((0, rxjs_1.map)((resp) => resp.data?.access_token), (0, rxjs_1.tap)((access_token) => (0, console_1.log)('token %s', access_token))));
         return access_token;
     }
     async getUserFromApi(access_token) {
-        const endpoint = "https://api.intra.42.fr/v2/me";
+        const endpoint = 'https://api.intra.42.fr/v2/me';
         const config = {
             headers: {
-                Authorization: "Bearer " + access_token,
+                Authorization: 'Bearer ' + access_token,
             },
         };
         const user = await (0, rxjs_1.firstValueFrom)(this.httpService.get(endpoint, config).pipe((0, rxjs_1.map)((res) => res?.data), (0, rxjs_1.map)((data) => {
             const email = data?.email;
             const username = data?.login;
-            const auth_type = "42auth";
+            const auth_type = '42auth';
             return { email, username, auth_type };
         })));
         return user;

@@ -27,14 +27,14 @@ let AuthController = class AuthController {
     }
     async postUserAuthorization(params) {
         const access_token = await this.AuthService.getAccessToken(params.code, params.state);
-        (0, console_1.log)("access_token %s", access_token);
+        (0, console_1.log)('access_token %s', access_token);
         const user = await this.AuthService.getUserFromApi(access_token);
         return this.UserService.create(user);
     }
 };
 exports.AuthController = AuthController;
 __decorate([
-    (0, common_1.Get)("42/login"),
+    (0, common_1.Get)('42/login'),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -42,14 +42,14 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "redirectToIntraApi", null);
 __decorate([
-    (0, common_1.Get)("42/callback"),
+    (0, common_1.Get)('42/callback'),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "postUserAuthorization", null);
 exports.AuthController = AuthController = __decorate([
-    (0, common_1.Controller)("auth"),
+    (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService,
         user_service_1.UserService])
 ], AuthController);
