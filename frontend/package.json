@@ -1,11 +1,13 @@
 {
-	"name": "portfolio-frontend",
+	"name": "frontend",
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
+		"format": "prettier --write \"src/**/*.ts\" \"src/**/*.svelte\"",
+		"lint": "eslint 'src/**/*.{js,svelte}'",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
 	},
@@ -22,5 +24,8 @@
 		"typescript": "^5.0.0",
 		"vite": "^4.4.2"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"prettier": "^3.0.3"
+	}
 }
