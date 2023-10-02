@@ -19,7 +19,6 @@ let AppController = class AppController {
     getHello() {
         return this.appService.getHello();
     }
-    testLogin() { }
 };
 exports.AppController = AppController;
 __decorate([
@@ -28,13 +27,6 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", String)
 ], AppController.prototype, "getHello", null);
-__decorate([
-    (0, common_1.Get)('login'),
-    (0, common_1.Redirect)('https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-c1a95612f155f794b7ad686516054bd69ed3a7020ce03d55129777d1a053847c&redirect_uri=https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-c1a95612f155f794b7ad686516054bd69ed3a7020ce03d55129777d1a053847c&redirect_uri=https%3A%2F%2Fwww.example.com&response_type=code&response_type=code'),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], AppController.prototype, "testLogin", null);
 exports.AppController = AppController = __decorate([
     (0, common_1.Controller)(),
     __metadata("design:paramtypes", [app_service_1.AppService])

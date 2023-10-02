@@ -20,6 +20,20 @@ export declare class UserController {
         username: string;
         auth_type: string;
     }>;
+    getFriends(id: string): Promise<({
+        friends: {
+            id: number;
+            email: string;
+            username: string;
+            auth_type: string;
+        }[];
+    } & {
+        id: number;
+        email: string;
+        username: string;
+        auth_type: string;
+    })[]>;
+    addFriend(id: string, friendId: string): Promise<void>;
     updateEmail(id: string, email: string): Promise<{
         id: number;
         email: string;

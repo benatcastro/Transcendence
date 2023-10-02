@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
+const console_1 = require("console");
 let UserService = class UserService {
     constructor(prisma) {
         this.prisma = prisma;
@@ -21,6 +22,9 @@ let UserService = class UserService {
     }
     async create(data) {
         return this.prisma.user.create({ data });
+    }
+    async getUsernameById(id) {
+        return (await this.findById(id)).username;
     }
     async updateUser(id, data) {
         return this.prisma.user.update({
@@ -42,7 +46,28 @@ let UserService = class UserService {
     }
     async findById(id) {
         return this.prisma.user.findUnique({
-            where: { id: id }
+            where: { id: id },
+        });
+    }
+    async findFriends(id) {
+        return this.prisma.user.findMany({
+            where: { id: id },
+            include: { friends: true }
+        });
+    }
+    async addFriend(id, friendId) {
+        (0, console_1.log)("friend id: %d", friendId);
+        const friend = await this.findById(friendId);
+        (0, console_1.log)(friend);
+        return this.prisma.user.update({
+            where: { id: id },
+            data: {
+                friends: {
+                    connect: {
+                        id: friend.id,
+                    }
+                }
+            }
         });
     }
 };

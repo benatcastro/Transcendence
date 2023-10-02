@@ -29,7 +29,6 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
   }
 }
 
-
 @Catch(Prisma.PrismaClientValidationError) 
 export class PrismaClientValidationFilter extends BaseExceptionFilter { 
   catch(exception: Prisma.PrismaClientValidationError, host: ArgumentsHost) {

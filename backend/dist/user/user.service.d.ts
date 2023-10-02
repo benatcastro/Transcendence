@@ -1,10 +1,11 @@
-import { PrismaService } from 'src/prisma/prisma.service';
-import { Prisma, User } from '@prisma/client';
+import { PrismaService } from "src/prisma/prisma.service";
+import { Prisma, User } from "@prisma/client";
 export declare class UserService {
     private prisma;
     constructor(prisma: PrismaService);
     all(): Promise<User[]>;
     create(data: Prisma.UserCreateInput): Promise<User>;
+    getUsernameById(id: number): Promise<string>;
     updateUser(id: number, data: Prisma.UserCreateInput): Promise<{
         id: number;
         email: string;
@@ -24,6 +25,25 @@ export declare class UserService {
         auth_type: string;
     }>;
     findById(id: number): Promise<{
+        id: number;
+        email: string;
+        username: string;
+        auth_type: string;
+    }>;
+    findFriends(id: number): Promise<({
+        friends: {
+            id: number;
+            email: string;
+            username: string;
+            auth_type: string;
+        }[];
+    } & {
+        id: number;
+        email: string;
+        username: string;
+        auth_type: string;
+    })[]>;
+    addFriend(id: number, friendId: number): Promise<{
         id: number;
         email: string;
         username: string;

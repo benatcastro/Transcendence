@@ -37,6 +37,14 @@ let UserController = class UserController {
             throw new common_1.NotFoundException(`User with id: ${id} does not exist.`);
         return user;
     }
+    async getFriends(id) {
+        return await this.userService.findFriends(Number(id));
+    }
+    async addFriend(id, friendId) {
+        (0, console_1.log)(id);
+        (0, console_1.log)(friendId);
+        const result = await this.userService.addFriend(Number(id), Number(friendId));
+    }
     async updateEmail(id, email) {
         const update = await this.userService.updateEmail(Number(id), email);
         return update;
@@ -71,6 +79,21 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getUserById", null);
+__decorate([
+    (0, common_2.Get)(':id/friend'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getFriends", null);
+__decorate([
+    (0, common_2.Post)(':id/friend'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)('friendId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "addFriend", null);
 __decorate([
     (0, common_2.Put)('email/:id'),
     __param(0, (0, common_1.Param)('id')),

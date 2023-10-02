@@ -8,7 +8,6 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
     const { httpAdapter } = app.get(HttpAdapterHost);
-    app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
     app.useGlobalFilters(new PrismaClientValidationFilter(httpAdapter));
     app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
     await app.listen(3000);
