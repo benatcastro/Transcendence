@@ -6,13 +6,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PrismaClientExceptionFilter = void 0;
+exports.PrismaClientValidationFilter = exports.PrismaClientExceptionFilter = void 0;
 const common_1 = require("@nestjs/common");
 const core_1 = require("@nestjs/core");
 const client_1 = require("@prisma/client");
 let PrismaClientExceptionFilter = class PrismaClientExceptionFilter extends core_1.BaseExceptionFilter {
     catch(exception, host) {
-        console.error(exception.message);
         const ctx = host.switchToHttp();
         const response = ctx.getResponse();
         const message = exception.message.replace(/\n/g, '');
@@ -35,4 +34,20 @@ exports.PrismaClientExceptionFilter = PrismaClientExceptionFilter;
 exports.PrismaClientExceptionFilter = PrismaClientExceptionFilter = __decorate([
     (0, common_1.Catch)(client_1.Prisma.PrismaClientKnownRequestError)
 ], PrismaClientExceptionFilter);
+let PrismaClientValidationFilter = class PrismaClientValidationFilter extends core_1.BaseExceptionFilter {
+    catch(exception, host) {
+        const ctx = host.switchToHttp();
+        const response = ctx.getResponse();
+        const message = exception.message.replace(/\n/g, '');
+        const status = common_1.HttpStatus.CONFLICT;
+        response.status(status).json({
+            statusCode: status,
+            message: message,
+        });
+    }
+};
+exports.PrismaClientValidationFilter = PrismaClientValidationFilter;
+exports.PrismaClientValidationFilter = PrismaClientValidationFilter = __decorate([
+    (0, common_1.Catch)(client_1.Prisma.PrismaClientValidationError)
+], PrismaClientValidationFilter);
 //# sourceMappingURL=prisma.filter.js.map

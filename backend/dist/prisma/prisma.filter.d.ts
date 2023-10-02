@@ -4,3 +4,6 @@ import { Prisma } from '@prisma/client';
 export declare class PrismaClientExceptionFilter extends BaseExceptionFilter {
     catch(exception: Prisma.PrismaClientKnownRequestError, host: ArgumentsHost): void;
 }
+export declare class PrismaClientValidationFilter extends BaseExceptionFilter {
+    catch(exception: Prisma.PrismaClientValidationError, host: ArgumentsHost): void;
+}
