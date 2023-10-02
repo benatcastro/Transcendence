@@ -26,6 +26,10 @@ let UserController = class UserController {
     }
     async returnAll() {
         (0, console_1.log)('entra');
+        try {
+        }
+        catch (PrismaClientSer) {
+        }
         return await this.userService.all();
     }
     async getUserById(id) {

@@ -18,6 +18,11 @@ export class UserController {
   @Get()
   async returnAll() {
     log('entra');
+    try {
+      
+    } catch (PrismaClientSer) {
+      
+    }
       return await this.userService.all();
   }
 
