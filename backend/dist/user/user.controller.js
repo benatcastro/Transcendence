@@ -22,27 +22,32 @@ let UserController = class UserController {
         this.userService = userService;
     }
     async createUser(userData) {
-        return await this.userService.create(userData);
+        const users = await this.userService.create(userData);
+        if (!users)
+            throw new common_1.NotFoundException(`No users found`);
+        return users;
     }
     async returnAll() {
-        (0, console_1.log)('entra');
-        try {
-        }
-        catch (PrismaClientSer) {
-        }
         return await this.userService.all();
     }
     async getUserById(id) {
         (0, console_1.log)("entra");
-        (0, console_1.log)(id);
         const user = await this.userService.findById(Number(id));
-        (0, console_1.log)(user);
         if (!user)
             throw new common_1.NotFoundException(`User with id: ${id} does not exist.`);
         return user;
     }
-    async updateEmail(id, newEmail) {
-        return await this.userService.updateEmailById(Number(id), newEmail);
+    async updateEmail(id, email) {
+        const update = await this.userService.updateEmail(Number(id), email);
+        return update;
+    }
+    async generalUpdate(id, userData) {
+        const update = await this.userService.updateUser(Number(id), userData);
+        return update;
+    }
+    async updateUsername(id, username) {
+        const update = await this.userService.updateUsername(Number(id), username);
+        return update;
     }
 };
 exports.UserController = UserController;
@@ -69,11 +74,27 @@ __decorate([
 __decorate([
     (0, common_2.Put)('email/:id'),
     __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)('newEmail')),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "updateEmail", null);
+__decorate([
+    (0, common_2.Put)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "generalUpdate", null);
+__decorate([
+    (0, common_2.Put)('username/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "updateUsername", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])

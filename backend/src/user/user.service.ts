@@ -14,10 +14,23 @@ export class UserService {
         return this.prisma.user.create({ data });
     }
 
-    async updateEmailById(req_id: number, newEmail: string) {
+    async updateUser(id: number, data: Prisma.UserCreateInput) {
+       return this.prisma.user.update({
+        where: { id: id }, 
+        data: data, 
+       }) 
+    }
+    async updateEmail(id: number, email: string) {
         return this.prisma.user.update({
-            where: { id: req_id },
-            data: { email: newEmail },
+            where: { id: id },
+            data: { email: email },
+        });
+    }
+
+    async updateUsername(id: number, username: string) {
+        return this.prisma.user.update({
+            where: { id: id },
+            data: { username: username },
         });
     }
 
@@ -26,4 +39,5 @@ export class UserService {
             where: { id: id }
         })
     }
+
 }

@@ -20,7 +20,23 @@ export declare class UserController {
         username: string;
         auth_type: string;
     }>;
-    updateEmail(id: string, newEmail: string): Promise<{
+    updateEmail(id: string, email: string): Promise<{
+        id: number;
+        email: string;
+        username: string;
+        auth_type: string;
+    }>;
+    generalUpdate(id: number, userData: {
+        email: string;
+        username: string;
+        auth_type: string;
+    }): Promise<{
+        id: number;
+        email: string;
+        username: string;
+        auth_type: string;
+    }>;
+    updateUsername(id: string, username: string): Promise<{
         id: number;
         email: string;
         username: string;

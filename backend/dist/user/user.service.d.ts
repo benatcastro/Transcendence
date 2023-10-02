@@ -5,7 +5,19 @@ export declare class UserService {
     constructor(prisma: PrismaService);
     all(): Promise<User[]>;
     create(data: Prisma.UserCreateInput): Promise<User>;
-    updateEmailById(req_id: number, newEmail: string): Promise<{
+    updateUser(id: number, data: Prisma.UserCreateInput): Promise<{
+        id: number;
+        email: string;
+        username: string;
+        auth_type: string;
+    }>;
+    updateEmail(id: number, email: string): Promise<{
+        id: number;
+        email: string;
+        username: string;
+        auth_type: string;
+    }>;
+    updateUsername(id: number, username: string): Promise<{
         id: number;
         email: string;
         username: string;

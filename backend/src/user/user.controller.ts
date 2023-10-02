@@ -12,37 +12,45 @@ export class UserController {
     async createUser(
     @Body() userData: { email: string; username: string; auth_type: string },
     ): Promise<User> {
-        return await this.userService.create(userData);
+        const users = await this.userService.create(userData);
+        if (!users)
+          throw new NotFoundException(`No users found`);
+
+        return users;
     }
 
   @Get()
   async returnAll() {
-    log('entra');
-    try {
-      
-    } catch (PrismaClientSer) {
-      
-    }
       return await this.userService.all();
   }
 
   @Get(':id')
   async getUserById(@Param('id') id: string) {
     log("entra");
-    log(id)
       const user = await this.userService.findById(Number(id));
 
-    log(user);
     if (!user)
       throw new NotFoundException(`User with id: ${id} does not exist.`);
     return user;
   }
-
+  
   @Put('email/:id')
-  async updateEmail(
-    @Param('id') id: string,
-    @Body('newEmail') newEmail: string,
-  ) {
-      return await this.userService.updateEmailById(Number(id), newEmail);
+  async updateEmail(@Param('id') id: string, @Body() email: string) {
+    const update = await this.userService.updateEmail(Number(id), email);
+    return update;
   }
+
+  @Put(':id')
+  async generalUpdate(@Param('id') id: number, @Body() userData: { email: string, username: string, auth_type: string }) {
+    const update = await this.userService.updateUser(Number(id), userData);
+    return update;
+  }
+
+  @Put('username/:id')
+  async updateUsername(@Param('id') id: string, @Body() username: string) {
+    const update = await this.userService.updateUsername(Number(id), username)
+    return update;
+  }
+  
+
 }

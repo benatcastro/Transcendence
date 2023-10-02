@@ -22,10 +22,22 @@ let UserService = class UserService {
     async create(data) {
         return this.prisma.user.create({ data });
     }
-    async updateEmailById(req_id, newEmail) {
+    async updateUser(id, data) {
         return this.prisma.user.update({
-            where: { id: req_id },
-            data: { email: newEmail },
+            where: { id: id },
+            data: data,
+        });
+    }
+    async updateEmail(id, email) {
+        return this.prisma.user.update({
+            where: { id: id },
+            data: { email: email },
+        });
+    }
+    async updateUsername(id, username) {
+        return this.prisma.user.update({
+            where: { id: id },
+            data: { username: username },
         });
     }
     async findById(id) {
