@@ -16,7 +16,6 @@ exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const common_2 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
-const console_1 = require("console");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -31,7 +30,6 @@ let UserController = class UserController {
         return await this.userService.all();
     }
     async getUserById(id) {
-        (0, console_1.log)("entra");
         const user = await this.userService.findById(Number(id));
         if (!user)
             throw new common_1.NotFoundException(`User with id: ${id} does not exist.`);
@@ -41,9 +39,11 @@ let UserController = class UserController {
         return await this.userService.findFriends(Number(id));
     }
     async addFriend(id, friendId) {
-        (0, console_1.log)(id);
-        (0, console_1.log)(friendId);
-        const result = await this.userService.addFriend(Number(id), Number(friendId));
+        const first = Number(id);
+        const second = Number(friendId);
+        const first_add = await this.userService.addFriend(first, second);
+        const second_add = await this.userService.addFriend(second, first);
+        return { first_add, second_add };
     }
     async updateEmail(id, email) {
         const update = await this.userService.updateEmail(Number(id), email);
@@ -56,6 +56,12 @@ let UserController = class UserController {
     async updateUsername(id, username) {
         const update = await this.userService.updateUsername(Number(id), username);
         return update;
+    }
+    async deleteFriend(id, friendId) {
+        const first = Number(id);
+        const second = Number(friendId);
+        const deletion = await this.userService.deleteFriend(first, second);
+        return deletion;
     }
 };
 exports.UserController = UserController;
@@ -87,7 +93,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getFriends", null);
 __decorate([
-    (0, common_2.Post)(':id/friend'),
+    (0, common_2.Put)(':id/friend'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)('friendId')),
     __metadata("design:type", Function),
@@ -118,6 +124,14 @@ __decorate([
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "updateUsername", null);
+__decorate([
+    (0, common_2.Delete)(':id/friend'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)('friendId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "deleteFriend", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])

@@ -49,4 +49,10 @@ export declare class UserService {
         username: string;
         auth_type: string;
     }>;
+    deleteFriend(id: number, friendId: number): Promise<{
+        id: number;
+        email: string;
+        username: string;
+        auth_type: string;
+    }>;
 }

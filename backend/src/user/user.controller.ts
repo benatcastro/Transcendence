@@ -26,7 +26,6 @@ export class UserController {
 
   @Get(':id')
   async getUserById(@Param('id') id: string) {
-    log("entra");
       const user = await this.userService.findById(Number(id));
 
     if (!user)
@@ -40,11 +39,16 @@ export class UserController {
 
   }
 
-  @Post(':id/friend')
+  @Put(':id/friend')
   async addFriend(@Param('id') id: string, @Body('friendId') friendId: string) {
-    log(id);
-    log(friendId);
-    const result = await this.userService.addFriend(Number(id), Number(friendId));
+
+    const first: number = Number(id);
+    const second: number = Number(friendId);
+
+    const first_add = await this.userService.addFriend(first, second);
+    const second_add = await this.userService.addFriend(second, first);
+
+    return {first_add, second_add};
   }
 
   @Put('email/:id')
@@ -65,4 +69,14 @@ export class UserController {
     return update;
   }
 
+  @Delete(':id/friend')
+  async deleteFriend(@Param('id') id: string, @Body('friendId') friendId: string) {
+    const first: number = Number(id);
+    const second: number = Number(friendId);
+
+    const deletion = await this.userService.deleteFriend(first, second);
+    // const second_delete = await this.userService.deleteFriend(second, first);
+
+    return deletion;
+  }
 }

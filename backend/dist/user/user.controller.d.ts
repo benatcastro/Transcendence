@@ -33,7 +33,20 @@ export declare class UserController {
         username: string;
         auth_type: string;
     })[]>;
-    addFriend(id: string, friendId: string): Promise<void>;
+    addFriend(id: string, friendId: string): Promise<{
+        first_add: {
+            id: number;
+            email: string;
+            username: string;
+            auth_type: string;
+        };
+        second_add: {
+            id: number;
+            email: string;
+            username: string;
+            auth_type: string;
+        };
+    }>;
     updateEmail(id: string, email: string): Promise<{
         id: number;
         email: string;
@@ -51,6 +64,12 @@ export declare class UserController {
         auth_type: string;
     }>;
     updateUsername(id: string, username: string): Promise<{
+        id: number;
+        email: string;
+        username: string;
+        auth_type: string;
+    }>;
+    deleteFriend(id: string, friendId: string): Promise<{
         id: number;
         email: string;
         username: string;

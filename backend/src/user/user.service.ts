@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Body, Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { Prisma, User } from "@prisma/client";
 import { log } from "console";
@@ -54,20 +54,29 @@ export class UserService {
 
   async addFriend(id: number, friendId: number) {
 
-    log("friend id: %d", friendId);
-    const friend = await this.findById(friendId);
-    log(friend);
 
     return this.prisma.user.update({
         where: { id: id }, 
         data: {
             friends: {
               connect: {
-                id: friend.id,
+                id: friendId,
               }
             }
         }
+    })
+  }
 
+  async deleteFriend(id: number, friendId: number) {
+    return this.prisma.user.update({
+      where: { id: id },
+      data: {
+        friends: {
+          delete: {
+            id: friendId,
+          }
+        }
+      }
     })
   }
 
