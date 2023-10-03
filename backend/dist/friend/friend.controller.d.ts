@@ -2,7 +2,7 @@ import { FriendService } from './friend.service';
 export declare class FriendController {
     private readonly friendService;
     constructor(friendService: FriendService);
-    getFriends(id: string): Promise<({
+    getFriends(id: string): Promise<{
         friends: {
             id: number;
             email: string;
@@ -14,7 +14,7 @@ export declare class FriendController {
         email: string;
         username: string;
         auth_type: string;
-    })[]>;
+    }>;
     addFriend(id: string, friendId: string): Promise<{
         first_add: {
             id: number;

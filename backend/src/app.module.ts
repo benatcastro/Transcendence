@@ -11,6 +11,7 @@ import { UserModule } from './user/user.module';
 import { PrismaService } from './prisma/prisma.service';
 import { AuthModule } from './auth/auth.module';
 import { FriendModule } from './friend/friend.module';
+import { BlockModule } from './block/block.module';
 
 @Module({
     imports: [
@@ -22,6 +23,7 @@ import { FriendModule } from './friend/friend.module';
         UserModule,
         AuthModule,
         FriendModule,
+        BlockModule,
     ],
     controllers: [AppController, AuthController, UserController],
     providers: [AppService, AuthService],

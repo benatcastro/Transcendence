@@ -1,9 +1,9 @@
-import { PrismaService } from 'src/prisma/prisma.service';
-export declare class FriendService {
-    private prisma;
-    constructor(prisma: PrismaService);
-    findFriends(id: number): Promise<{
-        friends: {
+import { BlockService } from './block.service';
+export declare class BlockController {
+    private readonly blockService;
+    constructor(blockService: BlockService);
+    getBlocks(id: string): Promise<{
+        blocks: {
             id: number;
             email: string;
             username: string;
@@ -15,13 +15,13 @@ export declare class FriendService {
         username: string;
         auth_type: string;
     }>;
-    addFriend(id: number, friendId: number): Promise<{
+    block(id: string, blockId: string): Promise<{
         id: number;
         email: string;
         username: string;
         auth_type: string;
     }>;
-    deleteFriend(id: number, friendId: number): Promise<{
+    unblock(id: string, blockId: string): Promise<{
         id: number;
         email: string;
         username: string;

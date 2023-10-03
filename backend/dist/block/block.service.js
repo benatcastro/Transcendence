@@ -9,47 +9,47 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FriendService = void 0;
+exports.BlockService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
-let FriendService = class FriendService {
+let BlockService = class BlockService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async findFriends(id) {
+    async getBlockedUsers(id) {
         return this.prisma.user.findUnique({
             where: { id: id },
-            include: { friends: true }
+            include: { blocks: true }
         });
     }
-    async addFriend(id, friendId) {
+    async block(id, blockId) {
         return this.prisma.user.update({
             where: { id: id },
             data: {
-                friends: {
+                blocks: {
                     connect: {
-                        id: friendId,
+                        id: blockId,
                     }
                 }
             }
         });
     }
-    async deleteFriend(id, friendId) {
+    async unblock(id, blockId) {
         return this.prisma.user.update({
             where: { id: id },
             data: {
-                friends: {
+                blocks: {
                     disconnect: {
-                        id: friendId,
+                        id: blockId,
                     }
                 }
             }
         });
     }
 };
-exports.FriendService = FriendService;
-exports.FriendService = FriendService = __decorate([
+exports.BlockService = BlockService;
+exports.BlockService = BlockService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService])
-], FriendService);
-//# sourceMappingURL=friend.service.js.map
+], BlockService);
+//# sourceMappingURL=block.service.js.map

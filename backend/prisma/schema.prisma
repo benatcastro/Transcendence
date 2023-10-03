@@ -10,13 +10,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-
 model User {
-  id    Int     @default(autoincrement()) @id
-  email String  @unique
+  id        Int    @id @default(autoincrement())
+  email     String @unique
   username  String
   auth_type String
+
   friends         User[] @relation("friends")
   friendsRelation User[] @relation("friends")
+
+  blocks         User[] @relation("blocks")
+  blocksRelation User[] @relation("blocks")
 }

@@ -6,7 +6,7 @@ export class FriendService {
     constructor(private prisma: PrismaService) {}
 
   async findFriends(id: number) {
-    return this.prisma.user.findMany({
+    return this.prisma.user.findUnique({
         where: { id: id },
         include: { friends: true }
     });
