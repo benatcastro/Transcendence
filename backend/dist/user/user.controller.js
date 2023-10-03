@@ -35,16 +35,6 @@ let UserController = class UserController {
             throw new common_1.NotFoundException(`User with id: ${id} does not exist.`);
         return user;
     }
-    async getFriends(id) {
-        return await this.userService.findFriends(Number(id));
-    }
-    async addFriend(id, friendId) {
-        const first = Number(id);
-        const second = Number(friendId);
-        const first_add = await this.userService.addFriend(first, second);
-        const second_add = await this.userService.addFriend(second, first);
-        return { first_add, second_add };
-    }
     async updateEmail(id, email) {
         const update = await this.userService.updateEmail(Number(id), email);
         return update;
@@ -57,10 +47,8 @@ let UserController = class UserController {
         const update = await this.userService.updateUsername(Number(id), username);
         return update;
     }
-    async deleteFriend(id, friendId) {
-        const first = Number(id);
-        const second = Number(friendId);
-        const deletion = await this.userService.deleteFriend(first, second);
+    async deleteUser(id) {
+        const deletion = await this.userService.delete(Number(id));
         return deletion;
     }
 };
@@ -86,21 +74,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getUserById", null);
 __decorate([
-    (0, common_2.Get)(':id/friend'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "getFriends", null);
-__decorate([
-    (0, common_2.Put)(':id/friend'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)('friendId')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "addFriend", null);
-__decorate([
     (0, common_2.Put)('email/:id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
@@ -125,13 +98,12 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "updateUsername", null);
 __decorate([
-    (0, common_2.Delete)(':id/friend'),
+    (0, common_2.Delete)(':id'),
     __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)('friendId')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "deleteFriend", null);
+], UserController.prototype, "deleteUser", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])

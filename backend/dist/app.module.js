@@ -17,6 +17,7 @@ const axios_1 = require("@nestjs/axios");
 const user_controller_1 = require("./user/user.controller");
 const user_module_1 = require("./user/user.module");
 const auth_module_1 = require("./auth/auth.module");
+const friend_module_1 = require("./friend/friend.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -30,6 +31,7 @@ exports.AppModule = AppModule = __decorate([
             axios_1.HttpModule,
             user_module_1.UserModule,
             auth_module_1.AuthModule,
+            friend_module_1.FriendModule,
         ],
         controllers: [app_controller_1.AppController, auth_controller_1.AuthController, user_controller_1.UserController],
         providers: [app_service_1.AppService, auth_service_1.AuthService],

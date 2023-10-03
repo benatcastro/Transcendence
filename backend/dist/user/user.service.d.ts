@@ -30,26 +30,7 @@ export declare class UserService {
         username: string;
         auth_type: string;
     }>;
-    findFriends(id: number): Promise<({
-        friends: {
-            id: number;
-            email: string;
-            username: string;
-            auth_type: string;
-        }[];
-    } & {
-        id: number;
-        email: string;
-        username: string;
-        auth_type: string;
-    })[]>;
-    addFriend(id: number, friendId: number): Promise<{
-        id: number;
-        email: string;
-        username: string;
-        auth_type: string;
-    }>;
-    deleteFriend(id: number, friendId: number): Promise<{
+    delete(id: number): Promise<{
         id: number;
         email: string;
         username: string;

@@ -20,33 +20,6 @@ export declare class UserController {
         username: string;
         auth_type: string;
     }>;
-    getFriends(id: string): Promise<({
-        friends: {
-            id: number;
-            email: string;
-            username: string;
-            auth_type: string;
-        }[];
-    } & {
-        id: number;
-        email: string;
-        username: string;
-        auth_type: string;
-    })[]>;
-    addFriend(id: string, friendId: string): Promise<{
-        first_add: {
-            id: number;
-            email: string;
-            username: string;
-            auth_type: string;
-        };
-        second_add: {
-            id: number;
-            email: string;
-            username: string;
-            auth_type: string;
-        };
-    }>;
     updateEmail(id: string, email: string): Promise<{
         id: number;
         email: string;
@@ -69,7 +42,7 @@ export declare class UserController {
         username: string;
         auth_type: string;
     }>;
-    deleteFriend(id: string, friendId: string): Promise<{
+    deleteUser(id: string): Promise<{
         id: number;
         email: string;
         username: string;

@@ -9,52 +9,47 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserService = void 0;
+exports.FriendService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
-let UserService = class UserService {
+let FriendService = class FriendService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async all() {
-        return this.prisma.user.findMany();
+    async findFriends(id) {
+        return this.prisma.user.findMany({
+            where: { id: id },
+            include: { friends: true }
+        });
     }
-    async create(data) {
-        return this.prisma.user.create({ data });
-    }
-    async getUsernameById(id) {
-        return (await this.findById(id)).username;
-    }
-    async updateUser(id, data) {
+    async addFriend(id, friendId) {
         return this.prisma.user.update({
             where: { id: id },
-            data: data,
+            data: {
+                friends: {
+                    connect: {
+                        id: friendId,
+                    }
+                }
+            }
         });
     }
-    async updateEmail(id, email) {
+    async deleteFriend(id, friendId) {
         return this.prisma.user.update({
             where: { id: id },
-            data: { email: email },
+            data: {
+                friends: {
+                    disconnect: {
+                        id: friendId,
+                    }
+                }
+            }
         });
-    }
-    async updateUsername(id, username) {
-        return this.prisma.user.update({
-            where: { id: id },
-            data: { username: username },
-        });
-    }
-    async findById(id) {
-        return this.prisma.user.findUnique({
-            where: { id: id },
-        });
-    }
-    async delete(id) {
-        return this.prisma.user.delete({ where: { id: id } });
     }
 };
-exports.UserService = UserService;
-exports.UserService = UserService = __decorate([
+exports.FriendService = FriendService;
+exports.FriendService = FriendService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService])
-], UserService);
-//# sourceMappingURL=user.service.js.map
+], FriendService);
+//# sourceMappingURL=friend.service.js.map
