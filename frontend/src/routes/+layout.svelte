@@ -1,5 +1,7 @@
 <script lang="ts">
-    import "../app.css"
+    import "../app.css";
 </script>
 
-<slot />
+<div class="bg-darkFHD bg-cover h-[100vh]">
+    <slot />
+</div>
