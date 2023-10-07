@@ -4,8 +4,8 @@ export default {
   content: ['./src/**/*.{html,ts,svelte}'],
   theme: {
     extend: {
-      screen: {
-        'desktop': {
+      screens: {
+       'desktop': {
           'raw': '(hover: hover)'
         }
       },

@@ -18,4 +18,12 @@
         h-screen
         bg-cover bg-lightFHD dark:bg-darkFHD
     }
+
+    .primary-menu {
+        @apply flex flex-col
+        justify-center items-center
+        border-4 rounded-full border-double border-neongreen dark:border-neonpink /* Border color */
+        desktop:min-h-[300px] desktop:min-w-[300px] desktop:max-h-[550px] desktop:max-w-[550px]
+        bg-gradient-to-br from-neongreen via-neonblue dark:from-neonred dark:via-neonpink via-30% /* Gradients and colors */
+    }
 }
