@@ -11,3 +11,11 @@
         font-family: 'CyberwayRiders', sans-serif;
     }
 }
+
+@layer components {
+    #screen-container {
+        @apply flex
+        h-screen
+        bg-cover bg-lightFHD dark:bg-darkFHD
+    }
+}

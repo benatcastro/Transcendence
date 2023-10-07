@@ -2,6 +2,6 @@
     import "../app.css";
 </script>
 
-<div class="bg-lightFHD bg-cover h-[100vh]">
+<div id="screen-container">
     <slot />
 </div>
