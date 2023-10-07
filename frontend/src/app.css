@@ -26,4 +26,16 @@
         desktop:min-h-[300px] desktop:min-w-[300px] desktop:max-h-[550px] desktop:max-w-[550px]
         bg-gradient-to-br from-neongreen via-neonblue dark:from-neonred dark:via-neonpink via-30% /* Gradients and colors */
     }
+
+    .primary-button {
+        @apply text-center
+        portrait:text-primaryp
+        landscape:text-primaryl;
+    }
+
+    .secondary-button {
+        @apply text-center
+        portrait:text-secodaryp
+        landscape:text-secodaryl;
+    }
 }
