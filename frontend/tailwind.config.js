@@ -10,10 +10,12 @@ export default {
         }
       },
       fontSize: {
-        'primaryl': 'calc(0.3em + 3vh)',
-        'primaryp': 'calc(0.3em + 3vw)',
-        'secodaryl': 'calc(0.3em + 2vh)',
-        'secodaryp': 'calc(0.3em + 2vw)'
+        'titlel': 'calc(2em + 4vh)',
+        'titlep': 'calc(2em + 4vw)',
+        'primaryl': 'calc(1em + 1.5vh)',
+        'primaryp': 'calc(1em + 1.5vw)',
+        'secodaryl': 'calc(1em + 0.5vh)',
+        'secodaryp': 'calc(1em + 0.5vw)'
       },
       backgroundImage: {
         'darkFHD': "url('/background/dark/darkFHD.jpg')",

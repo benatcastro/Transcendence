@@ -10,7 +10,7 @@
 </script>
 
 <nav class="primary-menu w-[30%] h-[65%] m-auto">
-    <ul class="space-y-[80%]">
+    <ul class="flex flex-col justify-evenly h-full">
         {#each navOpts as opt}
             <li class="primary-button"><a on:click={() => goto(opt[1])} href="{opt[1]}">{opt[0]}</a></li>
         {/each}
