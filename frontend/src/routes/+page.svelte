@@ -9,6 +9,7 @@
     }
 </script>
 
+<!-- <h1 class="absolute text-[10vw] left-1/2 -translate-x-1/2 self-center">Cyber Pong</h1>  -->
 <nav class="primary-menu w-[30%] h-[65%] m-auto">
     <ul class="flex flex-col justify-evenly h-full">
         {#each navOpts as opt}
