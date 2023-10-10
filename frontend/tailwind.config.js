@@ -21,6 +21,20 @@ export default {
         'darkFHD': "url('/background/dark/darkFHD.jpg')",
         'lightFHD': "url('/background/light/lightFHD.jpg')"
       },
+      keyframes: {
+        'fade-in': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        'fade-out': {
+          '0%': { opacity: '1' },
+          '100%': { opacity: '0' },
+        }
+      },
+      animation: {
+        'fade-in': 'fade-in 4s ease-in-out forwards',
+        'fade-in-out': 'fade-in 4s ease-in-out, fade-out 4s 6s ease-in forwards'
+      },
       colors: {
         'neonred': '#FE0000',
         'neonyellow': '#FFF205',
@@ -30,6 +44,8 @@ export default {
       }
     }
   },
-  plugins: []
+  plugins: [
+    require("tailwindcss-animation-delay")
+  ]
 }
 
