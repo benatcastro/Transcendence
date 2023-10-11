@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
+import { transform } from 'typescript';
+
 export default {
   content: ['./src/**/*.{html,ts,svelte}'],
   theme: {
@@ -32,8 +34,14 @@ export default {
         }
       },
       animation: {
-        'fade-in': 'fade-in 4s ease-in-out forwards',
-        'fade-in-out': 'fade-in 4s ease-in-out, fade-out 4s 6s ease-in forwards'
+        'fade-in': 'fade-in 2s ease-in-out forwards',
+        'fade-out': 'fade-out 2s ease-in-out forwards',
+        'fade-in-out': 'fade-in 4s ease-in-out, fade-out 4s 6s ease-in forwards',
+      },
+      dropShadow: {
+        'neonpink-s': '0 0 10px rgba(234, 0, 217, 0.8)',
+        'neonblue-s': '0 0 5px rgba(0, 184, 255, 1)',
+        'neongreen-s': '0 0 5px rgba(0, 255, 159, 1)'
       },
       colors: {
         'neonred': '#FE0000',

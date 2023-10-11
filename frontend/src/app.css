@@ -19,6 +19,17 @@
         bg-cover bg-lightFHD dark:bg-darkFHD
     }
 
+    #main-title {
+        @apply absolute
+        text-[10vw]
+        left-1/2 -translate-x-1/2
+        self-center
+        drop-shadow-neonpink-s 
+        before:content-['CyberPong'] before:absolute before:left-[51%] before:-translate-x-1/2 before:drop-shadow-neonblue-s
+        after:content-['CyberPong'] after:absolute after:left-1/2 after:-translate-x-1/2 after:drop-shadow-neongreen-s
+        animate-fade-in-out
+    }
+
     .primary-menu {
         @apply flex flex-col
         justify-center items-center

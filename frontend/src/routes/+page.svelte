@@ -9,7 +9,7 @@
     }
 </script>
 
-<h1 class="absolute text-[10vw] left-1/2 -translate-x-1/2 self-center animate-fade-in-out">Cyber Pong</h1>
+<h1 id="main-title">CyberPong</h1>
 <nav class="primary-menu w-[30%] h-[65%] m-auto opacity-0 animate-fade-in animation-delay-9000">
     <ul class="flex flex-col justify-evenly h-full">
         {#each navOpts as opt}
