@@ -40,8 +40,11 @@ export default {
       },
       dropShadow: {
         'neonpink-s': '0 0 10px rgba(234, 0, 217, 0.8)',
-        'neonblue-s': '0 0 5px rgba(0, 184, 255, 1)',
-        'neongreen-s': '0 0 5px rgba(0, 255, 159, 1)'
+        'neonpink-m': '0 0 20px rgba(234, 0, 217, 1)',
+        'neonblue-s': '0 0 10px rgba(0, 184, 255, 0.8)',
+        'neonblue-m': '0 0 20px rgba(0, 184, 255, 1)',
+        'neongreen-s': '0 0 10px rgba(0, 255, 159, 0.8)',
+        'neongreen-m': '0 0 20px rgba(0, 255, 159, 1)'
       },
       colors: {
         'neonred': '#FE0000',
