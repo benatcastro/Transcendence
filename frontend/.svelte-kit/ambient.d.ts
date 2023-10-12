@@ -40,7 +40,6 @@ declare module '$env/static/private' {
 	export const npm_config_engine_strict: string;
 	export const npm_config_resolution_mode: string;
 	export const COLOR: string;
-	export const npm_config_metrics_registry: string;
 	export const npm_config_prefix: string;
 	export const npm_config_npm_version: string;
 	export const npm_config_cache: string;
@@ -103,7 +102,6 @@ declare module '$env/dynamic/private' {
 		npm_config_engine_strict: string;
 		npm_config_resolution_mode: string;
 		COLOR: string;
-		npm_config_metrics_registry: string;
 		npm_config_prefix: string;
 		npm_config_npm_version: string;
 		npm_config_cache: string;
