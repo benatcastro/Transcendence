@@ -1,7 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 
-import { transform } from 'typescript';
-
 export default {
   content: ['./src/**/*.{html,ts,svelte}'],
   theme: {
@@ -10,6 +8,10 @@ export default {
        'desktop': {
           'raw': '(hover: hover)'
         }
+      },
+      fontFamily: {
+        'CyberwayRiders': ['CyberwayRiders', 'sans-serif'],
+        'xenotron': ['xenotron', 'sans-serif'],
       },
       fontSize: {
         'titlel': 'calc(2em + 4vh)',
@@ -44,7 +46,7 @@ export default {
         'neonblue-s': '0 0 10px rgba(0, 184, 255, 0.8)',
         'neonblue-m': '0 0 20px rgba(0, 184, 255, 1)',
         'neongreen-s': '0 0 10px rgba(0, 255, 159, 0.8)',
-        'neongreen-m': '0 0 20px rgba(0, 255, 159, 1)'
+        'neongreen-m': '0 0 20px rgba(0, 255, 159, 1)',
       },
       colors: {
         'neonred': '#FE0000',

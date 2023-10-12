@@ -5,10 +5,11 @@
 @layer html {
     @font-face {
         font-family: 'CyberwayRiders';
-        src: url('/fonts/CyberwayRiders.ttf') format('truetype');
+        src: url('/fonts/CyberwayRiders/CyberwayRiders.ttf') format('truetype');
     }
-    body {
-        font-family: 'CyberwayRiders', sans-serif;
+    @font-face {
+        font-family: 'xenotron';
+        src: url('/fonts/xenotron.ttf') format('truetype');
     }
 }
 
@@ -21,31 +22,42 @@
 
     #main-title {
         @apply absolute
+        font-CyberwayRiders
         text-[10vw]
         left-1/2 -translate-x-1/2
         self-center
         drop-shadow-neonpink-s 
         before:content-['CyberPong'] before:absolute before:left-[51%] before:-translate-x-1/2 before:drop-shadow-neonblue-s
         after:content-['CyberPong'] after:absolute after:left-1/2 after:-translate-x-1/2 after:drop-shadow-neongreen-s
+        from-transparent to-transparent
+        opacity-0
         animate-fade-in-out
     }
 
     .primary-menu {
         @apply flex flex-col
         justify-center items-center
+        font-xenotron
         border-4 rounded-full border-double border-neongreen dark:border-neonpink /* Border color */
         desktop:min-h-[300px] desktop:min-w-[300px] desktop:max-h-[550px] desktop:max-w-[550px]
-        bg-gradient-to-br from-neongreen via-neonblue dark:from-neonred dark:via-neonpink via-20% /* Gradients and colors */
+        bg-gradient-to-br from-neongreen via-neonblue dark:from-neonred dark:via-[#5e26b1] via-10% /* Gradients and colors */
     }
 
     .primary-button {
         @apply text-center
+        text-neongreen 
+        dark:text-neonblue
+        dark:drop-shadow-neonblue-s
+        drop-shadow-neongreen-s
         portrait:text-primaryp
         landscape:text-primaryl;
     }
 
     .secondary-button {
         @apply text-center
+        text-neongreen 
+        drop-shadow-neongreen-s
+        font-xenotron
         portrait:text-secodaryp
         landscape:text-secodaryl;
     }
