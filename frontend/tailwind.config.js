@@ -33,12 +33,33 @@ export default {
         'fade-out': {
           '0%': { opacity: '1' },
           '100%': { opacity: '0' },
+        },
+        'flicker': {
+          '0%': {
+            opacity: '0.1'
+          },
+          '2%': {
+            opacity: '1'
+          },
+          '4%': {
+            opacity: '0.1'
+          },
+          '8%': {
+            opacity: '1'
+          },
+          '70%': {
+            opacity: '0.7'
+          },
+          '100%': {
+            opacity: '1'
+          }
         }
       },
       animation: {
         'fade-in': 'fade-in 2s ease-in-out forwards',
         'fade-out': 'fade-out 2s ease-in-out forwards',
         'fade-in-out': 'fade-in 2s ease-in-out, fade-out 2s 2s ease-in forwards',
+        'flicker': 'flicker 2s linear infinite'
       },
       dropShadow: {
         'neonpink-s': '0 0 10px rgba(234, 0, 217, 0.8)',

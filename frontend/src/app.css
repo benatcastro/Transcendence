@@ -31,16 +31,19 @@
         after:content-['CyberPong'] after:absolute after:left-1/2 after:-translate-x-1/2 after:drop-shadow-neongreen-s
         from-transparent to-transparent
         opacity-0
-        animate-fade-in-out
+        /* animate-fade-in-out */
     }
 
     .primary-menu {
         @apply flex flex-col
         justify-center items-center
         font-xenotron
-        border-4 rounded-full border-double border-neongreen dark:border-neonpink /* Border color */
+        border-4 rounded-full border-double border-neongreen dark:border-blue-600 drop-shadow-neonblue-m /* Border color */
         desktop:min-h-[300px] desktop:min-w-[300px] desktop:max-h-[550px] desktop:max-w-[550px]
-        bg-gradient-to-br from-neongreen via-neonblue dark:from-neonred dark:via-[#5e26b1] via-10% /* Gradients and colors */
+        backdrop-blur-sm
+        dark:bg-neonblue
+
+        /* bg-gradient-to-br from-neongreen via-neonblue dark:from-neonblue dark:via-neonblue/50 via-10% Gradients and colors */
     }
 
     .primary-button {
@@ -61,4 +64,5 @@
         portrait:text-secodaryp
         landscape:text-secodaryl;
     }
+
 }
