@@ -1,0 +1,12 @@
+{
+  "name": "transcendence-monorepo",
+  "version": "1.0.0",
+  "description": "transcendence",
+  "workspaces": ["backend", "frontend"],
+  "scripts": {
+    "prestart": "npm install && rm -rf ./test_pgdata && rm -rf ./pgdata",
+    "start": "docker compose up --build",
+    "format": "npm run format --workspaces",
+    "lint": "npm run lint --workspaces"
+  }
+}
