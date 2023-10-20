@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div class="scene">
     <slot />
 </div>
@@ -13,3 +14,10 @@
         background-attachment: fixed;
     }
 </style>
+=======
+<script lang="ts">
+    import "../app.css"
+</script>
+
+<slot />
+>>>>>>> main

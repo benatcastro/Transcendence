@@ -1,4 +1,5 @@
 <script lang="ts">
+<<<<<<< HEAD
     import * as Threlte from '@threlte/core'
     import * as Three from 'three'
     import * as Utils from 'three/src/math/MathUtils'
@@ -18,3 +19,12 @@
     />
 
 </Threlte.Canvas>
+=======
+    import App from '$lib/components/App.svelte'
+</script>
+  
+  <div class="h-screen w-screen">
+    <App />
+  </div>
+  
+>>>>>>> main
