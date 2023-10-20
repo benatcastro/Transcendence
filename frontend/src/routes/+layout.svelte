@@ -1,7 +1,10 @@
-<<<<<<< HEAD
+<script lang="ts">
+    import "../app.css"
+</script>
+
 <div class="scene">
     <slot />
-</div>
+</div>div>
 
 <style>
     .scene
@@ -14,10 +17,3 @@
         background-attachment: fixed;
     }
 </style>
-=======
-<script lang="ts">
-    import "../app.css"
-</script>
-
-<slot />
->>>>>>> main
