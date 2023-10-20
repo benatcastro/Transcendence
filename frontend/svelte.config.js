@@ -7,7 +7,10 @@ const config = {
 
 	kit: {
 		adapter: adapter()
-	}
+	},
+	ssr: {
+		noExternal: ['three']
+	  }
 };
 
 export default config;
