@@ -37,7 +37,6 @@ declare module '$env/static/private' {
 	export const npm_package_json: string;
 	export const npm_config_userconfig: string;
 	export const npm_config_local_prefix: string;
-	export const npm_config_engine_strict: string;
 	export const npm_config_resolution_mode: string;
 	export const COLOR: string;
 	export const npm_config_prefix: string;
@@ -99,7 +98,6 @@ declare module '$env/dynamic/private' {
 		npm_package_json: string;
 		npm_config_userconfig: string;
 		npm_config_local_prefix: string;
-		npm_config_engine_strict: string;
 		npm_config_resolution_mode: string;
 		COLOR: string;
 		npm_config_prefix: string;
