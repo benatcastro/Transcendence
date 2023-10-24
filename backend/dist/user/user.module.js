@@ -13,13 +13,16 @@ const user_service_1 = require("./user.service");
 const prisma_service_1 = require("../prisma/prisma.service");
 const friend_controller_1 = require("./friend/friend.controller");
 const friend_service_1 = require("./friend/friend.service");
+const block_controller_1 = require("./block/block.controller");
+const block_service_1 = require("./block/block.service");
 let UserModule = class UserModule {
 };
 exports.UserModule = UserModule;
 exports.UserModule = UserModule = __decorate([
     (0, common_1.Module)({
-        controllers: [user_controller_1.UserController, friend_controller_1.FriendController],
-        providers: [prisma_service_1.PrismaService, user_service_1.UserService, friend_service_1.FriendService]
+        controllers: [user_controller_1.UserController, friend_controller_1.FriendController, block_controller_1.BlockController],
+        providers: [prisma_service_1.PrismaService, user_service_1.UserService, friend_service_1.FriendService, block_service_1.BlockService],
+        exports: [user_service_1.UserService]
     })
 ], UserModule);
 //# sourceMappingURL=user.module.js.map
