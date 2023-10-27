@@ -2,8 +2,10 @@ import { AuthService } from './auth.service';
 import { Controller, Get, Logger, Query, Redirect, Req, Res } from '@nestjs/common';
 import { log } from 'console';
 import { Request, Response } from 'express';
+import { Public } from 'src/public/public.decorator';
 import { UserService } from 'src/user/user.service';
 
+@Public()
 @Controller('auth')
 export class AuthController {
     constructor(
