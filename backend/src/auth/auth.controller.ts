@@ -1,5 +1,5 @@
 import { AuthService } from './auth.service';
-import { Controller, Get, Query, Redirect, Req, Res } from '@nestjs/common';
+import { Controller, Get, Logger, Query, Redirect, Req, Res } from '@nestjs/common';
 import { log } from 'console';
 import { Request, Response } from 'express';
 import { UserService } from 'src/user/user.service';
@@ -18,14 +18,24 @@ export class AuthController {
 
   @Get('42/callback')
   async postUserAuthorization(@Query() params: any) {
+
       const access_token = await this.AuthService.getAccessToken(
           params.code,
           params.state,
       );
 
-      log('access_token %s', access_token);
-      const user = await this.AuthService.getUserFromApi(access_token);
+      
+      const user_data = await this.AuthService.getUserFromApi(access_token);
 
-      return this.UserService.create(user);
+      let user;
+
+      user = await this.UserService.findByUsername(user_data.username);
+
+      if (user == null) {
+        user = await this.UserService.create(user);
+      }
+      Logger.log("Issuing JWT for user", user);
+      return await this.AuthService.createJWT(user);
+      
   }
 }

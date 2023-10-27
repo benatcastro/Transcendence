@@ -3,10 +3,12 @@ import { Injectable } from '@nestjs/common';
 import { AxiosError, AxiosResponse } from 'axios';
 import { Observable, catchError, firstValueFrom, map, tap } from 'rxjs';
 import { error, log } from 'console';
+import { Prisma, User } from '@prisma/client';
+import { JwtService } from '@nestjs/jwt'
 
 @Injectable()
 export class AuthService {
-    constructor(private readonly httpService: HttpService) {}
+    constructor(private readonly httpService: HttpService, private readonly jwtService: JwtService ) {}
 
     getLoginRedirectURI(): string {
         const RedirectUrl: string = process.env.REDIRECT_URL;
@@ -24,9 +26,9 @@ export class AuthService {
     async getAccessToken(code: string, state: string): Promise<any> {
         let endpoint = 'https://api.intra.42.fr/oauth/token';
 
-        const client_id = process.env.API_UID;
-        const client_secret = process.env.API_SECRET;
-        const redirect_uri = process.env.REDIRECT_URL;
+        const client_id :string = process.env.API_UID;
+        const client_secret :string = process.env.API_SECRET;
+        const redirect_uri: string = process.env.REDIRECT_URL;
         const grant_type = 'authorization_code';
 
         endpoint +=
@@ -81,5 +83,14 @@ export class AuthService {
             ),
         );
         return user;
+    }
+
+    async createJWT( user: User ) {
+        const payload = { id: user.id, username: user.id };
+
+        return {
+            JWT: this.jwtService.sign(payload),
+            ExpiresIn: process.env.JWT_EXPIRES_IN
+        }
     }
 }
