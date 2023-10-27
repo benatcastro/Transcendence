@@ -1,5 +1,12 @@
 <script lang="ts">
     import App from '$lib/components/App.svelte'
+    import { isLogged } from '$lib/scripts/UserUtiliteis';
+    import { constants } from '$lib/scripts/constants';
+    import { onMount } from 'svelte';
+
+    onMount( async () => {
+     console.log("isLogged:", isLogged(localStorage.getItem(constants.JWTkey)));
+    })
 </script>
   
   <div class="h-screen w-screen">
