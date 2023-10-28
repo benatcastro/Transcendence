@@ -1,5 +1,14 @@
 {
-	"/": [],
-	"/42/callback": [],
-	"/mockups": []
+	"/": [
+		"src/routes/+layout.ts",
+		"src/routes/+layout.ts"
+	],
+	"/42/callback": [
+		"src/routes/+layout.ts",
+		"src/routes/+layout.ts"
+	],
+	"/mockups": [
+		"src/routes/+layout.ts",
+		"src/routes/+layout.ts"
+	]
 }
