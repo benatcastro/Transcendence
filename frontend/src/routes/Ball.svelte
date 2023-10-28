@@ -10,31 +10,39 @@
 	import { Collider, RigidBody } from '@threlte/rapier'
     import type { Euler } from 'three'
 
-    let xPower = 8;
-    let zPower = 3;
+    let xPower = 9.5;
+    let zPower = 6.5;
     let linearVelocity = [xPower, 0, zPower];
 
     export let position: Parameters<Vector3['set']>
     export let rotation: Parameters<Euler['set']>
 
-    const ChangeDirection = (e: ContactEvent) =>
+    const ChangeDirection = (e: RigidBody) =>
     {
-        console.log("ChangeDirection");
-        xPower *= -1;
-        zPower *= -1;
-
-        linearVelocity = [xPower, 0, zPower];
+        // console.log(e.other.parent.tag.toString());
+        if (e.targetRigidBody.userData['tag'] == "player1" || e.targetRigidBody.userData['tag'] == "player2")
+        {
+            console.log("ChangeYDirection");
+            zPower *= -1.05;
+            linearVelocity = [xPower, 0, zPower];
+        }
+        else
+        {
+            console.log("ChangeXDirection");
+            xPower *= -1.05;
+            linearVelocity = [xPower, 0, zPower];
+        }
     }
-    
 </script>
 
 <T.Group
     position={position}
+    tag="ball"
 >
     <RigidBody
         type={'dynamic'}
         gravityScale={0}
-        bind:linearVelocity={linearVelocity}
+        linearVelocity={linearVelocity}
         enabledTranslations={[true, false, true]}
         enabledRotations={[false, false, false]}
         on:contact={ChangeDirection}
