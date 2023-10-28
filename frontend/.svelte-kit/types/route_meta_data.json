@@ -10,5 +10,9 @@
 	"/mockups": [
 		"src/routes/+layout.ts",
 		"src/routes/+layout.ts"
+	],
+	"/mockups/login": [
+		"src/routes/+layout.ts",
+		"src/routes/+layout.ts"
 	]
 }

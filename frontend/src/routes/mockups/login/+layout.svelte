@@ -1,5 +1,4 @@
-<script lang="ts">
-    import "../app.css"
+<script>
     import { userState } from "$lib/scripts/stores";
     import { get } from 'svelte/store'
 
