@@ -4,9 +4,12 @@
 	import { T } from '@threlte/core'
     import { Collider, RigidBody, AutoColliders } from '@threlte/rapier'
     import { DEG2RAD } from 'three/src/math/MathUtils.js'
+    import { Text } from '@threlte/extras'
+    //import Ball, {ResetPosition} from './Ball.svelte';
 
-    let Player1Points = 0;
-	let Player2Points = 0;
+    export let Player1Points = 0;
+	export let Player2Points = 0;
+	let PointText: string = "Player2 " + Player2Points.toString() + "\nPlayer1 " + Player1Points.toString();
 
 </script>
 
@@ -68,20 +71,40 @@
         args={[20, 4, 1]}
         on:sensorenter={() => {
             console.log("Player 1 scored!");
+            Player2Points += 1;
+            PointText = "Player2 " + Player2Points.toString() + "\nPlayer1 " + Player1Points.toString();
+            //ResetPosition();
+        }}
+    />
+</T.Group>
+<!-- POINT TRIGGERS -->
+<T.Group
+    position={[0, 2, -17.5]}
+>
+    <Collider
+        sensor
+        shape={'cuboid'}
+        args={[20, 4, 1]}
+        on:sensorenter={() => {
+            console.log("Player 1 scored!");
             Player1Points += 1;
+            PointText = "Player2 " + Player2Points.toString() + "\nPlayer1 " + Player1Points.toString();
+            //ResetPosition();
         }}
     />
 </T.Group>
 
-<!-- <T.Group>
+<T.Group
+    rotation={[-1.5, 0, 0]}
+>
     <Text
-        {Player1Points.toString()}
+        text={PointText}
         color="white"
-        {20}
+        fontSize={4}
         anchorX="50%"
         anchorY="100%"
     />
-</T.Group> -->
+</T.Group>
 
 <h1>{Player1Points}</h1>
 <h1>{Player2Points}</h1>
