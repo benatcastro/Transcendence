@@ -12,7 +12,7 @@
 
     let xPower = 9.5;
     let zPower = 6.5;
-    let linearVelocity = [xPower, 0, zPower];
+    let linearVelocity: [number, number, number] = [xPower, 0, zPower];
 
     export let position: Parameters<Vector3['set']>
     export let rotation: Parameters<Euler['set']>
@@ -44,7 +44,7 @@
         gravityScale={0}
         linearVelocity={linearVelocity}
         enabledTranslations={[true, false, true]}
-        enabledRotations={[false, false, false]}
+        enabledRotations={rotation}
         on:contact={ChangeDirection}
     >
         <Collider

@@ -1,6 +1,9 @@
 {
 	"/": [
-		"src/routes/+layout.ts",
-		"src/routes/+layout.ts"
+		"src/routes/+layout.js",
+		"src/routes/+layout.js"
+	],
+	"/Test": [
+		"src/routes/+layout.js"
 	]
 }

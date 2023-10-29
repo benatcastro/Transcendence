@@ -5,48 +5,14 @@
     import { Collider, RigidBody, AutoColliders } from '@threlte/rapier'
     import { DEG2RAD } from 'three/src/math/MathUtils.js'
 
-    let PlayerVelocity = 10;
+    let Player1Points = 0;
+	let Player2Points = 0;
 
-    let player1X = 0;
-    let player2X = 0;
-
-    let WallRightPosition = [10, 2, 0];
-    let WallLeftPosition = [-10, 2, 0];
-    let Player1Position = [player1X, 1, 15];
-    let Player2Position = [player2X, 1, -15];
-
-    const onKeyDown = (e: KeyboardEvent) =>
-    {
-        console.log(e.key);
-        e.preventDefault()
-
-		if (e.key == 'a')
-			player1X = -PlayerVelocity
-		if (e.key == 'd')
-			player1X = PlayerVelocity
-		if (e.key == 'ArrowLeft')
-			player2X = -PlayerVelocity
-		if (e.key == 'ArrowRight')
-			player2X = PlayerVelocity
-	}
-    const onKeyUp= (e: KeyboardEvent) =>
-    {
-        e.preventDefault()
-        if (e.key == 'a')
-			player1X = 0
-		if (e.key == 'd')
-			player1X = 0
-		if (e.key == 'ArrowLeft')
-			player2X = 0
-		if (e.key == 'ArrowRight')
-			player2X = 0
-	}
 </script>
 
-<svelte:window on:keydown={onKeyDown} on:keyup={onKeyUp}/>
-
+<!-- WALL RIGHT -->
 <T.Group
-    position={WallRightPosition}
+    position={[10, 2, 0]}
 >
     <RigidBody
         type={'dynamic'}
@@ -65,8 +31,9 @@
     </RigidBody>
 </T.Group>
 
+<!-- WALL LEFT -->
 <T.Group
-    position={WallLeftPosition}
+    position={[-10, 2, 0]}
 >
     <RigidBody
         type={'dynamic'}
@@ -91,44 +58,30 @@
     <T.MeshStandardMaterial color="#ffffff" side={Three.DoubleSide} />
 </T.Mesh>
 
-<!-- PLAYER 1 -->
+<!-- POINT TRIGGERS -->
 <T.Group
-    position={[0, 1, 15]}
+    position={[0, 2, 17.5]}
 >
-    <RigidBody
-        type={'static'}
-        gravityScale={0}
-        enabledTranslations={[true, false, false]}
-        enabledRotations={[false, false, false]}
-        userData={{tag: 'player1'}}
-        linearVelocity={[player1X, 0, 0]}
-    >
-        <AutoColliders shape={'cuboid'}>
-            <T.Mesh let:ref castShadow>
-                <T.BoxGeometry args={[5, 2, 1]}/>
-                <T.MeshStandardMaterial color="#ffffff" />
-            </T.Mesh>
-        </AutoColliders>
-    </RigidBody>
+    <Collider
+        sensor
+        shape={'cuboid'}
+        args={[20, 4, 1]}
+        on:sensorenter={() => {
+            console.log("Player 1 scored!");
+            Player1Points += 1;
+        }}
+    />
 </T.Group>
 
-<!-- PLAYER 2 -->
-<T.Group
-position={[0, 1, -15]}
->
-    <RigidBody
-        type={'dynamic'}
-        gravityScale={0}
-        enabledTranslations={[true, false, false]}
-        enabledRotations={[false, false, false]}
-        userData={{tag: 'player2'}}
-        linearVelocity={[player2X, 0, 0]}
-    >
-        <AutoColliders shape={'cuboid'} >
-            <T.Mesh let:ref castShadow >
-                <T.BoxGeometry args={[5, 2, 1]}/>
-                <T.MeshStandardMaterial color="#ffffff" />
-            </T.Mesh>
-        </AutoColliders>
-    </RigidBody>
-</T.Group>
+<!-- <T.Group>
+    <Text
+        {Player1Points.toString()}
+        color="white"
+        {20}
+        anchorX="50%"
+        anchorY="100%"
+    />
+</T.Group> -->
+
+<h1>{Player1Points}</h1>
+<h1>{Player2Points}</h1>

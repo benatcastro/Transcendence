@@ -1,17 +1,16 @@
 <script lang="ts">
 	import * as Threlte from '@threlte/core'
-	import * as Three from 'three'
 	import { T } from '@threlte/core'
 	import { Grid, OrbitControls, TransformControls } from '@threlte/extras'
 	import type { Euler, Vector3 } from 'three'
 	import { Debug } from '@threlte/rapier'
 	import { World } from '@threlte/rapier'
 	
-    import Loop from './Loop.svelte'
     import Scene from './Scene.svelte'
     import Ball from './Ball.svelte'
-
-	let ball_position = 6
+    import Player1 from './Player1.svelte'
+    import Player2 from './Player2.svelte'
+    import { goto } from '$app/navigation';
 
 	const getRandomRotation = (): Parameters<Euler['set']> =>
 	{
@@ -22,6 +21,8 @@
 <Threlte.Canvas>
 	<World>
 		<Scene />
+		<Player1 PlayerVelocity={10}/>
+		<Player2 PlayerVelocity={10}/>
 
 		<Grid cellColor="#808080" sectionSize={0} />
 		
