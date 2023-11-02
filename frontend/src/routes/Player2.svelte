@@ -15,7 +15,7 @@
 
     const onKeyDown = (e: KeyboardEvent) =>
     {
-        console.log(e.key);
+        //console.log(e.key);
         e.preventDefault()
 
 		if (e.key == 'ArrowLeft')
@@ -53,7 +53,7 @@
 >
     <RigidBody
         gravityScale={0}
-        enabledTranslations={[false, false, false]}
+        enabledTranslations={[true, false, false]}
         enabledRotations={[false, false, false]}
         userData={{tag: 'player1'}}
         linearVelocity={[playerX, 0, 0]}

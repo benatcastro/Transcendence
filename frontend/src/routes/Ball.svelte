@@ -1,56 +1,79 @@
 <script lang="ts" context="module">
-    const geometry = new SphereGeometry(1)
+	const geometry = new SphereGeometry(1)
 	const material = new MeshStandardMaterial({ color: '#ffffff' });
 </script>
 
 <script lang="ts">
-    import * as Threlte from '@threlte/core'
-    import { T } from '@threlte/core'
-	import { MeshStandardMaterial, SphereGeometry, Vector3, BoxGeometry} from 'three';
-	import { Collider, RigidBody } from '@threlte/rapier'
-    import type { Euler } from 'three'
+	import * as Threlte from '@threlte/core';
+	import { T } from '@threlte/core';
+	import { MeshStandardMaterial, SphereGeometry, Vector3, BoxGeometry, Object3D, Group, type Euler} from 'three';
+	import { Collider, RigidBody } from '@threlte/rapier';
 
-    let xPower = 8;
-    let zPower = 3;
-    let linearVelocity = [xPower, 0, zPower];
+	let xPower = getRandomNumber();
+	let zPower = 7;
+	let linearVelocity = [xPower, 0, zPower];
+	
+	let ball_position = [0, 1, 0];
 
-    export let position: Parameters<Vector3['set']>
-    export let rotation: Parameters<Euler['set']>
+	let unique = {}; // every {} is unique, {} === {} evaluates to false
 
-    const ChangeDirection = (e: ContactEvent) =>
-    {
-        console.log("ChangeDirection");
-        xPower *= -1;
+	const ChangeDirection = (e: ContactEvent) =>
+	{
+		if (e.targetRigidBody.userData['tag'] == "player1" || e.targetRigidBody.userData['tag'] == "player2")
+			zPower *= -1.2;
+		else if (e.targetRigidBody.userData['tag'] == "Point")
+			unique = {};
+		else
+			xPower *= -1;
+		linearVelocity = [xPower, 0, zPower];
+	}
 
-        linearVelocity = [xPower, 0, zPower];
-    }
+	const getRandomRotation = (): Parameters<Euler['set']> =>
+	{
+		return [Math.random() * 10, Math.random() * 10, Math.random() * 10];
+	}
 
-    // function destroySelf(){
-    //     this.$destroy();
-    // }
-    
+	function getRandomNumber()
+	{
+		let numeroAleatorio;
+		do {
+			numeroAleatorio = Math.floor(Math.random() * 21) - 10; // Genera un número entre -10 y 10
+		} while (numeroAleatorio === 0); // Repite si el número es 0
+
+		return numeroAleatorio;
+	}
+	
 </script>
 
-<T.Group
-    position={position}
->
-    <RigidBody
-        type={'dynamic'}
-        gravityScale={0}
-        bind:linearVelocity={linearVelocity}
-        enabledTranslations={[true, false, true]}
-        enabledRotations={[false, false, false]}
-        on:contact={ChangeDirection}
-    >
-        <Collider
-            shape={'ball'}
-            args={[1]}
-        />
-        <T.Mesh
-            castShadow
-            receiveShadow
-            {geometry}
-            {material}
-        />
-    </RigidBody>
-</T.Group>
+{#key unique}
+	<T.Object3D
+		position={ball_position}
+		rotation={getRandomRotation()}
+	>
+		<RigidBody
+			type={'dynamic'}
+			gravityScale={0}
+			linearVelocity={linearVelocity}
+			enabledTranslations={[true, false, true]}
+			enabledRotations={[true, true, true]}
+			on:contact={ChangeDirection}
+		>
+			<Collider
+				shape={'ball'}
+				args={[1]}
+				on:sensorenter={() => {
+					xPower = getRandomNumber();
+					zPower = 7;
+					unique = {};
+				}}
+			/>
+			<T.Mesh
+				castShadow
+				receiveShadow
+				{geometry}
+				{material}
+			/>
+		</RigidBody>
+	</T.Object3D>
+{/key}
+

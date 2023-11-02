@@ -5,13 +5,14 @@
     import { Collider, RigidBody, AutoColliders } from '@threlte/rapier'
     import { DEG2RAD } from 'three/src/math/MathUtils.js'
     import { Text } from '@threlte/extras'
-    //import Ball, {ResetPosition} from './Ball.svelte';
 
-    export let Player1Points = 0;
-	export let Player2Points = 0;
+    export let Player1Points: number = 0;
+	export let Player2Points: number = 0;
+
 	let PointText: string = "Player2 " + Player2Points.toString() + "\nPlayer1 " + Player1Points.toString();
 
 </script>
+
 
 <!-- WALL RIGHT -->
 <T.Group
@@ -65,33 +66,48 @@
 <T.Group
     position={[0, 2, 17.5]}
 >
-    <Collider
-        sensor
-        shape={'cuboid'}
-        args={[20, 4, 1]}
-        on:sensorenter={() => {
-            console.log("Player 1 scored!");
-            Player2Points += 1;
-            PointText = "Player2 " + Player2Points.toString() + "\nPlayer1 " + Player1Points.toString();
-            //ResetPosition();
-        }}
-    />
+    <RigidBody
+        type={'dynamic'}
+        gravityScale={0}
+        enabledTranslations={[false, false, false]}
+        enabledRotations={[false, false, false]}
+        userData={{tag: 'Point'}}
+    >
+        <Collider
+            sensor
+            shape={'cuboid'}
+            args={[20, 4, 1]}
+            on:sensorenter={() => {
+                console.log("Player 1 scored!");
+                Player2Points += 1;
+                PointText = "Player2 " + Player2Points.toString() + "\nPlayer1 " + Player1Points.toString();
+            }}
+        />
+    </RigidBody>
 </T.Group>
+
 <!-- POINT TRIGGERS -->
 <T.Group
     position={[0, 2, -17.5]}
 >
-    <Collider
-        sensor
-        shape={'cuboid'}
-        args={[20, 4, 1]}
-        on:sensorenter={() => {
-            console.log("Player 1 scored!");
-            Player1Points += 1;
-            PointText = "Player2 " + Player2Points.toString() + "\nPlayer1 " + Player1Points.toString();
-            //ResetPosition();
-        }}
-    />
+    <RigidBody
+        type={'dynamic'}
+        gravityScale={0}
+        enabledTranslations={[false, false, false]}
+        enabledRotations={[false, false, false]}
+        userData={{tag: 'Point'}}
+    >
+        <Collider
+            sensor
+            shape={'cuboid'}
+            args={[20, 4, 1]}
+            on:sensorenter={() => {
+                console.log("Player 1 scored!");
+                Player1Points += 1;
+                PointText = "Player2 " + Player2Points.toString() + "\nPlayer1 " + Player1Points.toString();
+            }}
+        />
+    </RigidBody>
 </T.Group>
 
 <T.Group

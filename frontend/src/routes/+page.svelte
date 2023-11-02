@@ -8,9 +8,9 @@
 	
     import Scene from './Scene.svelte'
     import Ball from './Ball.svelte'
+
     import Player1 from './Player1.svelte'
     import Player2 from './Player2.svelte'
-    import { goto } from '$app/navigation';
 
 	const getRandomRotation = (): Parameters<Euler['set']> =>
 	{
@@ -23,6 +23,7 @@
 		<Scene />
 		<Player1 PlayerVelocity={10}/>
 		<Player2 PlayerVelocity={10}/>
+		<Ball />
 
 		<Grid cellColor="#808080" sectionSize={0} />
 		
@@ -52,7 +53,6 @@
 		position={[5, 7, 0]}
 		/>
 
-		<Ball position={[0, 1, 0]} rotation={getRandomRotation()}/>
 
 		<Debug
 			depthTest={false}
