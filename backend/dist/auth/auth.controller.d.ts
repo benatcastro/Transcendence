@@ -10,5 +10,16 @@ export declare class AuthController {
         JWT: string;
         ExpiresIn: string;
     }>;
-    decrypJWT(authHeader: string): Promise<any>;
+    decrypJWT(authHeader: string): Promise<{
+        id: number;
+        email: string;
+        username: string;
+        auth_type: string;
+        avatar: string;
+        elo: number;
+        wins: number;
+        loses: number;
+        updatedAt: Date;
+        createdAt: Date;
+    }>;
 }

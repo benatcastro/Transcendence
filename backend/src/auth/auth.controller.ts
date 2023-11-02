@@ -46,8 +46,10 @@ export class AuthController {
 
 
     const [type, token] = authHeader.split(' ') ?? [];
-    Logger.log("token", token);
-    return await this.AuthService.decryptJWT(token);
+    // Logger.log("token", token);
+    const payload = await this.AuthService.decryptJWT(token);
+    Logger.log("Payload:", payload);
+    return await this.UserService.findById(payload?.id);
 
   }
 }

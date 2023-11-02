@@ -38,8 +38,9 @@ let AuthController = class AuthController {
     }
     async decrypJWT(authHeader) {
         const [type, token] = authHeader.split(' ') ?? [];
-        common_1.Logger.log("token", token);
-        return await this.AuthService.decryptJWT(token);
+        const payload = await this.AuthService.decryptJWT(token);
+        common_1.Logger.log("Payload:", payload);
+        return await this.UserService.findById(payload?.id);
     }
 };
 exports.AuthController = AuthController;
