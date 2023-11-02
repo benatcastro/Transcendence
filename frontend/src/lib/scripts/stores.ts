@@ -1,5 +1,10 @@
-import { writable, type Writable } from "svelte/store";
+import { get, writable, type Writable } from "svelte/store";
 export const userLogged = writable(false);
+
+const defaultUserParam = {
+    id: 0,
+    username: "",
+}
 
 interface UserParams {
     id: number;
@@ -7,20 +12,35 @@ interface UserParams {
 };
 
 class UserStore {
-    public id: Writable<Number>;
-    public username: Writable<string>
+    private attr: Writable<UserParams>;
 
     constructor () {
-        this.id = writable(0);
-        this.username = writable("");
+        this.attr = writable(defaultUserParam);
     };
 
-    init(params: UserParams) {
-        this.id.set(params.id);
-        this.username.set(params.username);
+    init(userValues: UserParams) {
+        this.attr.set(userValues);
     }
     
+    private updateStore(userValues: UserParams) {
+        return this.attr.set(userValues);
+    }
 
+    getId(): number {
+        return get(this.attr).id;
+    }
+
+    getUsername(): string {
+        return get(this.attr).username;
+    }
+
+    setUsername(newUsername: string) {
+        let tmp = get(this.attr);
+
+        tmp.username = newUsername
+
+        this.updateStore(tmp);
+    }
 }
 
 export const userState: UserStore  = new UserStore();
