@@ -1,5 +1,5 @@
 import { AuthService } from './auth.service';
-import { Controller, Get, Logger, Query, Redirect, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Query, Redirect, Req, Res, Post, Headers } from '@nestjs/common';
 import { log } from 'console';
 import { Request, Response } from 'express';
 import { Public } from 'src/public/public.decorator';
@@ -34,10 +34,20 @@ export class AuthController {
       user = await this.UserService.findByUsername(user_data.username);
 
       if (user == null) {
-        user = await this.UserService.create(user);
+        user = await this.UserService.create(user_data);
       }
       Logger.log("Issuing JWT for user", user);
       return await this.AuthService.createJWT(user);
       
+  }
+
+  @Post('jwt')
+  async decrypJWT(@Headers('authorization') authHeader: string) {
+
+
+    const [type, token] = authHeader.split(' ') ?? [];
+    Logger.log("token", token);
+    return await this.AuthService.decryptJWT(token);
+
   }
 }

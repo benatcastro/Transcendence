@@ -54,6 +54,30 @@ export declare class UserService {
         updatedAt: Date;
         createdAt: Date;
     }>;
+    findByEmail(email: string): Promise<{
+        id: number;
+        email: string;
+        username: string;
+        auth_type: string;
+        avatar: string;
+        elo: number;
+        wins: number;
+        loses: number;
+        updatedAt: Date;
+        createdAt: Date;
+    }>;
+    findByUsername(username: string): Promise<{
+        id: number;
+        email: string;
+        username: string;
+        auth_type: string;
+        avatar: string;
+        elo: number;
+        wins: number;
+        loses: number;
+        updatedAt: Date;
+        createdAt: Date;
+    }>;
     delete(id: number): Promise<{
         id: number;
         email: string;

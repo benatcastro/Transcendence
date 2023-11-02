@@ -7,15 +7,8 @@ export declare class AuthController {
     constructor(AuthService: AuthService, UserService: UserService);
     redirectToIntraApi(req: Request, res: Response): void;
     postUserAuthorization(params: any): Promise<{
-        id: number;
-        email: string;
-        username: string;
-        auth_type: string;
-        avatar: string;
-        elo: number;
-        wins: number;
-        loses: number;
-        updatedAt: Date;
-        createdAt: Date;
+        JWT: string;
+        ExpiresIn: string;
     }>;
+    decrypJWT(authHeader: string): Promise<any>;
 }

@@ -14,9 +14,11 @@ const axios_1 = require("@nestjs/axios");
 const common_1 = require("@nestjs/common");
 const rxjs_1 = require("rxjs");
 const console_1 = require("console");
+const jwt_1 = require("@nestjs/jwt");
 let AuthService = class AuthService {
-    constructor(httpService) {
+    constructor(httpService, jwtService) {
         this.httpService = httpService;
+        this.jwtService = jwtService;
     }
     getLoginRedirectURI() {
         const RedirectUrl = process.env.REDIRECT_URL;
@@ -70,10 +72,28 @@ let AuthService = class AuthService {
         })));
         return user;
     }
+    async createJWT(user) {
+        const payload = { id: user.id, username: user.id };
+        return {
+            JWT: this.jwtService.sign(payload),
+            ExpiresIn: process.env.JWT_EXPIRES_IN
+        };
+    }
+    async decryptJWT(jwt) {
+        try {
+            const payload = this.jwtService.verify(jwt, {
+                secret: process.env.JWT_SECRET
+            });
+            return payload;
+        }
+        catch (error) {
+            common_1.Logger.error(error);
+        }
+    }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [axios_1.HttpService])
+    __metadata("design:paramtypes", [axios_1.HttpService, jwt_1.JwtService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

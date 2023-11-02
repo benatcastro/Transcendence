@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { AxiosError, AxiosResponse } from 'axios';
 import { Observable, catchError, firstValueFrom, map, tap } from 'rxjs';
 import { error, log } from 'console';
@@ -92,5 +92,19 @@ export class AuthService {
             JWT: this.jwtService.sign(payload),
             ExpiresIn: process.env.JWT_EXPIRES_IN
         }
+    }
+
+    async decryptJWT(jwt:string ) {
+          try {
+            const payload = this.jwtService.verify(
+              jwt,
+              {
+                secret: process.env.JWT_SECRET
+              }
+            );
+            return payload;
+          } catch(error) {
+            Logger.error(error);
+          }
     }
 }

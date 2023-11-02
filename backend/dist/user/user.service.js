@@ -48,6 +48,16 @@ let UserService = class UserService {
             where: { id: id },
         });
     }
+    async findByEmail(email) {
+        return this.prisma.user.findUnique({
+            where: { email: email },
+        });
+    }
+    async findByUsername(username) {
+        return this.prisma.user.findUnique({
+            where: { username: username },
+        });
+    }
     async delete(id) {
         return this.prisma.user.delete({ where: { id: id } });
     }

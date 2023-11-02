@@ -13,12 +13,16 @@ const app_service_1 = require("./app.service");
 const prisma_service_1 = require("./prisma/prisma.service");
 const user_module_1 = require("./user/user.module");
 const auth_module_1 = require("./auth/auth.module");
+const throttler_1 = require("@nestjs/throttler");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [user_module_1.UserModule, auth_module_1.AuthModule],
+        imports: [user_module_1.UserModule, auth_module_1.AuthModule, throttler_1.ThrottlerModule.forRoot([{
+                    ttl: 6000,
+                    limit: 10,
+                }])],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService, prisma_service_1.PrismaService],
     })
