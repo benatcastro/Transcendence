@@ -1,0 +1,23 @@
+1. FROM python:3.8: Utiliza la imagen oficial de Python 3.8 como base para tu imagen.
+
+2. ENV DockerHOME=/home/app/webapp: Establece una variable de entorno llamada DockerHOME con el valor /home/app/webapp.
+
+3. RUN mkdir -p $DockerHOME: Crea el directorio especificado por DockerHOME y sus subdirectorios, si es necesario.
+
+4. WORKDIR $DockerHOME: Establece el directorio de trabajo actual dentro del contenedor.
+
+5. ENV PYTHONDONTWRITEBYTECODE 1 y ENV PYTHONUNBUFFERED 1: Establecen variables de entorno para la configuración de Python, como se explicó en respuestas anteriores.
+
+6. RUN pip install --upgrade pip: Actualiza la herramienta pip a la última versión.
+
+7. COPY . $DockerHOME: Copia el contenido del directorio actual (donde se encuentra el Dockerfile) al directorio especificado por DockerHOME dentro del contenedor.
+
+8.RUN pip install -r requirements.txt: Instala las dependencias de Python especificadas en el archivo requirements.txt.
+
+9.EXPOSE 8000: Informa a Docker que el contenedor escuchará en el puerto 8000. Esto es más una documentación para el usuario que ejecuta el contenedor y no tiene un impacto directo en la red del contenedor.
+
+10. CMD python manage.py runserver: Especifica el comando predeterminado que se ejecutará cuando el contenedor se inicie. En este caso, se inicia el servidor de desarrollo de Django.
+
+* PYTHONDONTWRITEBYTECODE=1: Evita que Python genere archivos de bytecode (.pyc) al importar módulos. Estos archivos no son necesarios en entornos de contenedor y desarrollo, y desactivarlos puede reducir el tamaño del contenedor.
+
+* PYTHONUNBUFFERED=1: Deshabilita el búfer de salida en Python, asegurando que la salida esté disponible de inmediato en la consola. Esto es útil para obtener logs y mensajes de salida sin esperar a que se llene un búfer, especialmente en entornos de contenedor y desarrollo.
