@@ -1,0 +1,44 @@
+version: '3.7'
+services:
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    volumes:
+      - static_volume:/home/app/microservice/static
+    depends_on:
+      - web
+    restart: "on-failure"
+
+  web:
+    build: ./django
+    command: sh -c "python manage.py makemigrations &&
+                    python manage.py migrate &&
+                    gunicorn proyect.wsgi:application --bind 0.0.0.0:${APP_PORT}"
+    volumes:
+      - .:/microservice
+      - static_volume:/home/app/microservice/static
+    env_file: .env
+    image: trascendence_app
+    expose:
+      - ${APP_PORT}
+    restart: "on-failure"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:11-alpine
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - PGPORT=${DB_PORT}
+      - POSTGRES_USER=${POSTGRES_USER}
+    restart: "on-failure"
+
+volumes:
+  postgres_data:
+  static_volume:
+
