@@ -1,5 +1,15 @@
 version: '3.7'
 services:
+  frontend:
+    container_name: frontend
+    restart: always
+    build:
+      context: ./frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
   nginx:
     build: ./nginx
     ports:
@@ -41,4 +51,3 @@ services:
 volumes:
   postgres_data:
   static_volume:
-
