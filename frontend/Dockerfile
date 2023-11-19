@@ -2,8 +2,6 @@
 
 FROM oven/bun:alpine
 
-ENV NODE_ENV development
-
 WORKDIR /app
 
 COPY package*.json ./
