@@ -6,12 +6,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN bun install &&\
-	bun install @threlte/core three @types/three &&\
-	bun install @threlte/extras &&\
-	bun install @threlte/rapier @dimforge/rapier3d-compat
-#	bunx @threlte/gltf@latest /path/to/Model.glb &&\
-
+RUN bun install && bun install @threlte/core three @types/three @threlte/extras @threlte/rapier @dimforge/rapier3d-compat
 
 EXPOSE 5173
 

@@ -14,7 +14,6 @@
 
 </script>
 
-
 <!-- WALL RIGHT -->
 <T.Group
     position={[10, 2, 0]}
@@ -128,15 +127,15 @@
 {#await useGltf('/futuristic-tower/source/tower.glb') then tower}
 	<T is={tower.scene} position={[0, -60, 0]} scale={1} />
 {/await}
-{#await useGltf('/city.glb') then city}
+<!-- {#await useGltf('/city.glb') then city}
 	<T is={city.scene} position={[40, -40, -40]} scale={[1, 1, 2]} />
-{/await}
+{/await} -->
 {#await useGltf('/oil_build.glb') then oil}
 	<T is={oil.scene} position={[-40, -100, -40]} scale={0.3} />
 {/await}
 {#await useGltf('/build01.glb') then build01}
 	<T is={build01.scene} position={[-35, -100, 0]} scale={10} />
 {/await}
-{#await useGltf('/ball.glb') then ball}
+<!-- {#await useGltf('/ball.glb') then ball}
 	<T is={ball.scene} position={[0, 3, 0]} scale={3} />
-{/await}
+{/await} -->
