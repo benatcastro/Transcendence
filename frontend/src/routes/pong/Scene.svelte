@@ -78,7 +78,7 @@
             shape={'cuboid'}
             args={[20, 4, 1]}
             on:sensorenter={() => {
-                console.log("Player 1 scored!");
+                console.log("Player 2 scored!");
                 Player2Points += 1;
                 PointText = "Player2 " + Player2Points.toString() + "\nPlayer1 " + Player1Points.toString();
             }}
@@ -136,6 +136,6 @@
 {#await useGltf('/build01.glb') then build01}
 	<T is={build01.scene} position={[-35, -100, 0]} scale={10} />
 {/await}
-<!-- {#await useGltf('/ball.glb') then ball}
+{#await useGltf('/ball.glb') then ball}
 	<T is={ball.scene} position={[0, 3, 0]} scale={3} />
-{/await} -->
+{/await}
