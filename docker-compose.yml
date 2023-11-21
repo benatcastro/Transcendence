@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   frontend:
-    container_name: frontend
+    container_name: transcendence-frontend
     restart: always
     build:
       context: ./frontend
@@ -11,16 +11,18 @@ services:
       - ./frontend:/app
       - /app/node_modules
   nginx:
+    container_name: transcendence-nginx
     build: ./nginx
     ports:
       - "80:80"
     volumes:
       - static_volume:/home/app/microservice/static
     depends_on:
-      - web
+      - django
     restart: "on-failure"
 
-  web:
+  django:
+    container_name: transcendence-django
     build: ./django
     command: sh -c "python manage.py makemigrations &&
                     python manage.py migrate &&
