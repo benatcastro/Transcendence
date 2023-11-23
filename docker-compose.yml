@@ -30,6 +30,7 @@ services:
     volumes:
       - .:/microservice
       - static_volume:/home/app/microservice/static
+      - ./django:/home/app/webapp 
     env_file: .env
     image: trascendence_app
     expose:
@@ -40,6 +41,8 @@ services:
 
   db:
     image: postgres:11-alpine
+    ports:
+      - ${DB_PORT}:${DB_PORT}
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - postgres_data:/var/lib/postgresql/data/
