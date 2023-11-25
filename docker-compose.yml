@@ -40,12 +40,12 @@ services:
       - db
 
   db:
-    image: postgres:11-alpine
+    image: postgres:16.1-alpine3.18
+    container_name: transcendence-db
     ports:
       - ${DB_PORT}:${DB_PORT}
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-      - postgres_data:/var/lib/postgresql/data/
+      - ${DATA_PATH}:/var/lib/postgresql/data/
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
@@ -54,5 +54,4 @@ services:
     restart: "on-failure"
 
 volumes:
-  postgres_data:
   static_volume:
