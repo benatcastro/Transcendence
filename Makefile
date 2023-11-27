@@ -21,6 +21,7 @@ migrations:
 # Makefile
 
 create_folders:
+	@mkdir -p ./data/djangoFiles
 	@mkdir -p ./data/static
 	@mkdir -p ./data/postgres
 	@echo "Folders created successfully."

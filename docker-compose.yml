@@ -31,6 +31,7 @@ services:
     volumes:
       - .:/microservice
       - static_volume:/home/app/microservice/static
+      - django_static:/home/app/webapp
     env_file: .env
     image: trascendence_app
     expose:
@@ -55,13 +56,18 @@ volumes:
   postgres_data:
     driver: local
     driver_opts:
-      type: none
+      type: volume
       o: bind
       device: ./data/postgres
-
+  django_static:
+    driver: local
+    driver_opts:
+      type: volume
+      o: bind
+      device: ./data/djangoFiles
   static_volume:
     driver: local
     driver_opts:
-      type: none
+      type: volume
       o: bind
       device: ./data/static
