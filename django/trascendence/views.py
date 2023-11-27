@@ -8,4 +8,10 @@ class HomeView(APIView):
 
  def get(self, request, format=None):
     return JsonResponse({"message":
-    'HELLO WORLD FROM DJANGO AND DOCKER'})
+    'cristian HELLO WORLD FROM DJANGO AND DOCKER'})
+
+ 
+
+def index(request):
+    print("¡Hola, estoy aquíiiiiii------!")
+    return render(request, 'index.html')

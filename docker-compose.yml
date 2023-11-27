@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   frontend:
-    container_name: transcendence-frontend
+    container_name: frontend
     restart: always
     build:
       context: ./frontend
@@ -11,7 +11,7 @@ services:
       - ./frontend:/app
       - /app/node_modules
   nginx:
-    container_name: transcendence-nginx
+    container_name: nginx
     build: ./nginx
     ports:
       - "80:80"
@@ -22,11 +22,12 @@ services:
     restart: "on-failure"
 
   django:
-    container_name: transcendence-django
+    container_name: django
     build: ./django
     command: sh -c "python manage.py makemigrations &&
                     python manage.py migrate &&
-                    gunicorn proyect.wsgi:application --bind 0.0.0.0:${APP_PORT}"
+                    python manage.py runserver_plus 0.0.0.0:${APP_PORT}"
+                   #gunicorn proyect.wsgi:application --bind 0.0.0.0:${APP_PORT}"
     volumes:
       - .:/microservice
       - static_volume:/home/app/microservice/static
@@ -52,4 +53,15 @@ services:
 
 volumes:
   postgres_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/postgres
+
   static_volume:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/static

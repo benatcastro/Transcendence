@@ -4,7 +4,7 @@ FROM python:3.10
 ENV DockerHOME=/home/app/webapp  
 
 # set work directory  
-RUN mkdir -p $DockerHOME  
+RUN mkdir -p $DockerHOME static
 
 # where your code lives  
 WORKDIR $DockerHOME  
