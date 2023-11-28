@@ -16,6 +16,9 @@
 
 </script>
 
+<svelte:head>
+	<title>Cyberpong - Play</title>
+</svelte:head>
 <!-- <h1>Ander mariquita hihi</h1> -->
 
 <Threlte.Canvas>

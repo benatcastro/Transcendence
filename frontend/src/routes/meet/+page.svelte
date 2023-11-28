@@ -9,7 +9,7 @@
 </script>
 
 <svelte:head>
-	<title>Meet the team</title>
+	<title>Cyberpong - Meet the team</title>
 </svelte:head>
 
 <h2>Meet the team behind CyberPong</h2>

@@ -2,7 +2,7 @@
 </script>
 
 <svelte:head>
-	<title>Profile</title>
+	<title>Cyberpong - Profile</title>
 </svelte:head>
 
 <h1>Profile mockup</h1>

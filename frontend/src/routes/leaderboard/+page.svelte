@@ -2,7 +2,7 @@
 </script>
 
 <svelte:head>
-	<title>Ranking</title>
+	<title>Cyberpong - Leaderboard</title>
 </svelte:head>
 
 <h1>Ranking mockup</h1>
