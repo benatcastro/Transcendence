@@ -7,13 +7,13 @@ all: create_folders build
 	@echo "${GREEN}All done!${DEFAULT}"
 
 build:
-	docker-compose up --build
+	docker compose up --build
 
 up:
-	docker-compose up -d
+	docker compose up -d
 
 down:
-	docker-compose down -v
+	docker compose down -v
 
 prune:
 	yes | docker system prune -a
@@ -24,7 +24,7 @@ fclean: clean
 	docker volume rm -f $(docker volume ls -q)  # Remove all volumes
 
 migrations:
-	docker-compose exec django sh -c "python manage.py makemigrations && python manage.py migrate"
+	docker compose exec django sh -c "python manage.py makemigrations && python manage.py migrate"
 
 create_folders:
 	@mkdir -p ./data/djangoFiles
@@ -50,7 +50,7 @@ help:
 	@echo "Usage: make [target]"
 	@echo "Targets:"
 	@echo ""
-	@echo "${GREEN}build${DEFAULT}			: Build the application with docker-compose."
+	@echo "${GREEN}build${DEFAULT}			: Build the application with docker compose."
 	@echo "${GREEN}up${DEFAULT}			: Start the application in detached mode (background)."
 	@echo "${GREEN}down${DEFAULT}			: Stop and remove containers, along with volumes."
 	@echo "${GREEN}prune${DEFAULT}			: Clean up all unused resources, including containers and images."
@@ -59,7 +59,7 @@ help:
 	@echo "${GREEN}migrations${DEFAULT}		: Run Django database migrations."
 	@echo "${GREEN}create_folders${DEFAULT}		: Create the necessary folders for the application."
 	@echo ""
-	@echo "${GREEN}Note:${DEFAULT} Make sure to have Docker and docker-compose installed to run the commands."
+	@echo "${GREEN}Note:${DEFAULT} Make sure to have Docker and docker compose installed to run the commands."
 	@echo ""
 
 .PHONY: all build up down prune clean fclean migrations create_folders help
