@@ -19,15 +19,18 @@
 		console.log('Logging in...');
 		return new Promise<void>((resolve, reject) => {
 			//TODO fetch user info with promise
-			//User authentication succeeded
+			//TODO User authentication succeeded
 			isLoggedIn = true;
 			resolve();
 			reject(new Error('Login failed'));
-			//User authentication failed
+			//TODO User authentication failed
 		});
 	}
 	function handlePlayClick(option: string) {
 		if (option === 'ranked' && !isLoggedIn) {
+			//TODO Temporary rejection for testing
+			console.error("You are not logged in");
+			return;
 			handleLoginClick()
 				.then(() => goto(`/matchmaking?mode=${option}`))
 				.catch((e) => console.error(e.message));

@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import { onDestroy } from 'svelte';
 	import { randInt } from 'three/src/math/MathUtils';
+
 	const mode = $page.url.searchParams.get('mode');
 	const phrases: Array<string> = [
 		"Sharpening Cristian's dark humour",
@@ -65,9 +66,18 @@
 		'Asking Google Assistant for advice on parallel universe travel',
 		'Brewing a potion to turn Monday mornings into Saturday evenings'
 	];
-
-	async function startMatchmaking() {}
 	let randPhrase: string = phrases[randInt(0, phrases.length - 1)];
+
+	async function matchmaking() {
+        //TODO endpoints for both casual and ranked matches
+		const res = mode == 'casual' ? await fetch('/api/casual') : await fetch('/api/ranked');
+		if (res.ok) {
+			return res.json();
+		}
+		console.error("fetch request didn't resolve");
+		throw new Error("Couldn't find an opponent, try again?");
+	}
+
 	const interval = setInterval(() => {
 		randPhrase = phrases[randInt(0, phrases.length - 1)];
 	}, 5000);
@@ -77,9 +87,19 @@
 </script>
 
 <svelte:head>
-    <title>CyberPong - Leaderboard</title>
+	<title>CyberPong - Matchmaking</title>
 </svelte:head>
-<div class="spinner-border" role="status">
-	<span class="visually-hidden">Loading...</span>
-</div>
-<p>{randPhrase}</p>
+
+{#await matchmaking()}
+	<div class="spinner-border" role="status">
+		<span class="visually-hidden">Loading...</span>
+	</div>
+	<p>{randPhrase}</p>
+{:then player}
+	<p>{player} wants to play!</p>
+	<p><a href="/pong">Play now</a></p>
+{:catch error}
+	<p>{error}</p>
+    <button on:click={() => window.location.reload()}>Keep searching</button>
+	<p><a href="/">Go back</a></p>
+{/await}
