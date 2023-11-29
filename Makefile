@@ -16,7 +16,7 @@ down:
 	docker-compose down -v
 
 prune:
-	docker system prune -a
+	yes | docker system prune -a
 
 clean: down prune
 
