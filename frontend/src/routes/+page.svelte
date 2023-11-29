@@ -17,20 +17,20 @@
 
 	async function handleLoginClick() {
 		console.log('Logging in...');
-		return new Promise<void>((resolve, reject) => {
-			//TODO fetch user info with promise
-			//TODO User authentication succeeded
-			isLoggedIn = true;
-			resolve();
-			reject(new Error('Login failed'));
+		//TODO fetch user info with promise
+		//TODO User authentication succeeded
+		const logged = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1');
+		if (!logged.ok) {
 			//TODO User authentication failed
-		});
+			return new Error('Incorrect username or password');
+		}
+		isLoggedIn = true;
+		return (await logged.json()).results[0].name; //TODO mock user info
 	}
 	function handlePlayClick(option: string) {
 		if (option === 'ranked' && !isLoggedIn) {
 			//TODO Temporary rejection for testing
-			console.error("You are not logged in");
-			return;
+			console.error('You are not logged in');
 			handleLoginClick()
 				.then(() => goto(`/matchmaking?mode=${option}`))
 				.catch((e) => console.error(e.message));
