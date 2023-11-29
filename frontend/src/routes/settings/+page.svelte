@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-	<title>Cyberpong - Settings</title>
+	<title>CyberPong - Settings</title>
 </svelte:head>
 
 <h2>Settings</h2>

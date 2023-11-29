@@ -9,7 +9,11 @@
 </script>
 
 <svelte:head>
-	<title>Cyberpong - Meet the team</title>
+	<meta
+		name="description"
+		content="Get to know the passionate minds behind our futuristic cyberpunk 3D Pong web app. Discover the talented team dedicated to bringing you an immersive gaming experience."
+	/>
+	<title>CyberPong - Meet the team</title>
 </svelte:head>
 
 <h2>Meet the team behind CyberPong</h2>

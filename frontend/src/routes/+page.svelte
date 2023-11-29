@@ -21,7 +21,7 @@
 			//TODO fetch user info with promise
 			//User authentication succeeded
 			isLoggedIn = true;
-            resolve();
+			resolve();
 			reject(new Error('Login failed'));
 			//User authentication failed
 		});
@@ -38,7 +38,11 @@
 </script>
 
 <svelte:head>
-	<title>Cyberpong</title>
+	<meta
+		name="description"
+		content="Immerse yourself in a neon-lit cyberpunk world with our online 3D Pong app. Engage in intense matches, customize your profile, and climb the leaderboards in this futuristic gaming universe."
+	/>
+	<title>CyberPong</title>
 </svelte:head>
 
 <h1>Main menu</h1>
