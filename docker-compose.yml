@@ -27,11 +27,10 @@ services:
     command: sh -c "python manage.py makemigrations &&
                     python manage.py migrate &&
                     python manage.py runserver_plus 0.0.0.0:${APP_PORT}"
-                   #gunicorn proyect.wsgi:application --bind 0.0.0.0:${APP_PORT}"
     volumes:
       - .:/microservice
       - static_volume:/home/app/microservice/static
-      - django_static:/home/app/webapp
+      - django_sources:/home/app/webapp
     env_file: .env
     image: trascendence_app
     expose:
@@ -41,7 +40,7 @@ services:
       - db
 
   db:
-    image: postgres:11-alpine
+    image: postgres:16.1-alpine3.18
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - postgres_data:/var/lib/postgresql/data/
@@ -58,13 +57,13 @@ volumes:
     driver_opts:
       type: volume
       o: bind
-      device: ./data/postgres
-  django_static:
+      device: ${DB_DATA_PATH}
+  django_sources:
     driver: local
     driver_opts:
       type: volume
       o: bind
-      device: ./data/djangoFiles
+      device: ./django
   static_volume:
     driver: local
     driver_opts:
