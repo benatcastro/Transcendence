@@ -16,10 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from trascendence.views import index
+from transcendence.views import index
 urlpatterns = [
     path('watchman/', include('watchman.urls')),
     path("admin/", admin.site.urls),
     path('', index, name='index'),
-    path('trascendence/', include('trascendence.urls')),
+    path('transcendence/', include('transcendence.urls')),
 ]
