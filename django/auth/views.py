@@ -35,7 +35,6 @@ def get_redirect_url():
 
     url += format_query_params(params)
 
-    print("url:", url)
     return url
 
 
