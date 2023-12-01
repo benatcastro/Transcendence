@@ -11,7 +11,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-import os
+import os, environ
+
+# Init env variable handler
+env = environ.Env()
+environ.Env.read_env()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,7 +31,6 @@ SECRET_KEY = "django-insecure-o&5&cg&s$mziwz^o2gb=p2^pb3_l8wh8+y+%0&@d_n45nx!jd5
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-print("hola")
 
 # Application definition
 
@@ -86,9 +90,20 @@ WHITENOISE_AUTOREFRESH = True  # Habilita la actualización en tiempo real para 
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+
+        'ENGINE': env('ENGINE'),
+
+        'NAME': env('DB_NAME'),
+
+        'USER': env('POSTGRES_USER'),
+
+        'PASSWORD': env('POSTGRES_PASSWORD'),
+
+        'HOST': env('DB_HOST'),
+
+        'PORT': env('DB_PORT'),
+
     }
 }
 
