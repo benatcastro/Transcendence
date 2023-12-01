@@ -8,7 +8,7 @@ class HomeView(APIView):
 
  def get(self, request, format=None):
     return JsonResponse({"message":
-    'cristian HELLO WORLD FROM DJANGO AND DOCKER'})
+    'cristian HELLO patata FROM DJANGO AND DOCKER'})
 
  
 
