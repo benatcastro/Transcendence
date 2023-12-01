@@ -1,6 +1,8 @@
 <script lang="ts">
-    import type {PageData} from './$types';
-
-    export let data: PageData;
+  import { goto } from "$app/navigation";
+  function redirect () {
+    goto("http://localhost:3000/auth/42/login")
+  }
 </script>
 
+<button on:click={redirect}>Login with 42 api</button>
