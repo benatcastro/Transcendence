@@ -1,12 +1,21 @@
 import environ
 from django.shortcuts import redirect
 from django.http import HttpResponse
-from urllib.parse import urlencode
+from django.http import JsonResponse
 import environ
+import requests
 
 # Env setup
 env = environ.Env()
 environ.Env.read_env()
+
+
+class ExternalApiError(Exception):
+    def __init__(self, status_code, message="", function="undefined"):
+        self.status_code = status_code
+        self.message = message
+        self.function = function
+        super().__init__(message)
 
 
 # Given a dictionary with the key values of the params formats them into a valid string
@@ -33,12 +42,62 @@ def get_redirect_url():
         'scope': 'public',
     }
 
-    url += format_query_params(params)
+    return url + format_query_params(params)
 
-    return url
+
+def retrieve_access_token(code):
+    url = 'https://api.intra.42.fr/oauth/token'
+    params = {
+        "client_id": env('FT_API_UID'),
+        "client_secret": env('FT_API_SECRET'),
+        "redirect_uri": env('FT_API_REDIRECT'),
+        "grant_type": "authorization_code",
+        "code": code,
+    }
+
+    response = requests.post(url + format_query_params(params))
+
+    if response.status_code == 200:
+        # Find the access token into the response body
+        # if thery is no value for the key "access_token" returns None
+        data = response.json()
+        token = data.get("access_token", "error")
+        return token if token != "error" else None
+    else:
+        raise ExternalApiError(message=response.json(), status_code=response.status_code, function=retrieve_access_token.__name__)
+
+
+def get_user_from_api(access_token):
+    url = 'https://api.intra.42.fr/v2/me'
+    headers = {"Authorization": "Bearer " + access_token}
+
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        data = response.json()
+        email = data.get("email", "error")
+        username = data.get("login", "error")
+        user = {
+            "email": email,
+            "username": username
+        }
+        print(user)
+        return user
+    else:
+        raise ExternalApiError(message=response.json(), status_code=response.status_code, function=get_user_from_api.__name__)
 
 
 # Entry point for 42 auth handling
 def ft_auth(request):
-    endpoint = get_redirect_url()
-    return redirect(endpoint)
+    if request.method == "GET":
+        return redirect(get_redirect_url())
+
+    if request.method == "POST":
+        try:
+            access_token = retrieve_access_token(request.GET.get("code"))
+            user = get_user_from_api(access_token)
+            return JsonResponse(user)
+        except ExternalApiError as e:
+            print("Error -> ", e.status_code)
+            print("In function -> ", e.function)
+            return HttpResponse(e.message, status=e.status_code)
