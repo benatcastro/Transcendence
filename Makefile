@@ -32,6 +32,9 @@ create_folders:
 	@mkdir -p ./data/postgres
 	@echo "${GREEN}Folders created successfully.${DEFAULT}"
 
+reload_django:
+	docker compose up --force-recreate --build -d django
+
 help:
 	@echo "${HEADER}${DEFAULT}"
 	@echo "${HEADER}                                                                                                    	   ${DEFAULT}"
@@ -62,4 +65,4 @@ help:
 	@echo "${GREEN}Note:${DEFAULT} Make sure to have Docker and docker compose installed to run the commands."
 	@echo ""
 
-.PHONY: all build up down prune clean fclean migrations create_folders help
+.PHONY: all build up down prune clean fclean migrations create_folders help reload_django
