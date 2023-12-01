@@ -22,4 +22,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('', index, name='index'),
     path('transcendence/', include('transcendence.urls')),
+    path('auth/', include('auth.urls')),
 ]
