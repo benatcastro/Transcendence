@@ -1,81 +1,79 @@
-# Django
-## _Static Files_
+# index tsx
 
-# Information on how to configure static files and hot reload
-- [Whitenose Link](https://whitenoise.readthedocs.io/en/latest/django.html)
--  [livesync](https://github.com/fabiogibson/django-livesync)
--  [Django-Extensions](https://django-extensions.readthedocs.io/en/latest/)
-Django Extensions es una colección de extensiones personalizadas para Django Framework.Estos incluyen comandos de administración, campos de bases de datos adicionales, extensiones de administración y mucho más.
-- [Werkzeug](https://werkzeug.palletsprojects.com/en/3.0.x/)
+- const server = Bun.serve({ ... });: This line initializes the server using Bun.serve() and sets it to listen on port 3000.
 
-## Tech
+- port: 3000,: Specifies that the server should listen on port 3000.
 
-- Whitnoise:
-En el archivo principal setting.py añadimos:
-WHITENOISE_AUTOREFRESH = True  # Habilita la actualización en tiempo real para archivos estáticos
+- fetch(req) { ... }: Defines a function that will handle all incoming HTTP requests. When a request comes in, it returns a new HTTP response with the text "Bun!".
 
-- django-extensions:
-django-extensions es una biblioteca de terceros para Django que proporciona un conjunto de utilidades y comandos adicionales para facilitar el desarrollo. Incluye características como comandos de shell mejorados, manejo de archivos, generadores de códigos y más.
+- return new Response(Bun!);: Creates a new HTTP response object with the text "Bun!".
 
-- livesync:
-django-livesync es una extensión de django-extensions que agrega la capacidad de recargar automáticamente el servidor de desarrollo de Django cuando se detectan cambios en el código fuente. Esto facilita la visualización inmediata de los efectos de los cambios sin necesidad de reiniciar manualmente el servidor. La opción --livesync se utiliza al ejecutar el servidor de desarrollo para habilitar esta funcionalidad de recarga en tiempo real.
+- console.log(Listening on localhost:${server.port} ...);: Logs a message to the console, indicating that the server is listening. It uses template literals to insert the port number dynamically.
 
-- Werkzeug:
-Depurador para django con las siguientes funciones:
-Principales características de Werkzeug:
+- import { renderToReadableStream } from "react-dom/server";: Imports the function renderToReadableStream from the react-dom/server package for server-side React rendering.
 
-  - **Servidor de Desarrollo:** Proporciona un servidor de desarrollo que facilita la ejecución y prueba de aplicaciones web durante el desarrollo local. Incluye recarga automática del servidor cuando hay cambios en el código fuente.
+- import Pokemon from "./components/Pokemon";: Imports a React component named Pokemon from a relative file path.
 
-  - **Depurador Interactivo:** Ofrece un depurador interactivo que se activa en caso de errores, proporcionando información detallada sobre el estado de la aplicación en el momento del error.
+- Bun.serve({ ... });: Uses the Bun.serve() method to set up an HTTP server. It includes an asynchronous fetch function to handle incoming HTTP requests.
 
-  - **Manejo de Solicitudes y Respuestas HTTP:** Contiene utilidades para manejar solicitudes y respuestas HTTP, facilitando la construcción de aplicaciones web.
+- async fetch(request) { ... }: An asynchronous function that will be triggered for each HTTP request coming to the server.
 
-  - **Utilidades Generales:** Incluye varias utilidades que son útiles para el desarrollo web, como manipulación de URL, manejo de cookies, y más.
+- const stream = await renderToReadableStream(<Pokemon />);: Asynchronously renders the Pokemon React component to a readable stream.
 
+- return new Response(stream, { ... });: Returns a new HTTP Response object with the readable stream and sets the "Content-Type" header to "text/html".
 
-## Requirements django
+- console.log("Listening ...");: Outputs a message to the console indicating that the server is listening for incoming requests.
+# Run bun 
+- bun --watch index.tsx
 
+## Building Dynamic Routes with a Pokémon Twist
 
-For installation in docker...
+- Navigating to /pokemon will trigger a fetch request to the Pokémon API, rendering the results as a clickable list of anchor tags.
 
+- Clicking any of these anchors takes you to /pokemon/[pokemonName], where a specific Pokémon is fetched, server-side rendered (SSR), and then streamed back to your client.
+
+## A lot is going on here. Let's dive deeper into the interesting pieces.
+
+- Initialize HTTP Server with Bun: The Bun.serve() method sets up an HTTP server and specifies an asynchronous fetch function to handle incoming requests, effectively acting as the entry point for all HTTP traffic.
+
+- Route for All Pokémon: When the URL path is /pokemon, the server fetches a list of Pokémon from an external API and renders a PokemonList React component to HTML. This HTML is then sent back to the client.
+
+- Route for Specific Pokémon: The code uses a Regular Expression to match URL paths that specify a particular Pokémon's name (e.g., /pokemon/pikachu). If such a path is detected, the server fetches details for that specific Pokémon and renders it using the Pokemon React component.
+
+- Server-Side React Rendering: For both the general and specific Pokémon routes, the renderToReadableStream function converts React components to a readable stream, which is then returned as an HTML response.
+
+- Error Handling: The code includes specific handling for 404 errors. If a Pokémon is not found in the API or if the URL doesn't match any expected routes, a "Not Found" message is returned with a 404 status code.
+
+# Package jackson
+
+- add dev ando production script
+"scripts": {
+    "start": "bun run index.tsx",
+    "dev": "bun --watch index.tsx"
+},
 ```sh
-pip install -r requirements.txt
+bun run dev
 ```
 or
 ```sh
-pip3 install -r requirements.txt
+bun run start
 ```
-| Package | version |
-| ------ | ------ |
-| django-rest-framework | 0.1.0 |
-| gunicorn | 21.2.0 |
-| whitenoise | 6.6.0 |
-| django-livesync | 0.5 |
-| django-extensions | 3.2.3 |
-| Werkzeug | 3.0.1 |
 
-## Docker
+# Build and compile bun 
+```sh
+bun build ./cli.ts --compile --outfile mycli
+$ ./mycli
+Hello world!
+bun build index.tsx --outfile out/frontend --compile
+```
 
-- FROM python:3.8: Utiliza la imagen oficial de Python 3.8 como base para tu imagen.
+Note — Currently, the --compile flag can only accept a single entrypoint at a time and does not support the following flags:
 
-- ENV DockerHOME=/home/app/webapp: Establece una variable de entorno llamada DockerHOME con el valor /home/app/webapp.
+--outdir — use outfile instead.
+--external
+--splitting
+--public-path
 
-- RUN mkdir -p $DockerHOME: Crea el directorio especificado por DockerHOME y sus subdirectorios, si es necesario.
+# create project using bun with svelte
 
-- WORKDIR $DockerHOME: Establece el directorio de trabajo actual dentro del contenedor.
-
-- ENV PYTHONDONTWRITEBYTECODE 1 y ENV PYTHONUNBUFFERED 1: Establecen variables de entorno para la configuración de Python, como se explicó en respuestas anteriores.
-
-- RUN pip install --upgrade pip: Actualiza la herramienta pip a la última versión.
-
-- COPY . $DockerHOME: Copia el contenido del directorio actual (donde se encuentra el Dockerfile) al directorio especificado por DockerHOME dentro del contenedor.
-
-- RUN pip install -r requirements.txt: Instala las dependencias de Python especificadas en el archivo requirements.txt.
-
-- EXPOSE 8000: Informa a Docker que el contenedor escuchará en el puerto 8000. Esto es más una documentación para el usuario que ejecuta el contenedor y no tiene un impacto directo en la red del contenedor.
-
-- CMD python manage.py runserver: Especifica el comando predeterminado que se ejecutará cuando el contenedor se inicie. En este caso, se inicia el servidor de desarrollo de Django.
-
-  -  PYTHONDONTWRITEBYTECODE=1: Evita que Python genere archivos de bytecode (.pyc) al importar módulos. Estos archivos no son necesarios en entornos de contenedor y desarrollo, y desactivarlos puede reducir el tamaño del contenedor.
-
-  - PYTHONUNBUFFERED=1: Deshabilita el búfer de salida en Python, asegurando que la salida esté disponible de inmediato en la consola. Esto es útil para obtener logs y mensajes de salida sin esperar a que se llene un búfer, especialmente en entornos de contenedor y desarrollo.
+- https://bun.sh/guides/ecosystem/sveltekit
