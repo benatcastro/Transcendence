@@ -45,9 +45,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "transcendence",
     'django_extensions',
+    'users'
 ]
-
-
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -55,27 +54,10 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    #"django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
-# CORS
-#CORS_ORIGIN_ALLOW_ALL = True
-
-# CORS_ALLOWED_ORIGINS = (
-#     "http://localhost:5173",  # Add the origin of your client application
-# )
-#
-# CORS_ALLOW_METHODS = [
-#     'DELETE',
-#     'GET',
-#     'OPTIONS',
-#     'PATCH',
-#     'POST',
-#     'PUT',
-# ]
 
 MIDDLEWARE_CLASSES = (
     'livesync.core.middleware.DjangoLiveSyncMiddleware',
@@ -143,6 +125,9 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
+# Users
+AUTH_USER_MODEL = 'users.TranscendenceUser'
 
 
 # Internationalization

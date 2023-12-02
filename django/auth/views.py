@@ -1,3 +1,5 @@
+import logging
+
 import environ
 from django.shortcuts import redirect
 from django.http import HttpResponse
@@ -10,6 +12,8 @@ env = environ.Env()
 environ.Env.read_env()
 
 
+# Exception used when the 42 api fails
+# needed for simpler error handling
 class ExternalApiError(Exception):
     def __init__(self, status_code, message="", function="undefined"):
         self.status_code = status_code
@@ -31,7 +35,7 @@ def format_query_params(params):
     return params_string
 
 
-# First step into the 42 auth workflow, redirects to the page were the user will enter their 42 credentials
+# First step into the 42 auth workflow, redirects to the page were the users will enter their 42 credentials
 def get_redirect_url():
     url = 'https://api.intra.42.fr/oauth/authorize'
 
@@ -45,6 +49,7 @@ def get_redirect_url():
     return url + format_query_params(params)
 
 
+# Posts the users code into the 42 api and retrieves the access token
 def retrieve_access_token(code):
     url = 'https://api.intra.42.fr/oauth/token'
     params = {
@@ -59,7 +64,7 @@ def retrieve_access_token(code):
 
     if response.status_code == 200:
         # Find the access token into the response body
-        # if thery is no value for the key "access_token" returns None
+        # if there is no value for the key "access_token" throws ExternalApiError
         data = response.json()
         token = data.get("access_token", "error")
         return token if token != "error" else None
@@ -67,6 +72,7 @@ def retrieve_access_token(code):
         raise ExternalApiError(message=response.json(), status_code=response.status_code, function=retrieve_access_token.__name__)
 
 
+# Given the access token gets the users data from the api
 def get_user_from_api(access_token):
     url = 'https://api.intra.42.fr/v2/me'
     headers = {"Authorization": "Bearer " + access_token}
@@ -98,6 +104,5 @@ def ft_auth(request):
             user = get_user_from_api(access_token)
             return JsonResponse(user)
         except ExternalApiError as e:
-            print("Error -> ", e.status_code)
-            print("In function -> ", e.function)
+            logging.error("External Api error in function: " + e.function)
             return HttpResponse(e.message, status=e.status_code)
