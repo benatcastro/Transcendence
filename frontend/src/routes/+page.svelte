@@ -17,7 +17,7 @@
 
 	async function handleLoginClick() {
 		console.log('Logging in...');
-		//TODO fetch user info with promise
+		//TODO fetch users info with promise
 		//TODO User authentication succeeded
 		const logged = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1');
 		if (!logged.ok) {
@@ -25,7 +25,7 @@
 			return new Error('Incorrect username or password');
 		}
 		isLoggedIn = true;
-		return (await logged.json()).results[0].name; //TODO mock user info
+		return (await logged.json()).results[0].name; //TODO mock users info
 	}
 	function handlePlayClick(option: string) {
 		if (option === 'ranked' && !isLoggedIn) {
