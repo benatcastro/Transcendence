@@ -8,6 +8,7 @@
 	import { T } from '@threlte/core';
 	import { MeshStandardMaterial, SphereGeometry, Vector3, BoxGeometry, Object3D, Group, type Euler} from 'three';
 	import { Collider, RigidBody } from '@threlte/rapier';
+	import { useGltf } from '@threlte/extras';
 
 	let xPower = getRandomNumber();
 	let zPower = 7;
@@ -20,8 +21,17 @@
 		if (e.targetRigidBody.userData['tag'] == "player1" || e.targetRigidBody.userData['tag'] == "player2")
 			zPower *= -1.2;
 		else if (e.targetRigidBody.userData['tag'] == "Point")
+		{
+			xPower = getRandomNumber();
+			zPower = 7;
+			linearVelocity = [xPower, 0, zPower];
 			unique = {};
-		else
+			xPower = getRandomNumber();
+			zPower = 7;
+			linearVelocity = [xPower, 0, zPower];
+			return;
+		}
+		else if (e.targetRigidBody.userData['tag'] == "Wall")
 			xPower *= -1;
 		linearVelocity = [xPower, 0, zPower];
 	}
@@ -39,39 +49,40 @@
 		} while (numeroAleatorio === 0); // Repite si el número es 0
 
 		return numeroAleatorio;
-	}
-	
+	}	
 </script>
 
 {#key unique}
-	<T.Object3D
-		position={[0, 1, 0]}
-		rotation={getRandomRotation()}
-	>
-		<RigidBody
-			type={'dynamic'}
-			gravityScale={0}
-			linearVelocity={linearVelocity}
-			enabledTranslations={[true, false, true]}
-			enabledRotations={[false, false, false]}
-			on:contact={ChangeDirection}
+	{#await useGltf('/ball.glb') then ball}
+		<T.Object3D
+			position={[0, 1, 0]}
+			rotation={getRandomRotation()}
 		>
-			<Collider
-				shape={'ball'}
-				args={[1]}
-				on:sensorenter={() => {
-					xPower = getRandomNumber();
-					zPower = 7;
-					unique = {};
-				}}
-			/>
-			<T.Mesh
-				castShadow
-				receiveShadow
-				{geometry}
-				{material}
-			/>
-		</RigidBody>
-	</T.Object3D>
+			<RigidBody
+				type={'dynamic'}
+				gravityScale={0}
+				linearVelocity={linearVelocity}
+				enabledTranslations={[true, false, true]}
+				enabledRotations={[false, false, false]}
+				on:contact={ChangeDirection}
+			>
+				<Collider
+					shape={'ball'}
+					args={[1]}
+					on:sensorenter={() => {
+						xPower = getRandomNumber();
+						zPower = 7;
+						linearVelocity = [xPower, 0, zPower];
+						unique = {};
+						xPower = getRandomNumber();
+						zPower = 7;
+						linearVelocity = [xPower, 0, zPower];
+					}}
+				/>
+
+				<T is={ball.scene} position={[0, 0, 0]} scale={3} />
+			</RigidBody>
+		</T.Object3D>
+	{/await}
 {/key}
 

@@ -1,9 +1,10 @@
 <script lang="ts">
 	import * as Threlte from '@threlte/core'
-	import { T } from '@threlte/core'
+	import { T, useFrame } from '@threlte/core'
 	import { Grid, OrbitControls, Environment } from '@threlte/extras'
 	import { Debug } from '@threlte/rapier'
 	import { World } from '@threlte/rapier'
+	import Bloom from './bloom.svelte'
 	
     import Scene from './Scene.svelte'
     import Ball from './Ball.svelte'
@@ -31,7 +32,9 @@
 			isBackground={true}
 		/>
 
-		<Grid cellColor="#808080" sectionSize={0} />
+		<Bloom />
+
+		<!-- <Grid cellColor="#808080" sectionSize={0} /> -->
 		
 		<T.PerspectiveCamera
 			position={[0, 40, 20]}
@@ -44,19 +47,19 @@
 		<OrbitControls />
 		</T.PerspectiveCamera>
 		
-		<T.AmbientLight color="#0B0B61" intensity={0.2} />
+		<T.AmbientLight color="#0B0B61" intensity={1} />
 		
 		<T.DirectionalLight
 			color="#0B0B61"
-			intensity={2}
+			intensity={7}
 			position={[10, 10, 0]}
 			shadow.camera.top={8}
 		/>
 		
 		<T.PointLight
 			color="#75a1f9"
-			intensity={8}
-			position={[5, 7, 0]}
+			intensity={500}
+			position={[-1.75, 0, 1.75]}
 		/>
 
 
