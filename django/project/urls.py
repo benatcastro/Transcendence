@@ -17,10 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from transcendence.views import index
+from django.contrib.auth.views import LogoutView
+
 urlpatterns = [
+    path('', include('transcendence.urls')),
     path('watchman/', include('watchman.urls')),
     path("admin/", admin.site.urls),
-    path('', index, name='index'),
-    path('transcendence/', include('transcendence.urls')),
     path('auth/', include('auth.urls')),
+    path('accounts/', include('allauth.urls')),
+    path('accounts/', include('intra_auth.urls')),
+    path('logout/', LogoutView.as_view(), name='logout'),
 ]
