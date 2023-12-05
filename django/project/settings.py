@@ -108,13 +108,16 @@ REST_AUTH = {
     'JWT_AUTH_REFRESH_COOKIE': 'transcendence-refresh-token',
 }
 
+#ACCOUNT_ADAPTER = 'users.authadapter.TranscendenceAdapter'
+ACCOUNT_EMAIL_VERIFICATION = "none"
 
 AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
-LOGIN_REDIRECT_URL = "/"
+FRONTEND_LOGIN_CALLBACK = 'localhost:5173/mockups/callback'
+
 REST_USE_JWT = True
 
 MIDDLEWARE_CLASSES = (
