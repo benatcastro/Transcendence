@@ -14,11 +14,19 @@ class FtIntraOAuth2Provider(OAuth2Provider):
 
     def extract_uid(self, data):
         """Extract uid ('user_id') and ensure it's a str."""
-        return str(data["email"])
+        return str(data["id"])
 
     def get_default_scope(self):
         """Ensure scope is null to fit their API."""
         return ["public"]
+
+    def extract_common_fields(self, data):
+        print("===EXTRACT COMMON FIELDS===")
+
+        return dict(
+            email= data.get("email"),
+            username=data.get("login"),
+        )
 
 
 provider_classes = [FtIntraOAuth2Provider]
