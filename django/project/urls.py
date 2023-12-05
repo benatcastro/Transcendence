@@ -23,8 +23,10 @@ urlpatterns = [
     path('', include('transcendence.urls')),
     path('watchman/', include('watchman.urls')),
     path("admin/", admin.site.urls),
-    path('auth/', include('auth.urls')),
+    # path('auth/', include('auth.urls')),
     path('accounts/', include('allauth.urls')),
     path('accounts/', include('intra_auth.urls')),
+    # path('accounts/', include('rest_auth.urls')),
+    path('auth/', include('rest_auth.urls')),
     path('logout/', LogoutView.as_view(), name='logout'),
 ]
