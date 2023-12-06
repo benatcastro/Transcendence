@@ -12,5 +12,9 @@ urlpatterns = [
     # Intra api endpoints
     path('42intra/', FtIntraLogin.as_view(), name='ftintra_login'),
     path('42intra/login/callback/', ftintra_callback, name="ftintra_callback"),
-    path('42intra/login/', intra_views.oauth2_login)
+    path('42intra/login/', intra_views.oauth2_login),
+
+    # General auth endpoints
+    path('', include('allauth.urls')),
+    path('', include('intra_auth.urls')),
 ]

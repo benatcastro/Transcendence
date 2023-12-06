@@ -108,7 +108,6 @@ REST_AUTH = {
     'JWT_AUTH_REFRESH_COOKIE': 'transcendence-refresh-token',
 }
 
-#ACCOUNT_ADAPTER = 'users.authadapter.TranscendenceAdapter'
 ACCOUNT_EMAIL_VERIFICATION = "none"
 
 AUTHENTICATION_BACKENDS = (
