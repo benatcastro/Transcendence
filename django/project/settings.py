@@ -45,7 +45,16 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "transcendence",
     'django_extensions',
-    'users'
+    'users',
+    'intra_auth',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
+    'rest_auth',
 ]
 
 MIDDLEWARE = [
@@ -57,7 +66,58 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+        'APP': {
+            'client_id': env('GOOGLE_UID'),
+            'secret': env('GOOGLE_SECRET'),
+            'key': ''
+        }
+    },
+    '42intra': {
+        'SCOPE': [
+            'public'
+        ],
+        'APP': {
+            'client_id': env('INTRA_UID'),
+            'secret': env('INTRA_SECRET'),
+            'key': ''
+        }
+    }
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+    )
+}
+
+REST_AUTH = {
+    'USE_JWT': True,
+    'JWT_AUTH_COOKIE': 'transcendence-auth',
+    'JWT_AUTH_REFRESH_COOKIE': 'transcendence-refresh-token',
+}
+
+ACCOUNT_EMAIL_VERIFICATION = "none"
+
+AUTHENTICATION_BACKENDS = (
+    'allauth.account.auth_backends.AuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+FRONTEND_LOGIN_CALLBACK = 'localhost:5173/mockups/callback'
+
+REST_USE_JWT = True
 
 MIDDLEWARE_CLASSES = (
     'livesync.core.middleware.DjangoLiveSyncMiddleware',

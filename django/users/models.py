@@ -7,6 +7,7 @@ from .manager import TranscendenceUserManager
 
 
 class TranscendenceUser(AbstractBaseUser, PermissionsMixin):
+    username = models.CharField(max_length=55, unique=True)
     email = models.EmailField("email address", unique=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
