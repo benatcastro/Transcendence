@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	let openPlayMenu: boolean = false;
@@ -68,3 +70,4 @@
 		<button on:click={() => (openPlayMenu = false)}>Go back</button>
 	</div>
 {/if}
+>>>>>>> main-v2
