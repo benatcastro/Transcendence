@@ -11,7 +11,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-import os
+import os, environ
+
+# Init env variable handler
+env = environ.Env()
+environ.Env.read_env()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,11 +31,11 @@ SECRET_KEY = "django-insecure-o&5&cg&s$mziwz^o2gb=p2^pb3_l8wh8+y+%0&@d_n45nx!jd5
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-print("hola")
 
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -40,20 +45,79 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "transcendence",
     'django_extensions',
+    'users',
+    'intra_auth',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
+    'rest_auth',
 ]
 
-
-
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     "django.middleware.security.SecurityMiddleware",
     'whitenoise.middleware.WhiteNoiseMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+        'APP': {
+            'client_id': env('GOOGLE_UID'),
+            'secret': env('GOOGLE_SECRET'),
+            'key': ''
+        }
+    },
+    '42intra': {
+        'SCOPE': [
+            'public'
+        ],
+        'APP': {
+            'client_id': env('INTRA_UID'),
+            'secret': env('INTRA_SECRET'),
+            'key': ''
+        }
+    }
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+    )
+}
+
+REST_AUTH = {
+    'USE_JWT': True,
+    'JWT_AUTH_COOKIE': 'transcendence-auth',
+    'JWT_AUTH_REFRESH_COOKIE': 'transcendence-refresh-token',
+}
+
+ACCOUNT_EMAIL_VERIFICATION = "none"
+
+AUTHENTICATION_BACKENDS = (
+    'allauth.account.auth_backends.AuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+FRONTEND_LOGIN_CALLBACK = 'localhost:5173/mockups/callback'
+
+REST_USE_JWT = True
 
 MIDDLEWARE_CLASSES = (
     'livesync.core.middleware.DjangoLiveSyncMiddleware',
@@ -86,9 +150,20 @@ WHITENOISE_AUTOREFRESH = True  # Habilita la actualización en tiempo real para 
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+
+        'ENGINE': env('ENGINE'),
+
+        'NAME': env('DB_NAME'),
+
+        'USER': env('POSTGRES_USER'),
+
+        'PASSWORD': env('POSTGRES_PASSWORD'),
+
+        'HOST': env('DB_HOST'),
+
+        'PORT': env('DB_PORT'),
+
     }
 }
 
@@ -111,6 +186,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Users
+AUTH_USER_MODEL = 'users.TranscendenceUser'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -130,6 +208,21 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 print(STATIC_ROOT + '----a')
+
+# CORS
+CORS_ALLOW_HEADERS = ["*"]
+
+CORS_ALLOW_CREDENTIALS = False
+
+CORS_ALLOWED_HOSTS = [
+    'localhost'
+]
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost',
+    'http://localhost:5173',
+]
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
