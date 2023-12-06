@@ -58,18 +58,11 @@
         userData={{tag: 'player1'}}
         linearVelocity={[playerX, 0, 0]}
     >
-        <Collider
-        shape={'cuboid'}
-        args={[2, 1, 0.25]}
-        >
-            <T.Mesh let:ref castShadow position={[0, 0, 0.25]}>
-                <T.BoxGeometry args={[5, 2, 1]}/>
-                <T.MeshStandardMaterial color="#ffffff" />
-            </T.Mesh>
-        </Collider>
-        <Collider
-            shape={'cuboid'}
-            args={[0.25, 1, 0.5]}
-        />
+    <AutoColliders shape={'cuboid'}>
+        <T.Mesh let:ref castShadow>
+            <T.BoxGeometry args={[5, 2, 1]}/>
+            <T.MeshStandardMaterial color="#ffffff" />
+        </T.Mesh>
+    </AutoColliders>
     </RigidBody>
 </T.Group>
