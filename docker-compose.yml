@@ -16,7 +16,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - static_volume:/home/app/microservice/static
+      - ./static_volume:/home/app/microservice/static
     depends_on:
       - django
     restart: "on-failure"
@@ -29,8 +29,8 @@ services:
                     python manage.py runserver_plus 0.0.0.0:${APP_PORT}"
     volumes:
       - .:/microservice
-      - static_volume:/home/app/microservice/static
-      - django_sources:/home/app/webapp
+      - ./static_volume:/home/app/microservice/static
+      - ./django:/home/app/webapp
     env_file: .env
     ports:
       - "8000:8000"
@@ -45,7 +45,7 @@ services:
     image: postgres:16.1-alpine3.18
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-      - postgres_data:/var/lib/postgresql/data/
+      - ${DB_DATA_PATH}:/var/lib/postgresql/data/
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
