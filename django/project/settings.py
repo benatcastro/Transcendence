@@ -30,7 +30,7 @@ SECRET_KEY = "django-insecure-o&5&cg&s$mziwz^o2gb=p2^pb3_l8wh8+y+%0&@d_n45nx!jd5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost:5173', 'localhost']
 
 # Application definition
 
@@ -216,9 +216,16 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 print(STATIC_ROOT + '----a')
 
 # CORS
-CORS_ALLOW_HEADERS = ["*"]
 
-CORS_ALLOW_CREDENTIALS = False
+SESSION_COOKIE_SAMESITE = 'None'
+CORS_ALLOW_HEADERS = (
+    # "accept",
+    # "authorization",
+    "content-type",
+    # "user-agent",
+    # "x-csrftoken",
+    # "x-requested-with",
+)
 
 CORS_ALLOWED_HOSTS = [
     'localhost'
@@ -228,6 +235,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
 ]
 
+CORS_ALLOW_CREDENTIALS = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

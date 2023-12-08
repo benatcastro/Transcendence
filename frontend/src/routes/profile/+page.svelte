@@ -1,9 +1,6 @@
 <script lang="ts">
 	async function loadProfile() {
-		const headers = {
-			"Authorization": "Bearer " +
-		}
-		const response = await fetch("http://localhost:8000/users/me", headers=headers);
+		const response = await fetch("http://localhost:8000/users");
 
 		const data = await response.json();
 		console.log(data);
