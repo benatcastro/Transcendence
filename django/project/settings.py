@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'watchman',
     "django.contrib.staticfiles",
     "transcendence",
+    'matchmaking',
     'django_extensions',
     'users',
     'intra_auth',
@@ -141,7 +142,7 @@ TEMPLATES = [
     },
 ]
 
-RUNSERVERPLUS_POLLER_RELOADER_INTERVAL = 3
+RUNSERVERPLUS_POLLER_RELOADER_INTERVAL = 1
 RUNSERVERPLUS_POLLER_RELOADER_TYPE = 'auto'
 WSGI_APPLICATION = "project.wsgi.application"
 WHITENOISE_AUTOREFRESH = True  # Habilita la actualización en tiempo real para archivos estáticos
@@ -215,13 +216,18 @@ CORS_ALLOW_HEADERS = ["*"]
 CORS_ALLOW_CREDENTIALS = False
 
 CORS_ALLOWED_HOSTS = [
-    'localhost'
-]
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost',
-    'http://localhost:5173',
+    'localhost',
+    'localhost:5173',
 ]
 
+# CON ESTO ALGUNA VARIBLES DE GET NO PASAN DE FRONTEND A BACKED
+
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost',
+#     'http://localhost:5173/',
+
+# ]
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
