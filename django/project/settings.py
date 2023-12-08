@@ -96,6 +96,8 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+SITE_ID = 1
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
@@ -104,8 +106,8 @@ REST_FRAMEWORK = {
 
 REST_AUTH = {
     'USE_JWT': True,
-    'JWT_AUTH_COOKIE': 'transcendence-auth',
-    'JWT_AUTH_REFRESH_COOKIE': 'transcendence-refresh-token',
+    'JWT_AUTH_COOKIE': 'transcendence-jwt',
+    'JWT_AUTH_REFRESH_COOKIE': 'transcendence-refresh-jwt',
 }
 
 ACCOUNT_EMAIL_VERIFICATION = "none"
@@ -114,6 +116,10 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
+
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 FRONTEND_LOGIN_CALLBACK = 'localhost:5173/mockups/callback'
 

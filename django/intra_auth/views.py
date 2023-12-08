@@ -22,7 +22,7 @@ class FtIntraOAuth2Adapter(OAuth2Adapter):
         metadata = requests.get(self.profile_url, headers=headers)
         print('profile status:', metadata.status_code)
         extra_data = metadata.json()
-        print("complete_login:", extra_data)
+        # print("complete_login:", extra_data)
         return self.get_provider().sociallogin_from_response(request, extra_data)
 
 

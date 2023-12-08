@@ -16,7 +16,12 @@ def google_callback(request):
 def ftintra_callback(request):
     params = urllib.parse.urlencode(request.GET)
 
-    return redirect(f'http://localhost:5173/mockups/callback/42intra/?{params}')
+    response = redirect(f'http://localhost:5173/mockups/callback/42intra/?{params}')
+
+    # print("request headers: ", request.headers)
+    # response['Test Header'] = 'Test Header'
+
+    return response
 
 
 class GoogleLogin(SocialLoginView):

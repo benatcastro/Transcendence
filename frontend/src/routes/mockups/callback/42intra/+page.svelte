@@ -8,6 +8,7 @@
          try {
              const response = await fetch('http://localhost:8000/auth/42intra/', {
                  method: 'POST',
+                 credentials: 'include',
                  headers: {
                      'Content-Type': 'application/json',
                  },
@@ -15,10 +16,12 @@
              });
 
              if (response.ok) {
-                 body = await response.json();
+                 data = await response.json();
                  console.log('Code posted successfully');
+                 console.log(response.headers)
                  console.log(data);
              } else {
+                 console.log(data)
                  console.error('Failed to post code');
              }
          } catch (error) {
