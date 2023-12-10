@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { onDestroy } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	//import { randInt } from 'three/src/math/MathUtils';
 	//import { loadingPhrases } from '$lib/types';
 
@@ -18,8 +18,8 @@
 		//TODO change to the actual endpoints for both casual and ranked matches
 		const res =
 			mode == 'casual'
-				? await fetch('http://10.13.7.2:8000/matchmaking/search?mode=casual&user=' + user)
-				: await fetch('http://10.13.7.2:8000/matchmaking/search?mode=ranked&user=' + user);
+				? await fetch('http://localhost:8000/matchmaking/search?mode=casual&user=' + user)
+				: await fetch('http://localhost:8000/matchmaking/search?mode=ranked&user=' + user);
 		if (res.ok) {
 			//TODO must return the info of the lobby (?)
 			rival = (await res.json())["rival"];
@@ -35,6 +35,18 @@
 	// onDestroy(() => {
 	// 	clearInterval(interval);
 	// });
+
+
+	// window.onbeforeunload = () => {
+	// 	destroyWindow()
+	// };
+
+	onDestroy(destroyWindow)
+	
+	function destroyWindow() {
+		fetch('http://localhost:8000/matchmaking/delete?mode=casual&user=' + user)
+	}
+
 </script>
 
 <svelte:head>
@@ -47,7 +59,7 @@
 	</div>
 {:then player}
 	<p>{player} wants to play!</p>
-	<p><a href="/pong">Go to game</a></p>
+	<p><a href="../pong">Go to game</a></p>
 {:catch error}
 	<p>{error}</p>
 	<p><a href="/">Go back</a></p>

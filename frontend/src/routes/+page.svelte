@@ -33,7 +33,7 @@
 	async function handleIsLoggedUsername(isLoggedIn: boolean) {
 		if (!isLoggedIn) {
 			//TODO change to the actual endpoints for both casual and ranked matches
-			const res = await fetch('http://10.13.7.2:8000/matchmaking/?mode=casual');
+			const res = await fetch('http://localhost:8000/matchmaking/?mode=casual');
 			if (!res.ok) {
 				//TODO must return the info of the lobby (?)
 				console.error("fetch request didn't resolve");
@@ -54,7 +54,6 @@
 				.catch((e) => console.error(e.message));
 		}
 		else {
-			console.log('Im here');
 			handleIsLoggedUsername(isLoggedIn)
 				.then(() => goto(`/matchmaking?mode=${option}&user=${username}`))
 				.catch((e) => console.error(e.message));

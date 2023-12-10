@@ -215,18 +215,21 @@ CORS_ALLOW_HEADERS = ["*"]
 
 CORS_ALLOW_CREDENTIALS = False
 
-CORS_ALLOWED_HOSTS = [
-    'localhost',
-    'localhost:5173',
-]
+
 
 # CON ESTO ALGUNA VARIBLES DE GET NO PASAN DE FRONTEND A BACKED
+# CORS_ALLOWED_HOSTS = [
+#     'localhost',
+#     'localhost:5173',
+# ]
 
 # CORS_ALLOWED_ORIGINS = [
 #     'http://localhost',
 #     'http://localhost:5173/',
 
 # ]
+
+CORS_ALLOWED_HOSTS = ["*"]
 CORS_ALLOW_ALL_ORIGINS = True
 
 # Default primary key field type
