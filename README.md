@@ -1,3 +1,75 @@
+# UML Diagrams
+
+## Class Diagrams
+
+### Backend Class Diagram
+
+![Backend Class Diagram](uml/Class_Diagram_Backend.png)
+
+### Gameplay Class Diagram
+
+![Gameplay Class Diagram](uml/GamePlay_Class.png)
+
+### Security Class Diagram
+
+![Security Class Diagram](uml/Seecurity_Class.png)
+
+### Graphics Class Diagram
+
+![Graphics Class Diagram](uml/Graphics_Class.png)
+
+### User Class Diagram
+
+![User Class Diagram](uml/User_Class.png)
+
+## Component Diagrams
+
+### Backend Component Diagram
+
+![Backend Component Diagram](uml/Component_Diagram_Backend.png)
+
+### DevOps Component Diagram
+
+![DevOps Component Diagram](uml/Devops_Component.png)
+
+### Gameplay Component Diagram
+![Gameplay Component Diagram](uml/GamePlay_Component.png)
+
+### Security Component Diagram
+
+![Security Component Diagram](uml/Security_Component.png)
+
+### Graphics Component Diagram
+
+![Graphics Component Diagram](uml/Graphic_Component.png)
+
+### User Component Diagram
+
+![User Component Diagram](uml/User_Component.png)
+
+## Sequence Diagrams
+
+### Backend Sequence Diagram
+
+![Backend Sequence Diagram](uml/Sequence_Diagram_Backend.png)
+
+### Gameplay Sequence Diagram
+
+![Gameplay Sequence Diagram](uml/GamePlay_Sequence.png)
+
+### Security Sequence Diagram
+
+![Security Sequence Diagram](uml/Security_Sequence.png)
+
+### Graphics Sequence Diagram
+
+![Graphics Sequence Diagram](uml/Graphic_Sequence.png)
+
+### User Sequence Diagram
+
+![User Sequence Diagram](uml/User_Sequence.png)
+
+
 # Django
 ## _Static Files_
 
