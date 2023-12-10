@@ -78,7 +78,11 @@ Adopta metodologías ágiles como Scrum o Kanban para una entrega iterativa y pr
 Implementa sistemas de monitorización como `Prometheus` y registra eventos con `ELK Stack` para identificar y solucionar problemas de rendimiento en tiempo real. 📊
 </details>
 
----
+<details>
+<summary><strong>16. Seleccionar un Framework Frontend</strong></summary>
+Elige un framework frontend que se adapte a tus necesidades. Puedes considerar opciones populares como [Material Design With Bootstrap](https://saurav.tech/mdbsvelte/?path=/story/intoduction--getting-started) o [Bootstrap](https://getbootstrap.com/), que ofrecen componentes y estilos predefinidos para un diseño atractivo y responsive.
+</details>
+  ---
 
 ### ¡A por el 125 ✨✨✨!
 
