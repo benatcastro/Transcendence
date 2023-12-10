@@ -14,7 +14,7 @@
 	<!-- Graphics click opens sub-menu for animations and effects, as well as general graphics -->
 	<!-- Game click opens sub-menu for skins and personalization -->
 	{#each menuOpts as opt}
-		<li>{opt}</li>
+		<button>{opt}</button>
 	{/each}
 </menu>
 <a on:click={() => goto('/')} href="/">&lt;</a>
