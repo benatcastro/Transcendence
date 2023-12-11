@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os, environ
+from datetime import timedelta
 
 # Init env variable handler
 env = environ.Env()
@@ -103,6 +104,8 @@ REST_FRAMEWORK = {
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
     )
 }
+
+SLIDING_TOKEN_LIFETIME = timedelta(hours=4),
 
 REST_AUTH = {
     'USE_JWT': True,
