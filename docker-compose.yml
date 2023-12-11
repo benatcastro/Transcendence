@@ -15,6 +15,7 @@ services:
     build: ./nginx
     ports:
       - "80:80"
+      - "8080:8080"
     volumes:
       - ./static_volume:/home/app/microservice/static
     depends_on:
@@ -55,22 +56,46 @@ services:
       - "5432:5432"
     restart: "on-failure"
 
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    expose:
+      - "3000"
+    volumes:
+      - ./data/grafana-data:/var/lib/grafana
+    environment:
+      - GF_AUTH_GITHUB_ENABLED=true
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - GF_AUTH_GENERIC_OAUTH_ENABLED=true
+      - GF_AUTH_GITHUB_CLIENT_ID=${G_CLIENT}
+      - GF_AUTH_GITHUB_CLIENT_SECRET=${G_SECRETS}
+      - GF_AUTH_GENERIC_OAUTH_NAME=GitHub
+      - GF_AUTH_GENERIC_OAUTH_URL=https://github.com/login/oauth/authorize
+      - GF_AUTH_GENERIC_OAUTH_TOKEN_URL=https://github.com/login/oauth/access_token
+      - GF_PROMETHEUS_DATASOURCE_HTTP_ENCRYPTION=true
+      - GF_PROMETHEUS_DATASOURCE_HTTP_ENCRYPTION_KEY=prueba
+      - GF_PROMETHEUS_DATASOURCE_URL=http://localhost:9090
+      - GF_AUTH_GENERIC_OAUTH_REQUIRE_2FA=true
+      - GF_AUTH_GENERIC_OAUTH_ALLOWED_ORGANIZATIONS=outhcyberpunk
+        #- GF_LOG_LEVEL=debug
+      - GF_AUTH_GENERIC_OAUTH_SCOPES=user:user:email,read:user,read:org
+      - GF_AUTH_GENERIC_OAUTH_ALLOW_SIGN_UP=false
+        #- GF_SERVER_ROOT_URL=http://localhost:3000
+      - GF_AUTH_GENERIC_OAUTH_ALLOW_ASSIGN_GRAFANA_ADMIN=true
+      - GF_SERVER_HTTP_PORT=3000
+      - GF_SERVER_PROTOCOL=http
+      - GF_SERVER_DOMAIN=127.0.0.1:8080
+      - GF_SERVER_ROOT_URL=http://127.0.0.1:8080/grafana/
+      - GF_SERVER_SERVE_FROM_SUB_PATH=true
+
+    restart: "on-failure"
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+
 volumes:
   postgres_data:
-    driver: local
-    driver_opts:
-      type: volume
-      o: bind
-      device: ${DB_DATA_PATH}
   django_sources:
-    driver: local
-    driver_opts:
-      type: volume
-      o: bind
-      device: ./django
   static_volume:
-    driver: local
-    driver_opts:
-      type: volume
-      o: bind
-      device: ./data/static
+  grafana-data:

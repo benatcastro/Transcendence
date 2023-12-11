@@ -56,10 +56,12 @@ INSTALLED_APPS = [
     'dj_rest_auth',
     'rest_auth',
     'matchmaking',
+    'django_prometheus',
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
+ 'django_prometheus.middleware.PrometheusBeforeMiddleware',  #importante que este middleware este colocado el primero
+ 'corsheaders.middleware.CorsMiddleware',
     "django.middleware.security.SecurityMiddleware",
     'whitenoise.middleware.WhiteNoiseMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -68,8 +70,9 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    'django_prometheus.middleware.PrometheusAfterMiddleware',  #importante que este middleware este colocado el ultimo
 ]
-
+"""
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': [
@@ -96,7 +99,7 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
-
+"""
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
