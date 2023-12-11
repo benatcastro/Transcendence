@@ -11,7 +11,7 @@
 		{ name: 'Settings', link: '/settings' }
 	];
 
-	let username: string = "";
+	let username: string = '';
 
 	$: menuOpts = isLoggedIn
 		? menuItems.filter((item) => item.name !== 'Log in')
@@ -33,16 +33,15 @@
 	async function handleIsLoggedUsername(isLoggedIn: boolean) {
 		if (!isLoggedIn) {
 			//TODO change to the actual endpoints for both casual and ranked matches
-			const res = await fetch('http://localhost:8000/matchmaking/?mode=casual');
+			const res = await fetch('http://localhost:8000/matchmaking/create-usr?mode=casual');
 			if (!res.ok) {
 				//TODO must return the info of the lobby (?)
 				console.error("fetch request didn't resolve");
 				throw new Error("Couldn't find an opponent, try again?");
 			}
 			username = (await res.json()).user;
-			console.log(username);
 		}
-		return (username);
+		return username;
 	}
 
 	function handlePlayClick(option: string) {
@@ -52,8 +51,7 @@
 			handleLoginClick()
 				.then(() => goto(`/matchmaking?mode=${option}&user=${username}`))
 				.catch((e) => console.error(e.message));
-		}
-		else {
+		} else {
 			handleIsLoggedUsername(isLoggedIn)
 				.then(() => goto(`/matchmaking?mode=${option}&user=${username}`))
 				.catch((e) => console.error(e.message));
