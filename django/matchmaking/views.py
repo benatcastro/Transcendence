@@ -1,48 +1,46 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.http import JsonResponse
-import json
 from random import randint
 
-# Create your views here.
+casual_ids = []
+ranked_ids = []
 
-casuals = []
-rankeds = []
+def make_response():
+	response = {"Casual_ids": casual_ids, "Ranked_ids": ranked_ids}
+	return JsonResponse(response)
 
-def makeResponse():
-	basic = '{}'
-	json_response = json.loads(basic)
-	newList = {"Users": casuals}
-	json_response.update(newList)
-	return JsonResponse(json_response)
+def show(request):
+	return make_response()
 
-def index(request):
-	id = request.GET.get('mode')
-	if (id == "casual"):
-		value = randint(1000, 9999)
-		print (value)
-		if not casuals.__contains__(value):
-			casuals.append(value)
-		return JsonResponse({"user": value})
-
-	return makeResponse()
-
-def deleteAll(request):
-	casuals.clear()
-	return redirect("http://localhost:8000/matchmaking/")
-
-def delete(request):
-	id = request.GET.get('mode')
-	if (id == "casual"):
-		print ("DELETE")
-		casuals.remove(int(request.GET.get('user')))
-	return makeResponse()
+def create(request):
+	mode = request.GET.get('mode')
+	user_id = 0
+	if mode == "ranked":
+		user_id = request.GET.get('user')
+		if user_id not in ranked_ids:
+			ranked_ids.append(user_id)
+	if mode == "casual":
+		user_id = randint(1000, 9999) if request.GET.get('user') is None else int(request.GET.get('user'))
+		if len(casual_ids) == 0 or user_id not in casual_ids:
+			casual_ids.append(user_id)
+	return JsonResponse({"user": user_id})
 
 def search(request):
-	i = 0
-	while 1:
-		if casuals[i] != int(request.GET.get('user')):
-			return JsonResponse({"rival": casuals[i]})
-		i = i + 1
-		if i + 1 > len(casuals):
-			i = 0
-	return makeResponse()
+	if len(casual_ids) is 0 or int(request.GET.get('user')) not in casual_ids:
+		create(request)
+	while True:
+		for i in casual_ids:
+			if i != int(request.GET.get('user')):
+				return JsonResponse({"rival": i})
+
+def delete(request):
+	#TODO: preguntar a Ander si quiere que se borre el usuario si ya se ha encontrado un rival o si quiere que se mantenga hasta quedar AFK en la partida
+	print("------------------DELETE------------------")
+	mode = request.GET.get('mode')
+	if mode is 'casual' and int(request.GET.get('user')) in casual_ids:
+		casual_ids.remove(int(request.GET.get('user')))
+	return make_response()
+
+def clear(request):
+	casual_ids.clear()
+	return redirect("http://localhost:8000/matchmaking/")
