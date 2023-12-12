@@ -26,7 +26,7 @@ def create(request):
 	return JsonResponse({"user": user_id})
 
 def search(request):
-	if len(casual_ids) is 0 or int(request.GET.get('user')) not in casual_ids:
+	if len(casual_ids) == 0 or int(request.GET.get('user')) not in casual_ids:
 		create(request)
 	while True:
 		for i in casual_ids:
@@ -37,7 +37,8 @@ def delete(request):
 	#TODO: preguntar a Ander si quiere que se borre el usuario si ya se ha encontrado un rival o si quiere que se mantenga hasta quedar AFK en la partida
 	print("------------------DELETE------------------")
 	mode = request.GET.get('mode')
-	if mode is 'casual' and int(request.GET.get('user')) in casual_ids:
+	print(mode)
+	if mode == 'casual' and int(request.GET.get('user')) in casual_ids:
 		casual_ids.remove(int(request.GET.get('user')))
 	return make_response()
 
