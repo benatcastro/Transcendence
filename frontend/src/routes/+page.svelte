@@ -2,11 +2,12 @@
 	import { goto } from '$app/navigation';
 
 	let openPlayMenu: boolean = false;
+	let openLogInMenu: boolean = false;
 	let isLoggedIn: boolean;
 	let username: string = '';
 	let menuItems = [
 		{ name: 'Play', link: '/', action: () => (openPlayMenu = true) },
-		{ name: 'Log in', link: '/', action: () => handleLoginClick() },
+		{ name: 'Log in', link: '/', action: () => (openLogInMenu = true) },
 		{ name: 'Log out', link: '/', action: () => (isLoggedIn = false) },
 		{ name: 'Profile', link: '/profile' },
 		{ name: 'Leaderboard', link: '/leaderboard' },
@@ -74,5 +75,17 @@
 		<button on:click={() => handlePlayClick('casual')}>Casual</button>
 		<button on:click={() => handlePlayClick('ranked')}>Ranked</button>
 		<button on:click={() => (openPlayMenu = false)}>Go back</button>
+	</div>
+{/if}
+
+{#if openLogInMenu}
+	<div>
+		<button class="btn btn-lg btn-light" on:click={() => handleLoginClick()}>
+			<img src="/oauth2/42_Logo.svg" alt="42 Network logo" class="w-25 h-25" />
+		</button>
+		<button class="btn btn-lg btn-light" on:click={() => handleLoginClick()}>
+			<img src="/oauth2/google.svg" alt="Google logo" class="w-25 h-25" />
+		</button>
+		<button class="btn btn-lg btn-light" on:click={() => (openLogInMenu = false)}> Go back</button>
 	</div>
 {/if}
