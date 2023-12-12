@@ -2,6 +2,8 @@
 
 FROM oven/bun:alpine
 
+RUN apk update && apk add --no-cache nodejs
+
 WORKDIR /app
 
 COPY package*.json ./
