@@ -10,13 +10,18 @@ from django.shortcuts import redirect
 def google_callback(request):
     params = urllib.parse.urlencode(request.GET)
 
-    return redirect(f'http://localhost:5173/mockups/callback/google/?{params}')
+    return redirect(f'http://localhost:5173/callback/google/?{params}')
 
 
 def ftintra_callback(request):
     params = urllib.parse.urlencode(request.GET)
 
-    return redirect(f'http://localhost:5173/mockups/callback/42intra/?{params}')
+    response = redirect(f'http://localhost:5173/callback/42intra/?{params}')
+
+    # print("request headers: ", request.headers)
+    # response['Test Header'] = 'Test Header'
+
+    return response
 
 
 class GoogleLogin(SocialLoginView):

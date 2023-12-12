@@ -4,6 +4,8 @@ from allauth.socialaccount.providers.google import views as google_views
 from intra_auth import views as intra_views
 
 urlpatterns = [
+
+    path('', include('dj_rest_auth.urls')),
     # Google api endpoints
     path('google/', GoogleLogin.as_view(), name='google_login'),
     path('google/login/callback/', google_callback, name="google_callback"),
