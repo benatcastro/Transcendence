@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+
 	let openPlayMenu: boolean = false;
-	let isLoggedIn: boolean; //TODO cookie management?
+	let isLoggedIn: boolean;
+	let username: string = '';
 	let menuItems = [
 		{ name: 'Play', link: '/', action: () => (openPlayMenu = true) },
 		{ name: 'Log in', link: '/', action: () => handleLoginClick() },
@@ -11,32 +13,20 @@
 		{ name: 'Settings', link: '/settings' }
 	];
 
-	let username: string = '';
-
 	$: menuOpts = isLoggedIn
 		? menuItems.filter((item) => item.name !== 'Log in')
 		: menuItems.filter((item) => item.name !== 'Log out');
 
 	async function handleLoginClick() {
-		console.log('Logging in...');
-		//TODO fetch users info with promise
-		//TODO User authentication succeeded
-		const logged = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1');
-		if (!logged.ok) {
-			//TODO User authentication failed
-			return new Error('Incorrect username or password');
-		}
+		username = 'User' + Math.floor(Math.random() * 1000); //TODO just for testing
+		console.log('Logged in as ' + username);
 		isLoggedIn = true;
-		return (await logged.json()).results[0].name; //TODO mock users info
 	}
 
-	async function handleIsLoggedUsername(isLoggedIn: boolean) {
+	async function getUser() {
 		if (!isLoggedIn) {
-			//TODO change to the actual endpoints for both casual and ranked matches
 			const res = await fetch('http://localhost:8000/matchmaking/create-usr?mode=casual');
 			if (!res.ok) {
-				//TODO must return the info of the lobby (?)
-				console.error("fetch request didn't resolve");
 				throw new Error("Couldn't find an opponent, try again?");
 			}
 			username = (await res.json()).user;
@@ -44,17 +34,16 @@
 		return username;
 	}
 
-	function handlePlayClick(option: string) {
-		if (option === 'ranked' && !isLoggedIn) {
-			//TODO Temporary rejection for testing
-			console.error('You are not logged in');
-			handleLoginClick()
-				.then(() => goto(`/matchmaking?mode=${option}&user=${username}`))
-				.catch((e) => console.error(e.message));
-		} else {
-			handleIsLoggedUsername(isLoggedIn)
-				.then(() => goto(`/matchmaking?mode=${option}&user=${username}`))
-				.catch((e) => console.error(e.message));
+	async function handlePlayClick(option: string) {
+		try {
+			if (option === 'ranked' && !isLoggedIn) {
+				await handleLoginClick();
+			} else {
+				await getUser();
+			}
+			await goto(`/matchmaking?mode=${option}&user=${username}`);
+		} catch (e) {
+			console.error(e.message);
 		}
 	}
 </script>
