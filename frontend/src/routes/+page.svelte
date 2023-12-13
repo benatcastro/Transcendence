@@ -3,6 +3,7 @@
 
 	let openPlayMenu: boolean = false;
 	let openLogInMenu: boolean = false;
+	let loginSelection: string;
 	let isLoggedIn: boolean;
 	let username: string = '';
 	let menuItems = [
@@ -15,20 +16,18 @@
 	];
 
 	$: menuOpts = isLoggedIn
-		? menuItems.filter((item) => item.name !== 'Log in')
-		: menuItems.filter((item) => item.name !== 'Log out');
+			? menuItems.filter((item) => item.name !== 'Log in')
+			: menuItems.filter((item) => item.name !== 'Log out');
 
-	async function handleLoginClick() {
-		username = 'User' + Math.floor(Math.random() * 1000); //TODO just for testing
-		console.log('Logged in as ' + username);
-		isLoggedIn = true;
+	$: if (loginSelection != null) {
+		goto(`http://localhost:8000/auth/${loginSelection}/login`);
 	}
 
 	async function getUser() {
 		if (!isLoggedIn) {
 			const res = await fetch('http://localhost:8000/matchmaking/create-usr?mode=casual');
 			if (!res.ok) {
-				throw new Error("Couldn't find an opponent, try again?");
+				throw new Error("Error while creating user");
 			}
 			username = (await res.json()).user;
 		}
@@ -38,7 +37,9 @@
 	async function handlePlayClick(option: string) {
 		try {
 			if (option === 'ranked' && !isLoggedIn) {
-				await handleLoginClick();
+				openLogInMenu = true;
+				openPlayMenu = false;
+				return;
 			} else {
 				await getUser();
 			}
@@ -51,8 +52,8 @@
 
 <svelte:head>
 	<meta
-		name="description"
-		content="Immerse yourself in a neon-lit cyberpunk world with our online 3D Pong app. Engage in intense matches, customize your profile, and climb the leaderboards in this futuristic gaming universe."
+			name="description"
+			content="Immerse yourself in a neon-lit cyberpunk world with our online 3D Pong app. Engage in intense matches, customize your profile, and climb the leaderboards in this futuristic gaming universe."
 	/>
 	<title>CyberPong</title>
 </svelte:head>
@@ -74,16 +75,16 @@
 	<div>
 		<button on:click={() => handlePlayClick('casual')}>Casual</button>
 		<button on:click={() => handlePlayClick('ranked')}>Ranked</button>
-		<button on:click={() => (openPlayMenu = false)}>Go back</button>
+		<button on:click={() => openPlayMenu = false}>Go back</button>
 	</div>
 {/if}
 
 {#if openLogInMenu}
 	<div>
-		<button class="btn btn-lg btn-light" on:click={() => handleLoginClick()}>
+		<button class="btn btn-lg btn-light" on:click={() => loginSelection = '42intra'}>
 			<img src="/oauth2/42_Logo.svg" alt="42 Network logo" class="w-25 h-25" />
 		</button>
-		<button class="btn btn-lg btn-light" on:click={() => handleLoginClick()}>
+		<button class="btn btn-lg btn-light" on:click={() => loginSelection = 'google'}>
 			<img src="/oauth2/google.svg" alt="Google logo" class="w-25 h-25" />
 		</button>
 		<button class="btn btn-lg btn-light" on:click={() => (openLogInMenu = false)}> Go back</button>

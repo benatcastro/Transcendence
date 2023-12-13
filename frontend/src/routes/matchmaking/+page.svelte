@@ -4,13 +4,10 @@
 
 	const mode = $page.url.searchParams.get('mode');
 	const user = $page.url.searchParams.get('user');
-	let rival: string = '';
+	let rival: string;
 
 	onMount(async () => {
-		const res =
-			mode == 'casual'
-				? await fetch('http://localhost:8000/matchmaking/search?mode=casual&user=' + user)
-				: await fetch('http://localhost:8000/matchmaking/search?mode=ranked&user=' + user);
+		const res = await fetch(`http://localhost:8000/matchmaking/search?mode=${mode}&user=${user}`);
 		if (res.ok) {
 			rival = (await res.json())['rival'];
 		} else {
@@ -20,7 +17,7 @@
 	});
 
 	addEventListener('beforeunload', () => {
-		fetch('http://localhost:8000/matchmaking/delete?mode=' + mode + '&user=' + user);
+		fetch(`http://localhost:8000/matchmaking/delete?mode=${mode}&user=${user}`);
 	});
 </script>
 
