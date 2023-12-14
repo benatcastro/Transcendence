@@ -8,7 +8,7 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN bun install && bun install @threlte/core three @types/three @threlte/extras @threlte/rapier @dimforge/rapier3d-compat postprocessing
+RUN bun install && bun install @threlte/core three @types/three @threlte/extras @threlte/rapier @dimforge/rapier3d-compat postprocessing mdbsvelte
 
 EXPOSE 5173
 
