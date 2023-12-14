@@ -7,13 +7,13 @@ all: create_folders build
 	@echo "${GREEN}All done!${DEFAULT}"
 
 build:
-	docker-compose up --build
+	docker compose up --build
 
 up:
-	docker-compose up -d
+	docker compose up -d
 
 down:
-	docker-compose down -v
+	docker compose down -v
 
 prune:
 	yes | docker system prune -a
@@ -24,7 +24,7 @@ fclean: clean
 	docker volume rm -f $(docker volume ls -q)  # Remove all volumes
 
 migrations:
-	docker-compose exec django sh -c "python manage.py makemigrations && python manage.py migrate"
+	docker compose exec django sh -c "python manage.py makemigrations && python manage.py migrate"
 
 create_folders:
 	@mkdir -p ./data/djangoFiles
@@ -33,7 +33,7 @@ create_folders:
 	@echo "${GREEN}Folders created successfully.${DEFAULT}"
 
 reload_django:
-	docker-compose up --force-recreate --build -d django
+	docker compose up --force-recreate --build -d django
 
 help:
 	@echo "${HEADER}${DEFAULT}"

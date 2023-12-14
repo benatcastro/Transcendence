@@ -60,6 +60,7 @@ services:
 
 
   db:
+    container_name: postgres
     image: postgres:16.1-alpine3.18
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -72,6 +73,15 @@ services:
     ports:
       - "5432:5432"
     restart: "on-failure"
+  
+  postgres_exporter:
+    image: wrouesnel/postgres_exporter
+    environment:
+      DATA_SOURCE_NAME: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${DB_PORT}/${POSTGRES_DB}?sslmode=disable
+    ports:
+      - "9187:9817"
+    depends_on:
+      - db
 
   grafana:
     container_name: grafana
