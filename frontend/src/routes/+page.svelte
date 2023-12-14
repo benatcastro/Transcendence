@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import Modal from '$lib/components/Modal.svelte';
+	import MDBBtn from 'mdbsvelte/src/MDBBtn.svelte';
 
 	let openPlayMenu: boolean = false;
 	let loginSelection: string;
@@ -54,6 +56,19 @@
 		name="description"
 		content="Immerse yourself in a neon-lit cyberpunk world with our online 3D Pong app. Engage in intense matches, customize your profile, and climb the leaderboards in this futuristic gaming universe."
 	/>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" />
+	<link
+		rel="stylesheet"
+		href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+	/>
+	<link
+		href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css"
+		rel="stylesheet"
+	/>
+	<link
+		href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.16.0/css/mdb.min.css"
+		rel="stylesheet"
+	/>
 </svelte:head>
 
 <h1>Main menu</h1>
@@ -76,3 +91,17 @@
 		<button on:click={() => (openPlayMenu = false)}>Go back</button>
 	</div>
 {/if}
+
+<Modal modalBtn={{ title: 'Log in' }}>
+	<div slot="modalBody">
+		<MDBBtn on:click={() => (loginSelection = '42intra')}>
+			<img src="/oauth2/42_Logo.svg" alt="42 Network logo" class="w-25 h-25" />
+		</MDBBtn>
+		<MDBBtn on:click={() => (loginSelection = 'google')}>
+			<img src="/oauth2/google.svg" alt="Google logo" class="w-25 h-25" />
+		</MDBBtn>
+	</div>
+	<div slot="modalFooter">
+		<MDBBtn color="secondary" on:click={() => toggle()}>Close</MDBBtn>
+	</div>
+</Modal>
