@@ -4,6 +4,7 @@
 
 node_modules
 bun.lockb
+package-lock.json
 
 build
 .svelte-kit
