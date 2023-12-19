@@ -1,26 +1,31 @@
-# base image  
-FROM python:3.10 
-# setup environment variable  
-ENV DockerHOME=/home/app/webapp  
+FROM python:3.10
+# Set environment variables
+ENV DockerHOME=/home/app/webapp \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_DEFAULT_TIMEOUT=100 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_NO_CACHE_DIR=1
 
-# set work directory  
+# Create the application directory
 RUN mkdir -p $DockerHOME static
 
-# where your code lives  
-WORKDIR $DockerHOME  
+# Set the working directory
+WORKDIR $DockerHOME
 
-# set environment variables  
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1  
+# Copy only the requirements file to leverage Docker cache
+COPY requirements.txt .
 
-# install dependencies  
-RUN pip install --upgrade pip  
+# Install dependencies
+RUN pip install --upgrade pip \
+    && pip install -r requirements.txt \
+    && rm -rf ~/.cache/pip
 
-# copy whole project to your docker home directory. 
-COPY .  $DockerHOME
-# run this command to install all dependencies  
-RUN pip install -r requirements.txt  
-# port where the Django app runs  
-EXPOSE 8000  
-# start server  
+# Copy the rest of the application code
+COPY . .
+
+# Expose the application port
+EXPOSE 8000
+
+# Command to run the application
 CMD python3 manage.py runserver
