@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import Modal from '$lib/components/Modal.svelte';
 	import MDBBtn from 'mdbsvelte/src/MDBBtn.svelte';
@@ -15,6 +16,12 @@
 		{ name: 'Leaderboard', link: '/leaderboard' },
 		{ name: 'Settings', link: '/settings' }
 	];
+
+	let audio;
+
+	onMount(() => {
+		audio.play();
+	});
 
 	$: menuOpts = isLoggedIn
 		? menuItems.filter((item) => item.name !== 'Log in')
@@ -70,6 +77,8 @@
 		rel="stylesheet"
 	/>
 </svelte:head>
+
+<audio bind:this={audio} on:ended={audio.play} src="/sound/Half_Mystery.mp3" />
 
 <h1>Main menu</h1>
 <nav>
