@@ -55,11 +55,33 @@
 
 <audio bind:this={audio} on:ended={audio.play} src="/sound/Half_Mystery.mp3" />
 
-<h1>CyberPong</h1>
-<nav>
-	<ul class="list-unstyled">
-		{#each menuItems as item}
-			<li><svelte:component this={item.component} {...item.props} /></li>
-		{/each}
-	</ul>
-</nav>
+<div class="vh-100 d-flex flex-column flex-center">
+	<h1 class="font-cr">CyberPong</h1>
+	<nav>
+		<ul class="list-unstyled">
+			{#each menuItems as item}
+				<li class="font-xe"><svelte:component this={item.component} {...item.props} /></li>
+			{/each}
+		</ul>
+	</nav>
+</div>
+
+<style>
+	@font-face {
+		font-family: 'Cyberway Riders';
+		src: url('/fonts/cyberway_riders/Cyberway Riders.otf') format('opentype');
+	}
+
+	@font-face {
+		font-family: 'xenotron';
+		src: url('/fonts/xenotron/XENOTRON.TTF') format('truetype');
+	}
+
+	.font-cr {
+		font-family: 'Cyberway Riders', sans-serif;
+	}
+
+	.font-xe {
+		font-family: 'xenotron', sans-serif;
+	}
+</style>
