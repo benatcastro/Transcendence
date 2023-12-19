@@ -2,9 +2,10 @@
 	import Modal from '$lib/components/Modal.svelte';
 	import MDBBtn from 'mdbsvelte/src/MDBBtn.svelte';
 	import { loginStorage } from '$lib/stores/stores';
+	export let gradient: string = '';
 </script>
 
-<Modal title="Log in" gradient="purple">
+<Modal title="Log in" {gradient}>
 	<div slot="modalBody">
 		<MDBBtn on:click={() => loginStorage.set('42intra')}>
 			<img src="/oauth2/42_Logo.svg" alt="42 Network logo" class="w-25 h-25" />

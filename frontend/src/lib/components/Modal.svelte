@@ -5,7 +5,9 @@
 	import MDBModalHeader from 'mdbsvelte/src/MDBModalHeader.svelte';
 	import MDBModalBody from 'mdbsvelte/src/MDBModalBody.svelte';
 	import MDBModalFooter from 'mdbsvelte/src/MDBModalFooter.svelte';
-	export let title: string, color: string, gradient: string;
+	export let title: string = '',
+		color: string = '',
+		gradient: string = '';
 
 	let state: boolean = false;
 	function toggle() {
