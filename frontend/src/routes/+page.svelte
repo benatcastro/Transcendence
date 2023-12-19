@@ -4,27 +4,28 @@
 	import { goto } from '$app/navigation';
 	import LogInModal from '$lib/components/LogInModal.svelte';
 	import { loginStorage } from '$lib/stores/stores';
+	import Button from '$lib/components/Button.svelte';
 
 	let openPlayMenu: boolean = false;
 	let isLoggedIn: boolean;
 	let username: string = '';
 	let audio;
 	let menuItems = [
-		{ name: 'Play', link: '/', action: () => (openPlayMenu = true) },
-		{ name: 'Log in', link: '/', action: () => (isLoggedIn = true) },
-		{ name: 'Log out', link: '/', action: () => (isLoggedIn = false) },
-		{ name: 'Profile', link: '/profile' },
-		{ name: 'Leaderboard', link: '/leaderboard' },
-		{ name: 'Settings', link: '/settings' }
+		{ component: Button, props: { title: 'Play', gradient: 'purple' } },
+		{ component: LogInModal, props: { title: 'Log in', gradient: 'purple' } },
+		{ component: Button, props: { title: 'Log out', gradient: 'purple' } },
+		{ component: Button, props: { title: 'Profile', gradient: 'purple', href: '/profile' } },
+		{ component: Button, props: { title: 'Leaderboard', gradient: 'purple', href: '/rank' } },
+		{ component: Button, props: { title: 'Settings', gradient: 'purple', href: '/settings' } }
 	];
 
 	onMount(() => {
 		audio.play();
 	});
 
-	$: menuOpts = isLoggedIn
-		? menuItems.filter((item) => item.name !== 'Log in')
-		: menuItems.filter((item) => item.name !== 'Log out');
+	/* $: menuOpts = isLoggedIn
+		? menuItems.filter((item) => item.props.title !== 'Log in')
+		: menuItems.filter((item) => item.props.title !== 'Log out'); Not working as expected at the moment */
 
 	loginStorage.subscribe((loginSelection) => {
 		if (browser && loginSelection) {
@@ -83,13 +84,9 @@
 
 <h1>Main menu</h1>
 <nav>
-	<ul>
-		{#each menuOpts as option}
-			{#if option.link === '/'}
-				<li><a on:click|preventDefault={option.action} href={option.link}>{option.name}</a></li>
-			{:else}
-				<li><a href={option.link}>{option.name}</a></li>
-			{/if}
+	<ul class="list-unstyled">
+		{#each menuItems as item}
+			<li><svelte:component this={item.component} {...item.props} /></li>
 		{/each}
 	</ul>
 </nav>
@@ -101,5 +98,3 @@
 		<button on:click={() => (openPlayMenu = false)}>Go back</button>
 	</div>
 {/if}
-
-<LogInModal />
