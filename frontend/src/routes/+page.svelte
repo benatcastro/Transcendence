@@ -1,18 +1,16 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import LogInModal from '$lib/components/LogInModal.svelte';
+	import { browser } from '$app/environment';
 	import { loginStorage } from '$lib/stores/stores';
+	import LogInModal from '$lib/components/LogInModal.svelte';
+	import PlayModal from '$lib/components/PlayModal.svelte';
 	import Button from '$lib/components/Button.svelte';
 
-	let openPlayMenu: boolean = false;
-	let isLoggedIn: boolean;
-	let username: string = '';
 	let audio;
 	let menuItems = [
-		{ component: Button, props: { title: 'Play', gradient: 'purple' } },
-		{ component: LogInModal, props: { title: 'Log in', gradient: 'purple' } },
+		{ component: PlayModal, props: { gradient: 'purple' } },
+		{ component: LogInModal, props: { gradient: 'purple' } },
 		{ component: Button, props: { title: 'Log out', gradient: 'purple' } },
 		{ component: Button, props: { title: 'Profile', gradient: 'purple', href: '/profile' } },
 		{ component: Button, props: { title: 'Leaderboard', gradient: 'purple', href: '/rank' } },
@@ -32,31 +30,6 @@
 			goto(`http://localhost:8000/auth/${loginSelection}/login`);
 		}
 	});
-
-	async function getUser() {
-		if (!isLoggedIn) {
-			const res = await fetch('http://localhost:8000/matchmaking/create-usr?mode=casual');
-			if (!res.ok) {
-				throw new Error('Error while creating user');
-			}
-			username = (await res.json()).user;
-		}
-		return username;
-	}
-
-	async function handlePlayClick(option: string) {
-		try {
-			if (option === 'ranked' && !isLoggedIn) {
-				openPlayMenu = false;
-				return;
-			} else {
-				await getUser();
-			}
-			await goto(`/matchmaking?mode=${option}&user=${username}`);
-		} catch (e) {
-			console.error(e.message);
-		}
-	}
 </script>
 
 <svelte:head>
@@ -82,7 +55,7 @@
 
 <audio bind:this={audio} on:ended={audio.play} src="/sound/Half_Mystery.mp3" />
 
-<h1>Main menu</h1>
+<h1>CyberPong</h1>
 <nav>
 	<ul class="list-unstyled">
 		{#each menuItems as item}
@@ -90,11 +63,3 @@
 		{/each}
 	</ul>
 </nav>
-
-{#if openPlayMenu}
-	<div>
-		<button on:click={() => handlePlayClick('casual')}>Casual</button>
-		<button on:click={() => handlePlayClick('ranked')}>Ranked</button>
-		<button on:click={() => (openPlayMenu = false)}>Go back</button>
-	</div>
-{/if}
