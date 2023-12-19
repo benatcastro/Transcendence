@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import Modal from '$lib/components/Modal.svelte';
-	import MDBBtn from 'mdbsvelte/src/MDBBtn.svelte';
+	import LogInModal from '$lib/components/LogInModal.svelte';
+	import { loginStorage } from '$lib/stores/stores';
 
 	let openPlayMenu: boolean = false;
-	let loginSelection: string;
 	let isLoggedIn: boolean;
 	let username: string = '';
+	let audio;
 	let menuItems = [
 		{ name: 'Play', link: '/', action: () => (openPlayMenu = true) },
 		{ name: 'Log in', link: '/', action: () => (isLoggedIn = true) },
@@ -17,8 +18,6 @@
 		{ name: 'Settings', link: '/settings' }
 	];
 
-	let audio;
-
 	onMount(() => {
 		audio.play();
 	});
@@ -27,9 +26,11 @@
 		? menuItems.filter((item) => item.name !== 'Log in')
 		: menuItems.filter((item) => item.name !== 'Log out');
 
-	$: if (loginSelection != null) {
-		goto(`http://localhost:8000/auth/${loginSelection}/login`);
-	}
+	loginStorage.subscribe((loginSelection) => {
+		if (browser && loginSelection) {
+			goto(`http://localhost:8000/auth/${loginSelection}/login`);
+		}
+	});
 
 	async function getUser() {
 		if (!isLoggedIn) {
@@ -101,16 +102,4 @@
 	</div>
 {/if}
 
-<Modal modalBtn={{ title: 'Log in' }}>
-	<div slot="modalBody">
-		<MDBBtn on:click={() => (loginSelection = '42intra')}>
-			<img src="/oauth2/42_Logo.svg" alt="42 Network logo" class="w-25 h-25" />
-		</MDBBtn>
-		<MDBBtn on:click={() => (loginSelection = 'google')}>
-			<img src="/oauth2/google.svg" alt="Google logo" class="w-25 h-25" />
-		</MDBBtn>
-	</div>
-	<div slot="modalFooter">
-		<MDBBtn color="secondary" on:click={() => toggle()}>Close</MDBBtn>
-	</div>
-</Modal>
+<LogInModal />
