@@ -4,13 +4,13 @@
 	import { loginStorage } from '$lib/stores/stores';
 </script>
 
-<Modal modalBtn={{ title: 'Log in' }}>
+<Modal title="Log in" gradient="purple">
 	<div slot="modalBody">
 		<MDBBtn on:click={() => loginStorage.set('42intra')}>
 			<img src="/oauth2/42_Logo.svg" alt="42 Network logo" class="w-25 h-25" />
 		</MDBBtn>
 		<MDBBtn on:click={() => loginStorage.set('google')}>
-			<img src="/oauth2/google.svg" alt="Google logo" class="w-100 h-100" />
+			<img src="/oauth2/google.svg" alt="Google logo" class="w-25 h-25" />
 		</MDBBtn>
 	</div>
 	<div slot="modalFooter">

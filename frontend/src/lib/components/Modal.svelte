@@ -5,19 +5,18 @@
 	import MDBModalHeader from 'mdbsvelte/src/MDBModalHeader.svelte';
 	import MDBModalBody from 'mdbsvelte/src/MDBModalBody.svelte';
 	import MDBModalFooter from 'mdbsvelte/src/MDBModalFooter.svelte';
-	export let modalTitle: any,
-		modalBody: any,
-		modalFooter: any,
-		modalBtn: { title: string; color?: string };
+	export let title: string, color: string, gradient: string;
 
-	let state = false;
+	let state: boolean = false;
 	function toggle() {
 		state = !state;
 	}
 </script>
 
 <MDBContainer>
-	<MDBBtn color={modalBtn.color} on:click={() => toggle()}>{modalBtn.title}</MDBBtn>
+	<MDBBtn {color} {gradient} on:click={() => toggle()}>
+		{title}
+	</MDBBtn>
 	<MDBModal isOpen={state} toggle={() => toggle()}>
 		<MDBModalHeader toggle={() => toggle()}>
 			<slot name="modalTitle" />
