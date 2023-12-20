@@ -7,7 +7,8 @@
 	import MDBModalFooter from 'mdbsvelte/src/MDBModalFooter.svelte';
 	export let title: string = '',
 		color: string = '',
-		gradient: string = '';
+		gradient: string = '',
+		rounded: string = '';
 
 	let state: boolean = false;
 	function toggle() {
@@ -16,7 +17,7 @@
 </script>
 
 <MDBContainer>
-	<MDBBtn {color} {gradient} on:click={() => toggle()}>
+	<MDBBtn {color} {gradient} {rounded} on:click={() => toggle()}>
 		{title}
 	</MDBBtn>
 	<MDBModal isOpen={state} toggle={() => toggle()}>

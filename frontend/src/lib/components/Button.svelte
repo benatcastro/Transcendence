@@ -6,11 +6,12 @@
 		color: string = '',
 		gradient: string = '',
 		href: string = '',
+		rounded: string = '',
 		action: () => void = () => {};
 </script>
 
 <MDBContainer>
-	<MDBBtn {color} {gradient} {href} on:click={action}>
+	<MDBBtn {color} {gradient} {rounded} {href} on:click={action}>
 		{title}
 	</MDBBtn>
 </MDBContainer>

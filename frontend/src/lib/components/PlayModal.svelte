@@ -3,7 +3,8 @@
 	import MDBBtn from 'mdbsvelte/src/MDBBtn.svelte';
 	import Modal from '$lib/components/Modal.svelte';
 
-	export let gradient: string = '';
+	export let gradient: string = '',
+		rounded: string = '';
 
 	let isLoggedIn: boolean; // TODO This will be a store so all urls can access it
 	let username: string = '';
@@ -30,7 +31,7 @@
 	}
 </script>
 
-<Modal title="Play" {gradient}>
+<Modal title="Play" {gradient} {rounded}>
 	<div slot="modalBody">
 		<MDBBtn on:click={() => handlePlayClick('casual')}>
 			<p>Casual</p>
