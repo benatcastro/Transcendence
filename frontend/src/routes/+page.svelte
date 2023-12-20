@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { browser } from '$app/environment';
 	import { loginStorage } from '$lib/stores/stores';
@@ -7,19 +6,23 @@
 	import PlayModal from '$lib/components/PlayModal.svelte';
 	import Button from '$lib/components/Button.svelte';
 
-	let audio;
 	let menuItems = [
-		{ component: PlayModal, props: { gradient: 'purple' } },
-		{ component: LogInModal, props: { gradient: 'purple' } },
-		{ component: Button, props: { title: 'Log out', gradient: 'purple' } },
-		{ component: Button, props: { title: 'Profile', gradient: 'purple', href: '/profile' } },
-		{ component: Button, props: { title: 'Leaderboard', gradient: 'purple', href: '/rank' } },
-		{ component: Button, props: { title: 'Settings', gradient: 'purple', href: '/settings' } }
+		{ component: PlayModal, props: { gradient: 'aqua', rounded: 'True' } },
+		{ component: LogInModal, props: { gradient: 'aqua', rounded: 'True' } },
+		{ component: Button, props: { title: 'Log out', gradient: 'aqua', rounded: 'True' } },
+		{
+			component: Button,
+			props: { title: 'Profile', gradient: 'aqua', rounded: 'True', href: '/profile' }
+		},
+		{
+			component: Button,
+			props: { title: 'Leaderboard', gradient: 'aqua', rounded: 'True', href: '/rank' }
+		},
+		{
+			component: Button,
+			props: { title: 'Settings', gradient: 'aqua', rounded: 'True', href: '/settings' }
+		}
 	];
-
-	onMount(() => {
-		audio.play();
-	});
 
 	/* $: menuOpts = isLoggedIn
 		? menuItems.filter((item) => item.props.title !== 'Log in')
@@ -52,8 +55,6 @@
 		rel="stylesheet"
 	/>
 </svelte:head>
-
-<audio bind:this={audio} on:ended={audio.play} src="/sound/Half_Mystery.mp3" />
 
 <div class="vh-100 d-flex flex-column flex-center">
 	<h1 class="font-cr">CyberPong</h1>
