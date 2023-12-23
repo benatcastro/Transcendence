@@ -6,9 +6,9 @@ RUN apk update && apk add --no-cache nodejs
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json ./
 
-RUN bun install && bun install @threlte/core three @types/three @threlte/extras @threlte/rapier @dimforge/rapier3d-compat postprocessing
+RUN bun install
 
 EXPOSE 5173
 

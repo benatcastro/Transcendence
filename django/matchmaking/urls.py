@@ -1,9 +1,10 @@
 from django.urls import path
-from .views import index, delete, deleteAll, search
+from .views import show, delete, clear, search, create
 
 urlpatterns = [
-    path('', index, name='home'),
+    path('', show),
+    path('create-usr', create),
     path('delete', delete),
-    path('deleteAll', deleteAll),
+    path('clear', clear),
     path('search', search),
 ]

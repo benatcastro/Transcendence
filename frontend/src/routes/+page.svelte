@@ -1,91 +1,88 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	let openPlayMenu: boolean = false;
-	let isLoggedIn: boolean; //TODO cookie management?
+	import { browser } from '$app/environment';
+	import { loginStorage } from '$lib/stores/stores';
+	import LogInModal from '$lib/components/LogInModal.svelte';
+	import PlayModal from '$lib/components/PlayModal.svelte';
+	import Button from '$lib/components/Button.svelte';
+
 	let menuItems = [
-		{ name: 'Play', link: '/', action: () => (openPlayMenu = true) },
-		{ name: 'Log in', link: '/', action: () => handleLoginClick() },
-		{ name: 'Log out', link: '/', action: () => (isLoggedIn = false) },
-		{ name: 'Profile', link: '/profile' },
-		{ name: 'Leaderboard', link: '/leaderboard' },
-		{ name: 'Settings', link: '/settings' }
+		{ component: PlayModal, props: { gradient: 'aqua', rounded: 'True' } },
+		{ component: LogInModal, props: { gradient: 'aqua', rounded: 'True' } },
+		{ component: Button, props: { title: 'Log out', gradient: 'aqua', rounded: 'True' } },
+		{
+			component: Button,
+			props: { title: 'Profile', gradient: 'aqua', rounded: 'True', href: '/profile' }
+		},
+		{
+			component: Button,
+			props: { title: 'Leaderboard', gradient: 'aqua', rounded: 'True', href: '/rank' }
+		},
+		{
+			component: Button,
+			props: { title: 'Settings', gradient: 'aqua', rounded: 'True', href: '/settings' }
+		}
 	];
 
-	let username: string = "";
+	/* $: menuOpts = isLoggedIn
+		? menuItems.filter((item) => item.props.title !== 'Log in')
+		: menuItems.filter((item) => item.props.title !== 'Log out'); Not working as expected at the moment */
 
-	$: menuOpts = isLoggedIn
-		? menuItems.filter((item) => item.name !== 'Log in')
-		: menuItems.filter((item) => item.name !== 'Log out');
-
-	async function handleLoginClick() {
-		console.log('Logging in...');
-		//TODO fetch users info with promise
-		//TODO User authentication succeeded
-		const logged = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1');
-		if (!logged.ok) {
-			//TODO User authentication failed
-			return new Error('Incorrect username or password');
+	loginStorage.subscribe((loginSelection) => {
+		if (browser && loginSelection) {
+			goto(`http://localhost:8000/auth/${loginSelection}/login`);
 		}
-		isLoggedIn = true;
-		return (await logged.json()).results[0].name; //TODO mock users info
-	}
-
-	async function handleIsLoggedUsername(isLoggedIn: boolean) {
-		if (!isLoggedIn) {
-			//TODO change to the actual endpoints for both casual and ranked matches
-			const res = await fetch('http://localhost:8000/matchmaking/?mode=casual');
-			if (!res.ok) {
-				//TODO must return the info of the lobby (?)
-				console.error("fetch request didn't resolve");
-				throw new Error("Couldn't find an opponent, try again?");
-			}
-			username = (await res.json()).user;
-			console.log(username);
-		}
-		return (username);
-	}
-
-	function handlePlayClick(option: string) {
-		if (option === 'ranked' && !isLoggedIn) {
-			//TODO Temporary rejection for testing
-			console.error('You are not logged in');
-			handleLoginClick()
-				.then(() => goto(`/matchmaking?mode=${option}&user=${username}`))
-				.catch((e) => console.error(e.message));
-		}
-		else {
-			handleIsLoggedUsername(isLoggedIn)
-				.then(() => goto(`/matchmaking?mode=${option}&user=${username}`))
-				.catch((e) => console.error(e.message));
-		}
-	}
+	});
 </script>
 
 <svelte:head>
+	<title>CyberPong</title>
 	<meta
 		name="description"
 		content="Immerse yourself in a neon-lit cyberpunk world with our online 3D Pong app. Engage in intense matches, customize your profile, and climb the leaderboards in this futuristic gaming universe."
 	/>
-	<title>CyberPong</title>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" />
+	<link
+		rel="stylesheet"
+		href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+	/>
+	<link
+		href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css"
+		rel="stylesheet"
+	/>
+	<link
+		href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.16.0/css/mdb.min.css"
+		rel="stylesheet"
+	/>
 </svelte:head>
 
-<h1>Main menu</h1>
-<nav>
-	<ul>
-		{#each menuOpts as option}
-			{#if option.link === '/'}
-				<li><a on:click|preventDefault={option.action} href={option.link}>{option.name}</a></li>
-			{:else}
-				<li><a href={option.link}>{option.name}</a></li>
-			{/if}
-		{/each}
-	</ul>
-</nav>
+<div class="vh-100 d-flex flex-column flex-center">
+	<h1 class="font-cr">CyberPong</h1>
+	<nav>
+		<ul class="list-unstyled">
+			{#each menuItems as item}
+				<li class="font-xe"><svelte:component this={item.component} {...item.props} /></li>
+			{/each}
+		</ul>
+	</nav>
+</div>
 
-{#if openPlayMenu}
-	<div>
-		<button on:click={() => handlePlayClick('casual')}>Casual</button>
-		<button on:click={() => handlePlayClick('ranked')}>Ranked</button>
-		<button on:click={() => (openPlayMenu = false)}>Go back</button>
-	</div>
-{/if}
+<style>
+	@font-face {
+		font-family: 'Cyberway Riders';
+		src: url('/fonts/cyberway_riders/Cyberway Riders.otf') format('opentype');
+	}
+
+	@font-face {
+		font-family: 'xenotron';
+		src: url('/fonts/xenotron/XENOTRON.TTF') format('truetype');
+	}
+
+	.font-cr {
+		font-family: 'Cyberway Riders', sans-serif;
+	}
+
+	.font-xe {
+		font-family: 'xenotron', sans-serif;
+	}
+</style>

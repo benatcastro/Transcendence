@@ -1,48 +1,61 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.http import JsonResponse
-import json
 from random import randint
 
-# Create your views here.
+casual_ids = []
+ranked_ids = []
 
-casuals = []
-rankeds = []
 
-def makeResponse():
-	basic = '{}'
-	json_response = json.loads(basic)
-	newList = {"Users": casuals}
-	json_response.update(newList)
-	return JsonResponse(json_response)
+def make_response():
+    response = {"Casual_ids": casual_ids, "Ranked_ids": ranked_ids}
+    return JsonResponse(response)
 
-def index(request):
-	id = request.GET.get('mode')
-	if (id == "casual"):
-		value = randint(1000, 9999)
-		print (value)
-		if not casuals.__contains__(value):
-			casuals.append(value)
-		return JsonResponse({"user": value})
 
-	return makeResponse()
+def show(request):
+    return make_response()
 
-def deleteAll(request):
-	casuals.clear()
-	return redirect("http://localhost:8000/matchmaking/")
 
-def delete(request):
-	id = request.GET.get('mode')
-	if (id == "casual"):
-		print ("DELETE")
-		casuals.remove(int(request.GET.get('user')))
-	return makeResponse()
+def create(request):
+    mode = request.GET.get('mode')
+    user_id = request.GET.get('user') if mode == "ranked" else request.GET.get('user') or str(randint(1000, 9999))
+    ids = casual_ids if mode == 'casual' else ranked_ids
+
+    if len(ids) == 0 or user_id not in ids:
+        ids.append(user_id)
+    return JsonResponse({"user": user_id})
+
 
 def search(request):
-	i = 0
-	while 1:
-		if casuals[i] != int(request.GET.get('user')):
-			return JsonResponse({"rival": casuals[i]})
-		i = i + 1
-		if i + 1 > len(casuals):
-			i = 0
-	return makeResponse()
+    user_id = str(request.GET.get('user'))
+    mode = request.GET.get('mode')
+    ids = casual_ids if mode == 'casual' else ranked_ids
+
+    if len(ids) == 0 or user_id not in ids:
+        create(request)
+    # TODO: This can completely hang the server with enough time: should we tell the puteros to use websockets with Django?
+    while True:
+        if mode == 'casual':
+            rival = next((i for i in ids if i != user_id), None)
+            if rival:
+                return JsonResponse({"rival": rival})
+        else:
+            # TODO: algoritmo de búsqueda de partida ranked
+            pass
+
+
+def delete(request):
+    # TODO: preguntar a Ander si quiere que se borre el usuario si ya se ha encontrado un rival o si quiere que se
+    #  mantenga hasta quedar AFK en la partida
+    user_id = str(request.GET.get('user'))
+    mode = request.GET.get('mode')
+    ids = casual_ids if mode == 'casual' else ranked_ids
+
+    if user_id in ids:
+        ids.remove(user_id)
+    return make_response()
+
+
+def clear(request):
+    casual_ids.clear()
+    ranked_ids.clear()
+    return redirect("http://localhost:8000/matchmaking/")
