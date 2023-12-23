@@ -1,13 +1,16 @@
 <script lang="ts">
 	const AUDIO_SRC = '/sound/Half_Mystery.mp3';
-	const IMAGE_SRC = '/assets/icons/speaker.webp';
+	const VOL_ON_IMAGE_SRC = '/assets/icons/volume-on.svg';
+	const VOL_OFF_IMAGE_SRC = '/assets/icons/volume-off.svg';
 
+	let volImageSrc = VOL_OFF_IMAGE_SRC;
 	let musicPlayer;
+	let isMusicOn = false;
 
-	const playMusic = () => {
-		if (musicPlayer) {
-			musicPlayer.play();
-		}
+	const toggleMusic = () => {
+		isMusicOn = !isMusicOn;
+		volImageSrc = isMusicOn ? VOL_ON_IMAGE_SRC : VOL_OFF_IMAGE_SRC;
+		isMusicOn ? musicPlayer.play() : musicPlayer.pause();
 	};
 </script>
 
@@ -18,13 +21,38 @@
 	preload="none"
 />
 
-<div class="fixed-top text-left">
-	<button class="btn btn-outline- shadow-none p-0" on:click={playMusic}>
-		<img loading="lazy" src={IMAGE_SRC} alt="Toggle music on/off button" class="w-header h-auto" />
+<div class="d-flex justify-content-between fixed-top">
+	<button class="btn shadow-none p-0" on:click={toggleMusic}>
+		<img
+			loading="lazy"
+			src={volImageSrc}
+			alt="Toggle music on/off button"
+			class="w-header h-auto"
+		/>
 	</button>
+	<div>
+		<button class="btn shadow-none p-0" on:click={toggleMusic}>
+			<img
+				loading="lazy"
+				src={'/assets/icons/profile.svg'}
+				alt="Log in/out button"
+				class="w-header h-auto"
+			/>
+		</button>
+		<button class="btn shadow-none p-0" on:click={toggleMusic}>
+			<img
+				loading="lazy"
+				src={'/assets/icons/settings.svg'}
+				alt="settings button"
+				class="w-header h-auto"
+			/>
+		</button>
+	</div>
 </div>
 
-<slot />
+<div class="vh-100">
+	<slot />
+</div>
 
 <footer class="fixed-bottom text-center py-3">
 	<a href="/meet">Meet the team</a>
