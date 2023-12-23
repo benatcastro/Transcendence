@@ -23,13 +23,23 @@
 
 <svelte:head>
 	<title>CyberPong - Matchmaking</title>
+	<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css"
+			rel="stylesheet"
+	/>
+	<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.16.0/css/mdb.min.css"
+			rel="stylesheet"
+	/>
 </svelte:head>
 
-{#if rival}
-	<p>Player {rival} wants to play!</p>
-	<p><a href="../pong">Go to game</a></p>
-{:else}
-	<div class="spinner-border" role="status">
-		<span class="visually-hidden">Loading...</span>
-	</div>
-{/if}
+<div class="d-flex flex-center">
+	{#if rival}
+		<p>Player {rival} wants to play!</p>
+		<p><a href="../pong">Go to game</a></p>
+	{:else}
+		<div class="spinner-border" role="status">
+			<span class="visually-hidden">Loading...</span>
+		</div>
+	{/if}
+</div>
