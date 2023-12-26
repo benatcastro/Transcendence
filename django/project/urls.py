@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
 from django.urls import path, include
+from game.views import game
 
 urlpatterns = [
     path('', include('transcendence.urls')),

@@ -22,6 +22,12 @@
 			zPower *= -1.2;
 		else if (e.targetRigidBody.userData['tag'] == "Wall")
 			xPower *= -1;
+
+		if (zPower >= 35)
+			zPower = 35;
+		else if (zPower <= -35)
+			zPower = -35;
+
 		linearVelocity = [xPower, 0, zPower];
 	}
 

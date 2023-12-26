@@ -68,9 +68,9 @@
 		<T.FogExp2 color={'#dddddd'} density={100} />
 
 
-		<!-- <Debug
+		<Debug
 			depthTest={false}
 			depthWrite={false}
-		/> -->
+		/>
 	</World>
 </Threlte.Canvas>
