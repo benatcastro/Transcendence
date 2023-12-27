@@ -1,20 +1,7 @@
-from channels.routing import ProtocolTypeRouter, URLRouter
-from channels.auth import AuthMiddlewareStack
-from django.urls import path
-from project.websocket.consumers import SomeConsumer  # Importa tus funciones de manejo
+from django.urls import re_path
 
-application = ProtocolTypeRouter(
-    {
-        "websocket": AuthMiddlewareStack(
-            URLRouter(
-                [
-                    # Define tus rutas aquí
-                    # Por ejemplo:
-                    # path(r'ws/some_path/$', consumers.SomeConsumer.as_asgi()),
-                    path('ws/socket/', SomeConsumer.as_asgi()),
-                ]
-            )
-        ),
-    }
-)
+from . import consumers
 
+websocket_urlpatterns = [
+    re_path(r'ws/socket/$', consumers.SomeConsumer.as_asgi()),
+]

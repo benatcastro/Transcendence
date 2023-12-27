@@ -23,7 +23,7 @@
 
 	let socket;
 	const roomName = 'mi_sala_de_pong';  // Nombre de la sala del juego
-
+/*
 	function connectWebSocket() {
 	const socketURL = `ws://localhost:8000/ws/game/${roomName}/`; // Ajusta la URL según tu configuración
 	socket = new WebSocket(socketURL);
@@ -51,6 +51,10 @@
 	}
 
 	connectWebSocket();
+
+
+*/
+
 </script>
 
 <svelte:head>
@@ -78,5 +82,5 @@
 </div>
 
 
-<button on:click={sendMessageToServer}>Enviar mensaje al servidor</button>
+  <!--<button on:click={sendMessageToServer}>Enviar mensaje al servidor</button>-->
 

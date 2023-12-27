@@ -12,6 +12,9 @@ requests==2.31.0
 django-allauth==0.58.2
 dj-rest-auth==5.0.2
 djangorestframework-simplejwt==5.3.1
-channels==3.0
-channels-redis==3.2
+channels
+channels-redis
+websockets
 websocket-client==0.57.0
+uvicorn[standard]
+redis

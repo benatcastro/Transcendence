@@ -5,6 +5,38 @@
 	import PlayModal from '$lib/components/PlayModal.svelte';
 	import Button from '$lib/components/Button.svelte';
 
+		//websockk pruebasss
+let ws: WebSocket | null = null;
+
+const connectWebSocket = () => {
+  ws = new WebSocket('ws://localhost:8000/ws/socket/');
+
+  ws.onopen = () => {
+    console.log('WebSocket connection opened');
+  };
+
+  ws.onmessage = (event) => {
+    console.log('WebSocket message received:', event.data);
+  };
+
+  ws.onclose = () => {
+    console.log('WebSocket connection closed');
+  };
+};
+
+const sendMessage = () => {
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    const message: string = 'Hola desde Svelte LE escribe Andy Sama a Aherrero';
+    ws.send(message);
+    console.log('WebSocket message sent:', message);
+  } else {
+    console.error('WebSocket connection not open');
+  }
+
+};
+//ed sockets
+
+
 	let menuItems = [
 		{ component: PlayModal, props: { gradient: 'aqua' } },
 		{
@@ -26,7 +58,12 @@
 			goto(`http://localhost:8000/auth/${loginSelection}/login`);
 		}
 	});
+
+
 </script>
+
+
+  
 
 <svelte:head>
 	<title>CyberPong</title>
@@ -43,7 +80,12 @@
 		rel="stylesheet"
 	/>
 </svelte:head>
-
+<main>
+	<h1>Svelte WebSocket Example</h1>
+  
+	<button class="sock" on:click={connectWebSocket}>Conectar WebSocket</button>
+	<button class="sock" on:click={sendMessage}>Enviar Mensaje</button>
+  </main>
 <div class="d-flex flex-column flex-center">
 	<h1 class="font-cr">CyberPong</h1>
 	<nav>
@@ -55,7 +97,20 @@
 	</nav>
 </div>
 
+
+ 
+
 <style>
+		main {
+	  text-align: center;
+	  margin-top: 50px;
+	}
+  
+	.sock {
+	  margin: 10px;
+	  padding: 10px;
+	  font-size: 16px;
+	}
 	/*@font-face {
 		font-family: 'Cyberway Riders';
 		src: url('/fonts/cyberway_riders/Cyberway Riders.otf') format('opentype');

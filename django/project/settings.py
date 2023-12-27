@@ -155,6 +155,7 @@ TEMPLATES = [
 RUNSERVERPLUS_POLLER_RELOADER_INTERVAL = 1
 RUNSERVERPLUS_POLLER_RELOADER_TYPE = 'auto'
 WSGI_APPLICATION = "project.wsgi.application"
+ASGI_APPLICATION = "project.websocket.routing.application"
 WHITENOISE_AUTOREFRESH = True  # Habilita la actualización en tiempo real para archivos estáticos
 
 # Database
@@ -218,18 +219,17 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-print(STATIC_ROOT + '----a')
 
 # CORS
 
 SESSION_COOKIE_SAMESITE = 'None'
 CORS_ALLOW_HEADERS = (
-    # "accept",
-    # "authorization",
+     "accept",
+     "authorization",
     "content-type",
-    # "user-agent",
-    # "x-csrftoken",
-    # "x-requested-with",
+     "user-agent",
+     "x-csrftoken",
+     "x-requested-with",
 )
 
 
@@ -249,19 +249,18 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_HOSTS = ["*"]
 CORS_ALLOW_ALL_ORIGINS = True
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)],
+        },
+    },
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'asgi_redis.RedisChannelLayer',
-        'CONFIG': {
-            'hosts': [('localhost', 8000)],
-        },
-        'ROUTING': 'example_channels.routing.channel_routing',
-    }
-}
 
