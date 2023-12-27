@@ -19,6 +19,38 @@
 	addEventListener('beforeunload', () => {
 		fetch(`http://localhost:8000/matchmaking/delete?mode=${mode}&user=${user}`);
 	});
+
+
+	let socket;
+	const roomName = 'mi_sala_de_pong';  // Nombre de la sala del juego
+
+	function connectWebSocket() {
+	const socketURL = `ws://localhost:8000/ws/game/${roomName}/`; // Ajusta la URL según tu configuración
+	socket = new WebSocket(socketURL);
+
+	socket.onopen = (event) => {
+		console.log('WebSocket conectado');
+		// Puedes enviar mensajes aquí si es necesario
+	};
+
+	socket.onmessage = (event) => {
+		const data = JSON.parse(event.data);
+		console.log('Mensaje recibido desde el servidor:', data.message);
+		// Maneja los mensajes recibidos del servidor aquí
+	};
+
+	socket.onclose = (event) => {
+		console.log('WebSocket cerrado');
+		// Maneja la lógica para reconectar o informar al usuario, si es necesario
+	};
+	}
+
+	function sendMessageToServer() {
+	const message = 'Hola desde el cliente';
+	socket.send(JSON.stringify({ message }));
+	}
+
+	connectWebSocket();
 </script>
 
 <svelte:head>
@@ -44,3 +76,7 @@
 		</div>
 	{/if}
 </div>
+
+
+<button on:click={sendMessageToServer}>Enviar mensaje al servidor</button>
+
