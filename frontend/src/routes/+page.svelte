@@ -8,8 +8,8 @@
 		//websockk pruebasss
 let ws: WebSocket | null = null;
 
-const connectWebSocket = () => {
-  ws = new WebSocket('ws://localhost:8000/ws/socket/');
+const connectWebSocket1 = () => {
+  ws = new WebSocket('ws://localhost:8000/ws/game/?room_code=Room1');
 
   ws.onopen = () => {
     console.log('WebSocket connection opened');
@@ -24,9 +24,36 @@ const connectWebSocket = () => {
   };
 };
 
-const sendMessage = () => {
+const connectWebSocket2 = () => {
+  ws = new WebSocket('ws://localhost:8000/ws/game/?room_code=Room2');
+
+  ws.onopen = () => {
+    console.log('WebSocket connection opened');
+  };
+
+  ws.onmessage = (event) => {
+    console.log('WebSocket message received:', event.data);
+  };
+
+  ws.onclose = () => {
+    console.log('WebSocket connection closed');
+  };
+};
+
+const sendMessage1 = () => {
   if (ws && ws.readyState === WebSocket.OPEN) {
-    const message: string = 'Hola desde Svelte LE escribe Andy Sama a Aherrero';
+    const message: string = 'Hola desde Room1';
+    ws.send(message);
+    console.log('WebSocket message sent:', message);
+  } else {
+    console.error('WebSocket connection not open');
+  }
+
+};
+
+const sendMessage2 = () => {
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    const message: string = 'Hola desde Room2';
     ws.send(message);
     console.log('WebSocket message sent:', message);
   } else {
@@ -83,8 +110,10 @@ const sendMessage = () => {
 <main>
 	<h1>Svelte WebSocket Example</h1>
   
-	<button class="sock" on:click={connectWebSocket}>Conectar WebSocket</button>
-	<button class="sock" on:click={sendMessage}>Enviar Mensaje</button>
+	<button class="sock" on:click={connectWebSocket1}>Conectar WebSocket Room1</button>
+	<button class="sock" on:click={sendMessage1}>Enviar Mensaje Room1</button>
+	<button class="sock" on:click={connectWebSocket2}>Conectar WebSocket Room2</button>
+	<button class="sock" on:click={sendMessage2}>Enviar Mensaje Room2</button>
   </main>
 <div class="d-flex flex-column flex-center">
 	<h1 class="font-cr">CyberPong</h1>

@@ -1,10 +1,10 @@
 ## game/consumers.py
-import json
-from channels.generic.websocket import AsyncJsonWebsocketConsumer
+import asyncio
+from channels.generic.websocket import AsyncWebsocketConsumer
 
 class GameConsumer(AsyncWebsocketConsumer):
-async def connect(self):
-        self.room_name = self.scope['url_route']['kwargs']['room_name']
+    async def connect(self):
+        self.room_name = self.scope['query_string'].decode().split('=')[1]
         self.room_group_name = f'pong_{self.room_name}'
 
         # Unirse al grupo de la sala
@@ -24,8 +24,7 @@ async def connect(self):
 
     async def receive(self, text_data):
         # Procesar el mensaje recibido desde el cliente
-        data = json.loads(text_data)
-        message = data['message']
+        message = f'Hola desde el servidor {self.room_name}'
 
         # Ejemplo: Enviar el mensaje recibido a todos en el grupo
         await self.send_group_message(message)
@@ -45,6 +44,4 @@ async def connect(self):
         message = event['message']
 
         # Enviar el mensaje al WebSocket
-        await self.send(text_data=json.dumps({
-            'message': message
-        }))
+        await self.send(text_data=f'Hola desde el servidor {self.room_name}')
