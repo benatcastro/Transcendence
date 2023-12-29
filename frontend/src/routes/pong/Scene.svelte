@@ -7,10 +7,18 @@
     import { Text } from '@threlte/extras'
     import { useGltf, useGltfAnimations } from '@threlte/extras'
 
+    import { onMount } from 'svelte';
+    import { page } from '$app/stores';
+    import { get } from 'svelte/store';
+
     export let Player1Points: number = 0;
 	export let Player2Points: number = 0;
 
-	let PointText: string = "cbustama " + Player2Points.toString() + "\n\n\n\n\naherrero " + Player1Points.toString();
+    const rival = $page.url.searchParams.get('rival');
+	const user = $page.url.searchParams.get('user');
+	const room = $page.url.searchParams.get('room');
+
+	let PointText: string = rival + " " + Player2Points.toString() + "\n\n\n\n\n" + user + " " + Player1Points.toString();
 
 </script>
 
@@ -112,7 +120,7 @@
             on:sensorenter={() => {
                 //console.log("Player 2 scored!");
                 Player2Points += 1;
-                PointText = "cbustama " + Player2Points.toString() + "\n\n\n\n\naherrero " + Player1Points.toString();
+                PointText = rival + " " + Player2Points.toString() + "\n\n\n\n\n" + user + " " + Player1Points.toString();
             }}
         />
     </RigidBody>
@@ -136,7 +144,7 @@
             on:sensorenter={() => {
                 //console.log("Player 1 scored!");
                 Player1Points += 1;
-                PointText = "cbustama " + Player2Points.toString() + "\n\n\n\n\naherrero " + Player1Points.toString();
+                PointText = rival + " " + Player2Points.toString() + "\n\n\n\n\n" + user + " " + Player1Points.toString();
             }}
         />
     </RigidBody>

@@ -3,41 +3,10 @@ from django.http import JsonResponse
 from random import randint
 
 casual_ids = []
-ranked_ids = []
-
-current_games = []
-
-class Game():
-	def __init__(self, player1_name, player2_name):
-		self.player1_name = player1_name
-		self.player2_name = player2_name
-		self.player1_position = 0
-		self.player2_position = 0
-		self.player1_score = 0
-		self.player2_score = 0
-		self.ball_x_dir = 9
-		self.ball_z_dir = 7
-
-class GameManager():
-	def __init__(self):
-		self.games = {}
-		
-	def add_game(self, player1_name, player2_name):
-		self.games.append(randint(1000, 9999), Game(player1_name, player2_name))
-
-	def get_game(self, id):
-		for game in self.games:
-			if game.id == id:
-				return game
-
-	def delete_game(self, id):
-		for game in self.games:
-			if game.id == id:
-				self.games.remove(game)
-	
+ranked_ids = []	
 
 def make_response():
-	response = {"Casual_ids": casual_ids, "Ranked_ids": ranked_ids, "Current_games": [mygame.__dict__ for mygame in current_games]}
+	response = {"Casual_ids": casual_ids, "Ranked_ids": ranked_ids}
 	return JsonResponse(response)
 
 def show(request):
@@ -52,7 +21,6 @@ def create(request):
 		ids.append(user_id)
 	return JsonResponse({"user": user_id})
 
-
 def search(request):
 	user_id = str(request.GET.get('user'))
 	mode = request.GET.get('mode')
@@ -65,14 +33,15 @@ def search(request):
 		if mode == 'casual':
 			rival = next((i for i in ids if i != user_id), None)
 			if rival:
-				if (j for j in current_games if j.player1_name != rival or j.player2_name != rival):
-					current_games.append(Game(user_id, rival))
-					return JsonResponse({"rival": rival})
-				return JsonResponse({"rival": "CAGASTE"})
+				if (rival > user_id):
+					print("room: " + rival + user_id)
+					return JsonResponse({"room": rival + user_id, "user": user_id, "rival": rival})
+				else:
+					print("room: " + user_id + rival)
+					return JsonResponse({"room": user_id + rival, "user": user_id, "rival": rival})
 		else:
 			# TODO: algoritmo de búsqueda de partida ranked
 			pass
-
 
 def delete(request):
 	# TODO: preguntar a Ander si quiere que se borre el usuario si ya se ha encontrado un rival o si quiere que se
@@ -85,9 +54,7 @@ def delete(request):
 		ids.remove(user_id)
 	return make_response()
 
-
 def clear(request):
 	casual_ids.clear()
 	ranked_ids.clear()
-	current_games.clear()
 	return redirect("http://localhost:8000/matchmaking/")
