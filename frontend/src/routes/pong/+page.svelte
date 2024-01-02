@@ -7,36 +7,44 @@
 	import Bloom from './bloom.svelte'
 	import { onMount } from 'svelte';
     import { page } from '$app/stores';
-	//import { ws } from './stores.js';
+	import { ws, user, rival, room } from './store';
 	
     import Scene from './Scene.svelte'
     import Ball from './Ball.svelte'
 
     import Player1 from './Player1.svelte'
     import Player2 from './Player2.svelte'
-	import { esbuildVersion } from 'vite';
+	//import { esbuildVersion } from 'vite';
 
 	let path = './'
 	let files: string | string[] = 'Skybox.png'
 
-	const user = $page.url.searchParams.get('user');
-	const rival = $page.url.searchParams.get('rival');
-	const room = $page.url.searchParams.get('room');
-
 	//ws.set(new WebSocket('ws://localhost:8000/ws/game/?room_code=' + room))
+	onMount(() => {
+		user.set($page.url.searchParams.get('user')?.toString());
+		rival.set($page.url.searchParams.get('rival')?.toString());
+		room.set($page.url.searchParams.get('room')?.toString());
 
-	// ws.get().onopen = () => {
-	// 	console.log('WebSocket connection opened');
-	// };
+		console.log('user: ' + $user);
+		console.log('rival: ' + $rival);
+		console.log('rival: ' + $room);
 
-	// ws.get().onmessage = (event) => {
-	// 	console.log('WebSocket message received:', event.data);
-	// };
+		// Crea tu WebSocket
+		ws.set(new WebSocket('ws://localhost:8000/ws/game/?room_code=' + $room));
+		
+		if ($ws) {
+			$ws.onopen = () => {
+				console.log('WebSocket connection opened');
+			};
+			$ws.onmessage = (event) => {
+				console.log('WebSocket message received:', event.data);
+			};
+			$ws.onclose = () => {
+				console.log('WebSocket connection closed');
+			};
+		}
+	});
 
-	// ws.get().onclose = () => {
-	// 	console.log('WebSocket connection closed');
-	// };
-	
 </script>
 
 <!-- <h1>Ander mariquita hihi</h1> -->
