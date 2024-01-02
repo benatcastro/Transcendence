@@ -32,6 +32,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 		
 		print("Player1 = " + self.player1.name + "\nPlayer2 = " + self.player2.name)
 
+
 		# Unirse al grupo de la sala
 		await self.channel_layer.group_add(
 			self.room_group_name,
