@@ -1,11 +1,9 @@
 <script lang="ts">
 	import * as Threlte from '@threlte/core'
-    import * as Three from 'three'
 	import { T } from '@threlte/core'
-    import { Collider, RigidBody, AutoColliders } from '@threlte/rapier'
-    import { DEG2RAD } from 'three/src/math/MathUtils.js'
+    import { Collider, RigidBody } from '@threlte/rapier'
 
-    import { ws, user, rival, room } from './store';
+    import { ws, user} from './store';
 
     //let PlayerVelocity = 10;
     export let PlayerVelocity = 0;
@@ -21,26 +19,33 @@
         e.preventDefault()
 
 		if (e.key == 'a')
+        {
             Left = true;
+            $ws?.send($user + "_move:left1")
+        }
 		if (e.key == 'd')
+        {
             Right = true;
+            $ws?.send($user + "_move:right1")
+        }
 	}
     const onKeyUp = (e: KeyboardEvent) =>
     {
         e.preventDefault()
         if (e.key == 'a')
+        {
             Left = false;
+            $ws?.send($user + "_move:left0")
+        }
 		if (e.key == 'd')
+        {
             Right = false;
+            $ws?.send($user + "_move:right0")
+        }
 	}
 
     Threlte.useFrame(() =>
     {
-        if (Left)
-            $ws?.send($user + "_left")
-        if (Right)
-            $ws?.send($user + "_right")
-        
 		if (Left && Right)
             playerX = 0;
         else if (Left)
