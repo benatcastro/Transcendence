@@ -27,10 +27,10 @@
 
 		console.log('user: ' + $user);
 		console.log('rival: ' + $rival);
-		console.log('rival: ' + $room);
+		console.log('room: ' + $room);
 
 		// Crea tu WebSocket
-		ws.set(new WebSocket('ws://localhost:8000/ws/game/?room_code=' + $room));
+		ws.set(new WebSocket('ws://localhost:8000/ws/game/?room_code=' + $room + '&username=' + $user));
 		
 		if ($ws) {
 			$ws.onopen = () => {
