@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'rest_auth',
     'matchmaking',
     'django_prometheus',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -220,18 +221,17 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-print(STATIC_ROOT + '----a')
 
 # CORS
 
 SESSION_COOKIE_SAMESITE = 'None'
 CORS_ALLOW_HEADERS = (
-    # "accept",
-    # "authorization",
+     "accept",
+     "authorization",
     "content-type",
-    # "user-agent",
-    # "x-csrftoken",
-    # "x-requested-with",
+     "user-agent",
+     "x-csrftoken",
+     "x-requested-with",
 )
 
 CORS_ALLOWED_HOSTS = [

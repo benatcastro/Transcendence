@@ -1,54 +1,39 @@
+<!-- tu_app/templates/tu_app/mostrar_tabla.html -->
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
-        }
-
-        form {
-            margin-top: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-        }
-
-        button {
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        a {
-            color: #3498db;
-            text-decoration: none;
-        }
-
-        h2 {
-            color: #333;
-        }
-
-        p.error-message {
-            color: #ff0000;
-        }
-    </style>
+    <title>Mostrar Tabla</title>
 </head>
 <body>
+
+    <h1>Información de Tablas y Contenido</h1>
+
+    {% for tabla in tablas %}
+        <h2>{{ tabla.nombre_tabla }}</h2>
+        {% if tabla.contenido_tabla %}
+            <table>
+                <thead>
+                    <tr>
+                        {% for columna, valor in tabla.contenido_tabla.0.items %}
+                            <th>{{ columna }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for fila in tabla.contenido_tabla %}
+                        <tr>
+                            {% for columna, valor in fila.items %}
+                                <td>{{ valor }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No hay contenido disponible para esta tabla.</p>
+        {% endif %}
+    {% endfor %}
 
 </body>
 </html>
