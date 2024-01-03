@@ -1,5 +1,6 @@
 // store.ts
 
+import type { Float } from '@threlte/extras';
 import { writable } from 'svelte/store';
 import type { Writable } from 'svelte/store';
 
@@ -9,10 +10,10 @@ type WebSocketType = WebSocket | null;
 // Crea un store writable para el WebSocket
 export const ws: Writable<WebSocketType> = writable(null);
 
-export const user: Writable<string | undefined> = writable('UserName');
-export const rival: Writable<string | undefined> = writable('RivalName');
+export const userName: Writable<string | undefined> = writable('UserName');
+export const rivalName: Writable<string | undefined> = writable('RivalName');
 export const room: Writable<string | undefined> = writable('RoomName');
 
-export const user_points: Writable<number> = writable(0);
-export const rival_points: Writable<number> = writable(0);
-
+export const user: Writable<JSON | null> = writable(null)
+export const rival: Writable<JSON | null> = writable(null)
+export const ball: Writable<JSON | null> = writable(null)

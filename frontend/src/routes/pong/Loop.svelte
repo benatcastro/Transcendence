@@ -1,7 +1,8 @@
 <script>
-    import * as Threlte from '@threlte/core'
+	import * as Threlte from '@threlte/core'
 
-    Threlte.useFrame(() => {
-		console.log("Loop");
-	})
+	Threlte.useFrame(() =>
+	{
+		//$ws?.send("");
+	});
 </script>

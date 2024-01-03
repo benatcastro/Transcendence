@@ -1,19 +1,29 @@
 <script lang="ts">
 	import * as Threlte from '@threlte/core'
-	import * as Three from 'three'
 	import { T } from '@threlte/core'
 	import { Collider, RigidBody, AutoColliders } from '@threlte/rapier'
 	import { DEG2RAD } from 'three/src/math/MathUtils.js'
 	import { Text } from '@threlte/extras'
 	import { useGltf, useGltfAnimations } from '@threlte/extras'
 
-	import { ws, user, rival, room } from './store';
+	import { ws, user, rival } from './store';
 
-	export let Player1Points: number = 0;
-	export let Player2Points: number = 0;
+	const setText = (): string => {
+		if ($rival && $user)
+			return $rival.name + " " + $rival.points.toString() + "\n\n\n\n\n" + $user.name + " " + $user.points.toString();
+		else if ($rival && !$user)
+			return $rival.name + " " + $rival.points.toString() + "\n\n\n\n\n" + "UserName --";
+		else if (!$rival && $user)
+			return "RivalName --" + "\n\n\n\n\n" + $user.name + " " + $user.points.toString();
+		else
+			return "RivalName --" + "\n\n\n\n\n" + "UserName --";
+	}
 
-
-	let PointText: string = $rival + " " + Player2Points.toString() + "\n\n\n\n\n" + $user + " " + Player1Points.toString();
+	let PointText: string = "";
+	Threlte.useFrame(() =>{
+		PointText = setText();
+		//console.log(PointText);
+	});
 
 </script>
 
@@ -114,8 +124,9 @@
 			args={[20, 4, 1]}
 			on:sensorenter={() => {
 				//console.log("Player 2 scored!");
-				Player2Points += 1;
-				PointText = $rival + " " + Player2Points.toString() + "\n\n\n\n\n" + $user + " " + Player1Points.toString();
+				if ($ws && $rival)
+					$ws?.send($rival.name + "_point:")
+				//PointText = setText();
 			}}
 		/>
 	</RigidBody>
@@ -138,8 +149,9 @@
 			args={[20, 4, 1]}
 			on:sensorenter={() => {
 				//console.log("Player 1 scored!");
-				Player1Points += 1;
-				PointText = $rival + " " + Player2Points.toString() + "\n\n\n\n\n" + $user + " " + Player1Points.toString();
+				if ($ws && $user)
+					$ws?.send($user.name + "_point:")
+				//PointText = setText();
 			}}
 		/>
 	</RigidBody>
@@ -166,7 +178,7 @@
 <!-- {#await useGltf('/city.glb') then city}
 	<T is={city.scene} position={[40, -40, -40]} scale={[1, 1, 2]} />
 {/await} -->
-{#await useGltf('/oil_build.glb') then oil}
+<!-- {#await useGltf('/oil_build.glb') then oil}
 	<T is={oil.scene} position={[-40, -100, -40]} scale={0.3} />
 {/await}
 {#await useGltf('/build01.glb') then build01}
@@ -174,5 +186,5 @@
 {/await}
 {#await useGltf('/city.glb') then city}
 	<T is={city.scene} position={[-120, -100, 70]} scale={2} />
-{/await}
+{/await} -->
 

@@ -6,54 +6,39 @@
     import { ws, user} from './store';
 
     //let PlayerVelocity = 10;
-    export let PlayerVelocity = 0;
+    //export let PlayerVelocity = 0;
 
     let playerX = 0;
 
     let Left = false;
     let Right = false;
 
-    const onKeyDown = (e: KeyboardEvent) =>
-    {
+    const onKeyDown = (e: KeyboardEvent) => {
         //console.log(e.key);
         e.preventDefault()
 
-		if (e.key == 'a')
+		if (e.key == 'a' && $ws && $user)
         {
             Left = true;
-            $ws?.send($user + "_move:left1")
+            $ws?.send($user.name + "_move:left")
         }
-		if (e.key == 'd')
+		if (e.key == 'd' && $ws && $user)
         {
             Right = true;
-            $ws?.send($user + "_move:right1")
+            $ws?.send($user.name + "_move:right")
         }
 	}
-    const onKeyUp = (e: KeyboardEvent) =>
-    {
+    const onKeyUp = (e: KeyboardEvent) => {
         e.preventDefault()
         if (e.key == 'a')
-        {
             Left = false;
-            $ws?.send($user + "_move:left0")
-        }
 		if (e.key == 'd')
-        {
             Right = false;
-            $ws?.send($user + "_move:right0")
-        }
 	}
 
-    Threlte.useFrame(() =>
-    {
-		if (Left && Right)
-            playerX = 0;
-        else if (Left)
-            playerX = -PlayerVelocity;
-        else if (Right)
-            playerX = PlayerVelocity;
-        else
-            playerX = 0;
+    Threlte.useFrame(() => {
+		if ($user)
+		    playerX = $user.x;
 	})
 </script>
 
@@ -61,14 +46,13 @@
 
 <!-- PLAYER 1 -->
 <T.Group
-    position={[0, 1, 15]}
+    position={[playerX, 1, 15]}
 >
     <RigidBody
         gravityScale={0}
         enabledTranslations={[false, false, false]}
         enabledRotations={[false, false, false]}
         userData={{tag: 'player1'}}
-        linearVelocity={[playerX, 0, 0]}
     >
     <Collider
       shape={'cuboid'}
