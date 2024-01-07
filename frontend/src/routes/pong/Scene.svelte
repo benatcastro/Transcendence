@@ -1,10 +1,9 @@
 <script lang="ts">
 	import * as Threlte from '@threlte/core'
 	import { T } from '@threlte/core'
-	import { Collider, RigidBody, AutoColliders } from '@threlte/rapier'
 	import { DEG2RAD } from 'three/src/math/MathUtils.js'
 	import { Text } from '@threlte/extras'
-	import { useGltf, useGltfAnimations } from '@threlte/extras'
+	import { useGltf } from '@threlte/extras'
 
 	import { ws, user, rival } from './store';
 
@@ -31,73 +30,52 @@
 <T.Group
 	position={[16, 1, 0]}
 >
-	<RigidBody
-		type={'dynamic'}
-		gravityScale={0}
-		enabledTranslations={[false, false, false]}
-		enabledRotations={[false, false, false]}
-		userData={{tag: 'Wall'}}
-	>
-		tag={'WallRight'}
-		<AutoColliders shape={'cuboid'}>
-			<T.Mesh position={[0, 1, 0]} rotation={[DEG2RAD * 90, 0, 0]}>
-				<T.CylinderGeometry args={[0.2, 0.2, 31]}/>
-				<T.MeshBasicMaterial color="#ffffff"/>
-			</T.Mesh>
-			<T.Mesh position={[0, 0, 0]} rotation={[DEG2RAD * 90, 0, 0]}>
-				<T.CylinderGeometry args={[0.2, 0.2, 31]}/>
-				<T.MeshBasicMaterial color="#ffffff"/>
-			</T.Mesh>
-			<T.Mesh position={[0, -1, 0]} rotation={[DEG2RAD * 90, 0, 0]}>
-				<T.CylinderGeometry args={[0.2, 0.2, 31]}/>
-				<T.MeshBasicMaterial color="#ffffff"/>
-			</T.Mesh>
-			<T.Mesh position={[0, 0, 15.5]} rotation={[DEG2RAD * 90, 0, 0]}>
-				<T.BoxGeometry args={[1, 1, 3]}/>
-				<T.MeshStandardMaterial color="#000000"/>
-			</T.Mesh>
-			<T.Mesh position={[0, 0, -15.5]} rotation={[DEG2RAD * 90, 0, 0]}>
-				<T.BoxGeometry args={[1, 1, 3]}/>
-				<T.MeshStandardMaterial color="#000000"/>
-			</T.Mesh>
-		</AutoColliders>
-	</RigidBody>
+	<T.Mesh position={[0, 1, 0]} rotation={[DEG2RAD * 90, 0, 0]}>
+		<T.CylinderGeometry args={[0.2, 0.2, 31]}/>
+		<T.MeshBasicMaterial color="#ffffff"/>
+	</T.Mesh>
+	<T.Mesh position={[0, 0, 0]} rotation={[DEG2RAD * 90, 0, 0]}>
+		<T.CylinderGeometry args={[0.2, 0.2, 31]}/>
+		<T.MeshBasicMaterial color="#ffffff"/>
+	</T.Mesh>
+	<T.Mesh position={[0, -1, 0]} rotation={[DEG2RAD * 90, 0, 0]}>
+		<T.CylinderGeometry args={[0.2, 0.2, 31]}/>
+		<T.MeshBasicMaterial color="#ffffff"/>
+	</T.Mesh>
+	<T.Mesh position={[0, 0, 15.5]} rotation={[DEG2RAD * 90, 0, 0]}>
+		<T.BoxGeometry args={[1, 1, 3]}/>
+		<T.MeshStandardMaterial color="#000000"/>
+	</T.Mesh>
+	<T.Mesh position={[0, 0, -15.5]} rotation={[DEG2RAD * 90, 0, 0]}>
+		<T.BoxGeometry args={[1, 1, 3]}/>
+		<T.MeshStandardMaterial color="#000000"/>
+	</T.Mesh>
 </T.Group>
 
 <!-- WALL LEFT -->
 <T.Group
 	position={[-15, 1, 0]}
 >
-	<RigidBody
-		type={'dynamic'}
-		gravityScale={0}
-		enabledTranslations={[false, false, false]}
-		enabledRotations={[false, false, false]}
-		userData={{tag: 'Wall'}}
-	>
-		<AutoColliders shape={'cuboid'}>
-			<T.Mesh position={[0, 1, 0]} rotation={[DEG2RAD * 90, 0, 0]}>
-				<T.CylinderGeometry args={[0.2, 0.2, 31]}/>
-				<T.MeshBasicMaterial color="#ffffff"/>
-			</T.Mesh>
-			<T.Mesh position={[0, 0, 0]} rotation={[DEG2RAD * 90, 0, 0]}>
-				<T.CylinderGeometry args={[0.2, 0.2, 31]}/>
-				<T.MeshBasicMaterial color="#ffffff"/>
-			</T.Mesh>
-			<T.Mesh position={[0, -1, 0]} rotation={[DEG2RAD * 90, 0, 0]}>
-				<T.CylinderGeometry args={[0.2, 0.2, 31]}/>
-				<T.MeshBasicMaterial color="#ffffff"/>
-			</T.Mesh>
-			<T.Mesh position={[0, 0, 15.5]} rotation={[DEG2RAD * 90, 0, 0]}>
-				<T.BoxGeometry args={[1, 1, 3]}/>
-				<T.MeshStandardMaterial color="#000000"/>
-			</T.Mesh>
-			<T.Mesh position={[0, 0, -15.5]} rotation={[DEG2RAD * 90, 0, 0]}>
-				<T.BoxGeometry args={[1, 1, 3]}/>
-				<T.MeshStandardMaterial color="#000000"/>
-			</T.Mesh>
-		</AutoColliders>
-	</RigidBody>
+	<T.Mesh position={[0, 1, 0]} rotation={[DEG2RAD * 90, 0, 0]}>
+		<T.CylinderGeometry args={[0.2, 0.2, 31]}/>
+		<T.MeshBasicMaterial color="#ffffff"/>
+	</T.Mesh>
+	<T.Mesh position={[0, 0, 0]} rotation={[DEG2RAD * 90, 0, 0]}>
+		<T.CylinderGeometry args={[0.2, 0.2, 31]}/>
+		<T.MeshBasicMaterial color="#ffffff"/>
+	</T.Mesh>
+	<T.Mesh position={[0, -1, 0]} rotation={[DEG2RAD * 90, 0, 0]}>
+		<T.CylinderGeometry args={[0.2, 0.2, 31]}/>
+		<T.MeshBasicMaterial color="#ffffff"/>
+	</T.Mesh>
+	<T.Mesh position={[0, 0, 15.5]} rotation={[DEG2RAD * 90, 0, 0]}>
+		<T.BoxGeometry args={[1, 1, 3]}/>
+		<T.MeshStandardMaterial color="#000000"/>
+	</T.Mesh>
+	<T.Mesh position={[0, 0, -15.5]} rotation={[DEG2RAD * 90, 0, 0]}>
+		<T.BoxGeometry args={[1, 1, 3]}/>
+		<T.MeshStandardMaterial color="#000000"/>
+	</T.Mesh>
 </T.Group>
 	
 
@@ -106,56 +84,6 @@
 	<T.PlaneGeometry args={[20, 30]} />
 	<T.MeshStandardMaterial color="#ffffff" side={Three.DoubleSide} />
 </T.Mesh> -->
-
-<!-- POINT TRIGGERS -->
-<T.Group
-	position={[0, 2, 17.5]}
->
-	<RigidBody
-		type={'dynamic'}
-		gravityScale={0}
-		enabledTranslations={[false, false, false]}
-		enabledRotations={[false, false, false]}
-		userData={{tag: 'Point'}}
-	>
-		<Collider
-			sensor
-			shape={'cuboid'}
-			args={[20, 4, 1]}
-			on:sensorenter={() => {
-				//console.log("Player 2 scored!");
-				if ($ws && $rival)
-					$ws?.send($rival.name + "_point:")
-				//PointText = setText();
-			}}
-		/>
-	</RigidBody>
-</T.Group>
-
-<!-- POINT TRIGGERS -->
-<T.Group
-	position={[0, 2, -17.5]}
->
-	<RigidBody
-		type={'dynamic'}
-		gravityScale={0}
-		enabledTranslations={[false, false, false]}
-		enabledRotations={[false, false, false]}
-		userData={{tag: 'Point'}}
-	>
-		<Collider
-			sensor
-			shape={'cuboid'}
-			args={[20, 4, 1]}
-			on:sensorenter={() => {
-				//console.log("Player 1 scored!");
-				if ($ws && $user)
-					$ws?.send($user.name + "_point:")
-				//PointText = setText();
-			}}
-		/>
-	</RigidBody>
-</T.Group>
 
 <T.Group
 	rotation={[DEG2RAD * -90, 0, 0]}

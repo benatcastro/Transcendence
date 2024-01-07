@@ -13,6 +13,7 @@ export const ws: Writable<WebSocketType> = writable(null);
 export const userName: Writable<string | undefined> = writable('UserName');
 export const rivalName: Writable<string | undefined> = writable('RivalName');
 export const room: Writable<string | undefined> = writable('RoomName');
+export const isPlayer1: Writable<Boolean> = writable(false);
 
 export const user: Writable<JSON | null> = writable(null)
 export const rival: Writable<JSON | null> = writable(null)

@@ -7,11 +7,10 @@
 	import Bloom from './bloom.svelte'
 	import { onMount } from 'svelte';
     import { page } from '$app/stores';
-	import { ws, userName, rivalName, room, ball, user, rival } from './store';
+	import { ws, userName, rivalName, room, ball, user, rival, isPlayer1 } from './store';
 	
     import Scene from './Scene.svelte'
     import Ball from './Ball.svelte'
-    import Loop from './Loop.svelte'
 
     import Player1 from './Player1.svelte'
     import Player2 from './Player2.svelte'
@@ -43,11 +42,13 @@
 				{
 					$user = JSON.parse(event.data.split('_')[0]);
 					$rival = JSON.parse(event.data.split('_')[1]);
+					$isPlayer1 = true;
 				}
 				else
 				{
 					$rival = JSON.parse(event.data.split('_')[0]);
 					$user = JSON.parse(event.data.split('_')[1]);
+					$isPlayer1 = false;
 				}
 				$ball = JSON.parse(event.data.split('_')[2]);
 			};
@@ -67,7 +68,6 @@
 		<Player1 />
 		<Player2 />
 		<Ball />
-		<Loop />
 
 		<!-- <StarsEmitter /> -->
 		
@@ -108,11 +108,5 @@
 		/>
 
 		<T.FogExp2 color={'#dddddd'} density={100} />
-
-
-		<!-- <Debug
-			depthTest={false}
-			depthWrite={false}
-		/> -->
 	</World>
 </Threlte.Canvas>
