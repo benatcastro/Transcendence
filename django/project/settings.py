@@ -57,11 +57,14 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'dj_rest_auth',
     'rest_auth',
+    'matchmaking',
+    'django_prometheus',
     'channels',
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
+ 'django_prometheus.middleware.PrometheusBeforeMiddleware',  #importante que este middleware este colocado el primero
+ 'corsheaders.middleware.CorsMiddleware',
     "django.middleware.security.SecurityMiddleware",
     'whitenoise.middleware.WhiteNoiseMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -70,6 +73,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    'django_prometheus.middleware.PrometheusAfterMiddleware',  #importante que este middleware este colocado el ultimo
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -152,7 +156,7 @@ TEMPLATES = [
     },
 ]
 
-RUNSERVERPLUS_POLLER_RELOADER_INTERVAL = 1
+RUNSERVERPLUS_POLLER_RELOADER_INTERVAL = 3
 RUNSERVERPLUS_POLLER_RELOADER_TYPE = 'auto'
 WSGI_APPLICATION = "project.wsgi.application"
 ASGI_APPLICATION = "game.routing.application"
@@ -232,6 +236,13 @@ CORS_ALLOW_HEADERS = (
      "x-requested-with",
 )
 
+CORS_ALLOWED_HOSTS = [
+    'localhost'
+]
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost',
+    'http://localhost:5173',
+]
 
 CORS_ALLOW_CREDENTIALS = True
 
