@@ -1,7 +1,24 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import {onMount} from "svelte";
 
 	let menuOpts: string[] = ['Volume', 'Graphics', 'Game'];
+	let volume: number = 1;
+
+	function handleVolumeChange(e: Event) {
+		volume = (e.target as HTMLInputElement).valueAsNumber / 100;
+		let audio = document.querySelector('audio');
+
+		audio.volume = volume;
+	}
+
+	onMount(() => {
+		handleVolumeChange({
+			target: {
+				valueAsNumber: volume * 100
+			} as any
+		} as Event);
+	});
 </script>
 
 <svelte:head>
@@ -16,15 +33,22 @@
 	/>
 </svelte:head>
 
-<h2>Settings</h2>
-<menu>
-	<!-- Volume on click opens sub-menu for music and sound effects -->
-	<!-- Graphics click opens sub-menu for animations and effects, as well as general graphics -->
-	<!-- Game click opens sub-menu for skins and personalization -->
-	{#each menuOpts as opt}
-		<button>{opt}</button>
-	{/each}
-</menu>
+<div class="d-flex flex-column flex-center">
+	<h2>Settings</h2>
+	<menu class="d-flex flex-column p-2">
+		<!-- Volume on click opens sub-menu for music and sound effects -->
+		<!-- Graphics click opens sub-menu for animations and effects, as well as general graphics -->
+		<!-- Game click opens sub-menu for skins and personalization -->
+		{#each menuOpts as opt}
+			{#if opt === 'Volume'}
+				<p class="mx-auto">Volume</p>
+				<input type="range" min="0" max="100" step="1" on:input={handleVolumeChange} />
+			{:else}
+				<button class="my-2">{opt}</button>
+			{/if}
+		{/each}
+	</menu>
+</div>
 <a on:click={() => goto('/')} href="/">&lt;</a>
 
 <style>

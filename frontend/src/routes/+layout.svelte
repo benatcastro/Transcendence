@@ -1,4 +1,6 @@
 <script lang="ts">
+	import {goto} from "$app/navigation";
+
 	const AUDIO_SRC = '/sound/Half_Mystery.mp3';
 	const VOL_ON_IMAGE_SRC = '/assets/icons/volume-on.svg';
 	const VOL_OFF_IMAGE_SRC = '/assets/icons/volume-off.svg';
@@ -31,7 +33,7 @@
 		/>
 	</button>
 	<div>
-		<button class="btn shadow-none p-0" on:click={toggleMusic}>
+		<button class="btn shadow-none p-0" on:click={() => goto('/profile')}>
 			<img
 				loading="lazy"
 				src={'/assets/icons/profile.svg'}
@@ -39,11 +41,12 @@
 				class="w-header h-auto"
 			/>
 		</button>
-		<button class="btn shadow-none p-0" on:click={toggleMusic}>
+		<button class="btn shadow-none p-0" on:click={() => goto('/settings')}>
+			<!-- Change to dropdown when on game -->
 			<img
 				loading="lazy"
 				src={'/assets/icons/settings.svg'}
-				alt="settings button"
+				alt="Settings button"
 				class="w-header h-auto"
 			/>
 		</button>

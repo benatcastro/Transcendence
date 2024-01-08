@@ -21,7 +21,7 @@ prune:
 clean: down prune
 
 fclean: clean
-	docker volume rm -f $(docker volume ls -q)  # Remove all volumes
+	docker compose down -v --remove-orphans --rmi all
 
 migrations:
 	docker compose exec django sh -c "python manage.py makemigrations && python manage.py migrate"
