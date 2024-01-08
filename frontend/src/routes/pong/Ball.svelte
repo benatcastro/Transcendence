@@ -4,11 +4,16 @@
 </script>
 
 <script lang="ts">
-	import * as Threlte from '@threlte/core';
+	import * as Threlte from '@threlte/core'
 	import { T } from '@threlte/core';
 	import { MeshStandardMaterial, SphereGeometry, Vector3, BoxGeometry, Object3D, Group, type Euler} from 'three';
 	import { Collider, RigidBody } from '@threlte/rapier';
 	import { useGltf } from '@threlte/extras';
+	import { ws, ball } from './store';
+
+	let ballX = 0;
+	let ballZ = 0;
+
 
 	let xPower = getRandomNumber();
 	let zPower = 7;
@@ -22,6 +27,12 @@
 			zPower *= -1.2;
 		else if (e.targetRigidBody.userData['tag'] == "Wall")
 			xPower *= -1;
+
+		if (zPower >= 35)
+			zPower = 35;
+		else if (zPower <= -35)
+			zPower = -35;
+
 		linearVelocity = [xPower, 0, zPower];
 	}
 
@@ -43,19 +54,28 @@
 		} while (numeroAleatorio === 0); // Repite si el número es 0
 
 		return numeroAleatorio;
-	}	
+	}
+	
+	Threlte.useFrame(() =>
+	{
+		if ($ball && $ws)
+		{
+			$ws?.send("ball_move:")
+			ballX = $ball.x;
+			ballZ = $ball.z;
+		}
+	});
 </script>
 
 {#key unique}
 	{#await useGltf('/ball.glb') then ball}
 		<T.Object3D
-			position={[0, 1, 0]}
+			position={[ballX, 1, ballZ]}
 			rotation={getRandomRotation()}
 		>
 			<RigidBody
 				type={'dynamic'}
 				gravityScale={0}
-				linearVelocity={linearVelocity}
 				enabledTranslations={[true, false, true]}
 				enabledRotations={[true, true, false]}
 				on:contact={ChangeDirection}
