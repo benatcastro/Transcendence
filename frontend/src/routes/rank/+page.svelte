@@ -1,4 +1,13 @@
 <script lang="ts">
+	import {onMount} from "svelte";
+
+	let users = [];
+
+	onMount(async () => {
+		const response = await fetch("http://localhost:8000/api/users/");
+		users = await response.json();
+		users.sort((a, b) => a.username.localeCompare(b.username));
+	});
 </script>
 
 <svelte:head>
@@ -17,4 +26,11 @@
 	/>
 </svelte:head>
 
-<h1>Ranking mockup</h1>
+<div class="d-flex flex-column flex-center">
+	<h1>Ranking mockup</h1>
+	<ul>
+		{#each users as user}
+			<li>{user.username} - {user.id}</li>
+		{/each}
+	</ul>
+</div>
