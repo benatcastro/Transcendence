@@ -22,18 +22,24 @@ services:
     depends_on:
       - django
     restart: "on-failure"
-
+  redis:
+    container_name: redis
+    image: "redis:latest"
+    expose:
+      - "6379"
   django:
     container_name: django
     build: ./django
     command: sh -c "python manage.py makemigrations &&
                     python manage.py migrate &&
-                    python manage.py runserver_plus 0.0.0.0:${APP_PORT}"
+                    uvicorn project.asgi:application --host 0.0.0.0 --port ${APP_PORT} --reload"
     volumes:
       - .:/microservice
       - ./static_volume:/home/app/microservice/static
       - ./django:/home/app/webapp
     env_file: .env
+    environment:
+      - DJANGO_SETTINGS_MODULE=project.settings
     ports:
       - "8000:8000"
     image: trascendence_app
@@ -42,6 +48,7 @@ services:
     restart: "on-failure"
     depends_on:
       - db
+      - redis
 
   db:
     image: postgres:16.1-alpine3.18

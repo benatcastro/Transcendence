@@ -1,16 +1,26 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { json } from '@sveltejs/kit';
 	import { onMount } from 'svelte';
+	import { goto } from "$app/navigation";
 
 	const mode = $page.url.searchParams.get('mode');
 	const user = $page.url.searchParams.get('user');
 	let rival: string;
+	let room: string;
+	let response_json;
 
 	onMount(async () => {
 		const res = await fetch(`http://localhost:8000/matchmaking/search?mode=${mode}&user=${user}`);
 		if (res.ok) {
-			rival = (await res.json())['rival'];
-		} else {
+			response_json = await res.json();
+			rival = response_json['rival'];
+			room = response_json['room'];
+			console.log(rival);
+			console.log(room);
+			goto(`http://localhost:5173/pong?user=${user}&rival=${rival}&room=${room}`);
+		}
+		else {
 			console.error("fetch request didn't resolve");
 			throw new Error("Couldn't fetch rival");
 		}

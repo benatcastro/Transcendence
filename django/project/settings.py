@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'dj_rest_auth',
     'rest_auth',
+    'channels',
     'django_prometheus',
     'drf_yasg',
 ]
@@ -158,6 +159,7 @@ TEMPLATES = [
 RUNSERVERPLUS_POLLER_RELOADER_INTERVAL = 1
 RUNSERVERPLUS_POLLER_RELOADER_TYPE = 'auto'
 WSGI_APPLICATION = "project.wsgi.application"
+ASGI_APPLICATION = "game.routing.application"
 WHITENOISE_AUTOREFRESH = True  # Habilita la actualización en tiempo real para archivos estáticos
 
 # Database
@@ -251,6 +253,14 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_HOSTS = ["*"]
 CORS_ALLOW_ALL_ORIGINS = True
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)],
+        },
+    },
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

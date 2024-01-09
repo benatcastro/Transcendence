@@ -26,7 +26,12 @@
 			goto(`http://localhost:8000/auth/${loginSelection}/login`);
 		}
 	});
+
+
 </script>
+
+
+  
 
 <svelte:head>
 	<title>CyberPong</title>
@@ -55,7 +60,15 @@
 	</nav>
 </div>
 
+
+ 
+
 <style>
+		main {
+	  text-align: center;
+	  margin-top: 50px;
+	}
+
 	/*@font-face {
 		font-family: 'Cyberway Riders';
 		src: url('/fonts/cyberway_riders/Cyberway Riders.otf') format('opentype');

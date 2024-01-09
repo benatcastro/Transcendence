@@ -1,20 +1,62 @@
 <script lang="ts">
 	import * as Threlte from '@threlte/core'
-	import { T, useFrame } from '@threlte/core'
-	import { Grid, OrbitControls, Environment } from '@threlte/extras'
+	import { T } from '@threlte/core'
+	import { OrbitControls, Environment } from '@threlte/extras'
 	import { Debug } from '@threlte/rapier'
 	import { World } from '@threlte/rapier'
 	import Bloom from './bloom.svelte'
-	import StarsEmitter from './StarsEmitter.svelte'
+	import { onMount } from 'svelte';
+    import { page } from '$app/stores';
+	import { ws, userName, rivalName, room, ball, user, rival, isPlayer1 } from './store';
 	
     import Scene from './Scene.svelte'
     import Ball from './Ball.svelte'
 
     import Player1 from './Player1.svelte'
     import Player2 from './Player2.svelte'
+	//import { esbuildVersion } from 'vite';
 
 	let path = './'
 	let files: string | string[] = 'Skybox.png'
+
+	//ws.set(new WebSocket('ws://localhost:8000/ws/game/?room_code=' + room))
+	onMount(() => {
+		userName.set($page.url.searchParams.get('user')?.toString());
+		rivalName.set($page.url.searchParams.get('rival')?.toString());
+		room.set($page.url.searchParams.get('room')?.toString());
+
+		console.log('user: ' + $page.url.searchParams.get('user')?.toString());
+		console.log('rival: ' + $page.url.searchParams.get('rival')?.toString());
+		console.log('room: ' + $room);
+
+		// Crea tu WebSocket
+		ws.set(new WebSocket('ws://localhost:8000/ws/game/?room_code=' + $room + '&username=' + $page.url.searchParams.get('user')?.toString()));
+		
+		if ($ws) {
+			$ws.onopen = () => {
+				console.log('WebSocket connection opened');
+			};
+			$ws.onmessage = (event) => {
+				//console.log('WebSocket message received:', event.data);
+				if ($userName == JSON.parse(event.data.split('_')[0]).name)
+				{
+					$user = JSON.parse(event.data.split('_')[0]);
+					$rival = JSON.parse(event.data.split('_')[1]);
+					$isPlayer1 = true;
+				}
+				else
+				{
+					$rival = JSON.parse(event.data.split('_')[0]);
+					$user = JSON.parse(event.data.split('_')[1]);
+					$isPlayer1 = false;
+				}
+				$ball = JSON.parse(event.data.split('_')[2]);
+			};
+			$ws.onclose = () => {
+				console.log('WebSocket connection closed');
+			};
+		}
+	});
 
 </script>
 
@@ -23,8 +65,8 @@
 <Threlte.Canvas>
 	<World>
 		<Scene />
-		<Player1 PlayerVelocity={10}/>
-		<Player2 PlayerVelocity={10}/>
+		<Player1 />
+		<Player2 />
 		<Ball />
 
 		<!-- <StarsEmitter /> -->
@@ -66,11 +108,5 @@
 		/>
 
 		<T.FogExp2 color={'#dddddd'} density={100} />
-
-
-		<!-- <Debug
-			depthTest={false}
-			depthWrite={false}
-		/> -->
 	</World>
 </Threlte.Canvas>
