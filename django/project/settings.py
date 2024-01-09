@@ -31,7 +31,7 @@ SECRET_KEY = "django-insecure-o&5&cg&s$mziwz^o2gb=p2^pb3_l8wh8+y+%0&@d_n45nx!jd5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost:5173', 'localhost']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -240,16 +240,16 @@ CORS_ALLOW_HEADERS = (
 CORS_ALLOW_CREDENTIALS = True
 
 # CON ESTO ALGUNA VARIBLES DE GET NO PASAN DE FRONTEND A BACKED
-# CORS_ALLOWED_HOSTS = [
-#     'localhost',
-#     'localhost:5173',
-# ]
+CORS_ALLOWED_HOSTS = [
+    'localhost',
+    'localhost:5173',
+]
 
-# CORS_ALLOWED_ORIGINS = [
-#     'http://localhost',
-#     'http://localhost:5173/',
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost',
+    'http://localhost:5173',
 
-# ]
+]
 
 CORS_ALLOWED_HOSTS = ["*"]
 CORS_ALLOW_ALL_ORIGINS = True

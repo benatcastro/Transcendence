@@ -54,7 +54,6 @@ class Ball():
 			self.dirZ = 1
 		self.dirX = random.choice(dirxList)
 
-		# Normalizar el vector de dirección para mantener una velocidad constante
 		magnitude = math.sqrt(self.dirX**2 + self.dirZ**2)
 		if magnitude != 0:
 			self.dirX /= magnitude
@@ -88,16 +87,32 @@ class Ball():
 		if (self.z <= -14.5):
 			if (player1.y < 0):
 				if (abs(self.x - player1.x) <= 3):
+					if (self.x - player1.x < 0):
+						self.dirX = -1
+					else:
+						self.dirX = 1
 					self.dirZ *= -1
 			else:
-				if (abs(self.x - player2.x) <= 3):
+				if (abs(self.x - -player2.x) <= 3):
+					if (self.x - -player2.x < 0):
+						self.dirX = -1
+					else:
+						self.dirX = 1
 					self.dirZ *= -1
 		if (self.z >= 14.5):
 			if (player1.y > 0):
 				if (abs(self.x - player1.x) <= 3):
+					if (self.x - player1.x < 0):
+						self.dirX = -1
+					else:
+						self.dirX = 1
 					self.dirZ *= -1
 			else:
-				if (abs(self.x - player2.x) <= 3):
+				if (abs(self.x - -player2.x) <= 3):
+					if (self.x - -player2.x < 0):
+						self.dirX = -1
+					else:
+						self.dirX = 1
 					self.dirZ *= -1
 			
 # salas_activas = {}
