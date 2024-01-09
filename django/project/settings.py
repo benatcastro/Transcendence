@@ -57,10 +57,14 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'dj_rest_auth',
     'rest_auth',
+    'matchmaking',
+    'django_prometheus',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
+ 'django_prometheus.middleware.PrometheusBeforeMiddleware',  #importante que este middleware este colocado el primero
+ 'corsheaders.middleware.CorsMiddleware',
     "django.middleware.security.SecurityMiddleware",
     'whitenoise.middleware.WhiteNoiseMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -69,6 +73,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    'django_prometheus.middleware.PrometheusAfterMiddleware',  #importante que este middleware este colocado el ultimo
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -217,18 +222,17 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-print(STATIC_ROOT + '----a')
 
 # CORS
 
 SESSION_COOKIE_SAMESITE = 'None'
 CORS_ALLOW_HEADERS = (
-    # "accept",
-    # "authorization",
+     "accept",
+     "authorization",
     "content-type",
-    # "user-agent",
-    # "x-csrftoken",
-    # "x-requested-with",
+     "user-agent",
+     "x-csrftoken",
+     "x-requested-with",
 )
 
 

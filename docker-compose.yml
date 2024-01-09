@@ -15,6 +15,8 @@ services:
     build: ./nginx
     ports:
       - "80:80"
+      - "8080:8080"
+      - "82:82"
     volumes:
       - ./static_volume:/home/app/microservice/static
     depends_on:
@@ -55,22 +57,54 @@ services:
       - "5432:5432"
     restart: "on-failure"
 
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    expose:
+      - "3000"
+    volumes:
+      - ./data/grafana-data:/var/lib/grafana
+    environment:
+      - GF_AUTH_GITHUB_ENABLED=${ENABLE_GIT}
+      - GF_AUTH_DISABLE_LOGIN_FORM=${GRAFANA_DISABLE_LOGIN_BASIC}
+        #- GF_AUTH_GENERIC_OAUTH_ENABLED=true
+      - GF_AUTH_GITHUB_CLIENT_ID=${G_CLIENT}
+      - GF_AUTH_GITHUB_CLIENT_SECRET=${G_SECRETS}
+      - GF_AUTH_GENERIC_OAUTH_NAME=${AUTH_NAME}
+      - GF_AUTH_GENERIC_OAUTH_URL=${GENERIC_OUTH_URL}
+      - GF_AUTH_GENERIC_OAUTH_TOKEN_URL=${GENERIC_OUT_PATH}
+      - GF_PROMETHEUS_DATASOURCE_HTTP_ENCRYPTION=${PROMETHEUS_HTTP_ENC}
+      - GF_PROMETHEUS_DATASOURCE_HTTP_ENCRYPTION_KEY=${PROMETHEUS_PASS_ENC}
+      - GF_PROMETHEUS_DATASOURCE_URL=${PROMETHEUS_DATASOURCE}
+        #- GF_AUTH_GENERIC_OAUTH_REQUIRE_2FA=true
+      - GF_AUTH_GENERIC_OAUTH_ALLOWED_ORGANIZATIONS=outhcyberpunk
+        #- GF_LOG_LEVEL=debug
+      - GF_AUTH_GITHUB_ALLOWED_ORGANIZATIONS=${GIT_ORG}
+      - GF_AUTH_GITHUB_AUTO_LOGIN=${GIT_AUTH_LOGIN}
+      - GF_AUTH_GENERIC_OAUTH_SCOPES=${GF_SCOPE}
+      - GF_AUTH_GENERIC_OAUTH_ALLOW_SIGN_UP=${GIT_AUTH_LOGIN}
+        #- GF_AUTH_GITHUB_ALLOW_ASSIGN_GRAFANA_ADMIN=true
+        #- GF_SERVER_ROOT_URL=http://localhost:3000
+        #- GF_AUTH_GENERIC_OAUTH_ALLOW_ASSIGN_GRAFANA_ADMIN=true
+      - GF_SERVER_HTTP_PORT=${GF_PORT}
+      - GF_SERVER_PROTOCOL=${GF_PROTOCOL}
+      - GF_SERVER_DOMAIN=${GF_DOMAIN}
+      - GF_SERVER_ROOT_URL=${GF_SERV_ROOT}
+      - GF_SERVER_SERVE_FROM_SUB_PATH=${ACTIVATE_SERV_ROOT}
+      - GF_AUTH_GITHUB_ROLE_ATTRIBUTE_PATH=${GIT_ROLE}
+      - GF_AUTH_GITHUB_API_URL=${GIT_USER_API}
+      - GF_AUTH_GITHUB_ALLOW_SIGN_UP=true
+
+    restart: "on-failure"
+  prometheus:
+    container_name: prometheus
+    restart: "on-failure"
+    image: prom/prometheus
+    expose:
+      - "9090"
+
 volumes:
   postgres_data:
-    driver: local
-    driver_opts:
-      type: volume
-      o: bind
-      device: ${DB_DATA_PATH}
   django_sources:
-    driver: local
-    driver_opts:
-      type: volume
-      o: bind
-      device: ./django
   static_volume:
-    driver: local
-    driver_opts:
-      type: volume
-      o: bind
-      device: ./data/static
+  grafana-data:
