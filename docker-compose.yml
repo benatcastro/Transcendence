@@ -51,7 +51,39 @@ services:
       - db
       - redis
 
+  node_exporter:
+    image: prom/node-exporter
+    volumes:
+      - "/proc:/host/proc:ro"
+      - "/sys:/host/sys:ro"
+      - "/:/rootfs:ro"
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points'
+      - '^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - "9100:9100"
+    restart: always
+
+  cadvisor:
+    privileged: true
+    container_name: cadvisor
+    image: gcr.io/cadvisor/cadvisor:v0.47.2
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/kmsg:/dev/kmsg
+    ports:
+      - "9150:8080"
+    restart: always
+
+
+
   db:
+    container_name: postgres
     image: postgres:16.1-alpine3.18
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -64,6 +96,15 @@ services:
     ports:
       - "5432:5432"
     restart: "on-failure"
+  
+  postgres_exporter:
+    image: wrouesnel/postgres_exporter
+    environment:
+      DATA_SOURCE_NAME: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${DB_PORT}/${POSTGRES_DB}?sslmode=disable
+    ports:
+      - "9187:9817"
+    depends_on:
+      - db
 
   grafana:
     container_name: grafana
@@ -108,6 +149,8 @@ services:
     container_name: prometheus
     restart: "on-failure"
     image: prom/prometheus
+    volumes: 
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
     expose:
       - "9090"
 
