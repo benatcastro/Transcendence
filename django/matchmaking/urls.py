@@ -1,6 +1,9 @@
 from django.urls import path
-from .views import show
-
+from .views import show, delete, clear, search, create
 urlpatterns = [
-    path('', show, name='show'),
+    path('', show),
+    path('create-usr', create),
+    path('delete', delete),
+    path('clear', clear),
+    path('search', search),
 ]
