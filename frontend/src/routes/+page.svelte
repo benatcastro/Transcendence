@@ -60,16 +60,13 @@
 	</nav>
 </div>
 
-
- 
-
 <style>
 		main {
 	  text-align: center;
 	  margin-top: 50px;
 	}
 
-	/*@font-face {
+	@font-face {
 		font-family: 'Cyberway Riders';
 		src: url('/fonts/cyberway_riders/Cyberway Riders.otf') format('opentype');
 	}
@@ -85,5 +82,5 @@
 
 	.font-xe {
 		font-family: 'xenotron', sans-serif;
-	}*/
+	}
 </style>
