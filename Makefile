@@ -3,9 +3,13 @@ HEADER := $(shell tput -Txterm setaf 6)
 GREEN := $(shell tput -Txterm setaf 2)
 DEFAULT := $(shell tput -Txterm sgr0)
 
-all: create_folders build
+all: create_folders build grafana_up
 	@echo "${GREEN}All done!${DEFAULT}"
 
+grafana_up:
+	export UID=$(id -u); \
+    	export GID=$(id -g);
+	@echo "${GREEN} Grafana permissions done!!${DEFAULT}"
 build:
 	docker compose up --build
 
@@ -30,6 +34,7 @@ create_folders:
 	@mkdir -p ./data/djangoFiles
 	@mkdir -p ./data/static
 	@mkdir -p ./data/postgres
+	@mkdir -p ./data/grafana-data
 	@echo "${GREEN}Folders created successfully.${DEFAULT}"
 
 reload_django:
@@ -65,4 +70,4 @@ help:
 	@echo "${GREEN}Note:${DEFAULT} Make sure to have Docker and docker compose installed to run the commands."
 	@echo ""
 
-.PHONY: all build up down prune clean fclean migrations create_folders help reload_django
+.PHONY: all build up down prune clean fclean migrations create_folders help reload_django grafana_up

@@ -113,6 +113,7 @@ services:
       - "3000"
     volumes:
       - ./data/grafana-data:/var/lib/grafana
+    user: "${UID}:${GID}"
     environment:
       - GF_AUTH_GITHUB_ENABLED=${ENABLE_GIT}
       - GF_AUTH_DISABLE_LOGIN_FORM=${GRAFANA_DISABLE_LOGIN_BASIC}
@@ -143,7 +144,6 @@ services:
       - GF_AUTH_GITHUB_ROLE_ATTRIBUTE_PATH=${GIT_ROLE}
       - GF_AUTH_GITHUB_API_URL=${GIT_USER_API}
       - GF_AUTH_GITHUB_ALLOW_SIGN_UP=true
-
     restart: "on-failure"
   prometheus:
     container_name: prometheus
