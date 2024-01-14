@@ -11,14 +11,14 @@
 	let response_json;
 
 	onMount(async () => {
-		const res = await fetch(`http://localhost:8000/matchmaking/search?mode=${mode}&user=${user}`);
+		const res = await fetch(`django:8000/matchmaking/search?mode=${mode}&user=${user}`);
 		if (res.ok) {
 			response_json = await res.json();
 			rival = response_json['rival'];
 			room = response_json['room'];
 			console.log(rival);
 			console.log(room);
-			goto(`http://localhost:5173/pong?user=${user}&rival=${rival}&room=${room}`);
+			goto(`http://localhost/pong?user=${user}&rival=${rival}&room=${room}`);
 		}
 		else {
 			console.error("fetch request didn't resolve");

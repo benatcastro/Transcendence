@@ -37,8 +37,9 @@ create_folders:
 	@mkdir -p ./data/grafana-data
 	@echo "${GREEN}Folders created successfully.${DEFAULT}"
 
-reload_django:
+django:
 	docker compose up --force-recreate --build -d django
+
 
 help:
 	@echo "${HEADER}${DEFAULT}"

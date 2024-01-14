@@ -19,7 +19,6 @@
 	let path = './'
 	let files: string | string[] = 'Skybox.png'
 
-	//ws.set(new WebSocket('ws://localhost:8000/ws/game/?room_code=' + room))
 	onMount(() => {
 		userName.set($page.url.searchParams.get('user')?.toString());
 		rivalName.set($page.url.searchParams.get('rival')?.toString());

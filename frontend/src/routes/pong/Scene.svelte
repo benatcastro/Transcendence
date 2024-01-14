@@ -9,13 +9,13 @@
 
 	const setText = (): string => {
 		if ($rival && $user)
-			return $rival.name + " " + $rival.points.toString() + "\n\n\n\n\n" + $user.name + " " + $user.points.toString();
+			return $rival.name + "\n" + $rival.points.toString() + "\n\n\n\n\n\n\n\n\n" + $user.name + "\n" + $user.points.toString();
 		else if ($rival && !$user)
-			return $rival.name + " " + $rival.points.toString() + "\n\n\n\n\n" + "UserName --";
+			return $rival.name + "\n" + $rival.points.toString() + "\n\n\n\n\n\n\n\n\n" + "UserName\n--";
 		else if (!$rival && $user)
-			return "RivalName --" + "\n\n\n\n\n" + $user.name + " " + $user.points.toString();
+			return "RivalName\n--" + "\n\n\n\n\n" + $user.name + "\n" + $user.points.toString();
 		else
-			return "RivalName --" + "\n\n\n\n\n" + "UserName --";
+			return "RivalName\n--" + "\n\n\n\n\n" + "UserName\n--";
 	}
 
 	let PointText: string = "";
@@ -92,9 +92,10 @@
 	<Text
 		text={PointText}
 		color="white"
-		fontSize={4}
+		fontSize={2}
 		anchorX="50%"
 		anchorY="100%"
+		textAlign="center"
 	/>
 </T.Group>
 

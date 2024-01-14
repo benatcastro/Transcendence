@@ -130,7 +130,7 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
-FRONTEND_LOGIN_CALLBACK = 'localhost:5173/mockups/callback'
+FRONTEND_LOGIN_CALLBACK = 'frontend:5173/mockups/callback'
 
 REST_USE_JWT = True
 
@@ -242,12 +242,13 @@ CORS_ALLOW_CREDENTIALS = True
 # CON ESTO ALGUNA VARIBLES DE GET NO PASAN DE FRONTEND A BACKED
 CORS_ALLOWED_HOSTS = [
     'localhost',
-    'localhost:5173',
+    'frontend:5173',
 ]
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost',
-    'http://localhost:5173',
+    'http://frontend:5173',
+    
 
 ]
 

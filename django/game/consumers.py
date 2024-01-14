@@ -191,7 +191,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 		# Procesar el mensaje recibido desde el cliente
 		# message = f'Hola desde el servidor {self.room_name}'
 					
-		message = json.dumps(self.player1.__dict__) + "_" + json.dumps(self.player2.__dict__) + "_" + json.dumps(self.ball.__dict__)
+		message = (json.dumps(self.player1.__dict__) + "_" + json.dumps(self.player2.__dict__) + "_" + json.dumps(self.ball.__dict__))
 		# print(self.ball.__dict__)
 
 		# Ejemplo: Enviar el mensaje recibido a todos en el grupo
