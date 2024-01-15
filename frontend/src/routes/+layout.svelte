@@ -32,7 +32,7 @@
 			class="w-header h-auto"
 		/>
 	</button>
-	<button type="button" class="btn btn-link py-3 font-cr" on:click={() => goto('/')}>
+	<button type="button" class="btn btn-link btn-extra-lg py-3 font-cr" on:click={() => goto('/')}>
 		CYBERPONG
 	</button>
 	<div class="ml-auto">
@@ -60,23 +60,22 @@
 	<slot />
 </div>
 
-<footer class="fixed-bottom text-center py-3">
+<footer class="fixed-bottom text-center py-3 font-cr">
 	<a href="/meet">Meet the team</a>
 </footer>
 
 <style>
-	footer {
-		color: #0ff; /* Neon blue text */
-		font-family: 'Cyberway Riders', sans-serif;
+	.btn-extra-lg {
+		font-size: 2em;
+		padding: 1em 2em;
 	}
-
 	footer a {
-		color: #0ff; /* Neon blue text */
+		color: #0ff;
 		text-decoration: none;
 	}
 
 	footer a:hover {
-		text-shadow: 0 0 5px #0ff, /* Neon light glow */
+		text-shadow: 0 0 5px #0ff,
 		0 0 10px #0ff,
 		0 0 15px #0ff,
 		0 0 20px #0ff;
