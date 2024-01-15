@@ -12,6 +12,9 @@ services:
     cap_add:
       - IPC_LOCK
     restart: "on-failure"
+    volumes:
+      - ./init-vault.sh:/usr/local/bin/init-vault.sh
+    entrypoint: ["sh", "/usr/local/bin/init-vault.sh"]
   frontend:
     container_name: frontend
     restart: always
