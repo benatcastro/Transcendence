@@ -41,8 +41,8 @@ services:
     env_file: .env
     environment:
       - DJANGO_SETTINGS_MODULE=project.settings
-    # ports:
-    #   - "8000:8000"
+    ports:
+       - "8000:8000"
     image: trascendence_app
     expose:
       - ${APP_PORT}

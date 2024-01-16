@@ -27,7 +27,7 @@
 	});
 
 	addEventListener('beforeunload', () => {
-		fetch(`http://localhost:8000/matchmaking/delete?mode=${mode}&user=${user}`);
+		fetch(`django:8000/matchmaking/delete?mode=${mode}&user=${user}`);
 	});
 </script>
 

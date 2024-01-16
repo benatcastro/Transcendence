@@ -23,7 +23,7 @@
 
 	loginStorage.subscribe((loginSelection) => {
 		if (browser && loginSelection) {
-			goto(`http://localhost:8000/auth/${loginSelection}/login`);
+			goto(`django:8000/auth/${loginSelection}/login`);
 		}
 	});
 

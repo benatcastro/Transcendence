@@ -2,21 +2,53 @@
 	import { goto } from '$app/navigation';
 	import MDBBtn from 'mdbsvelte/src/MDBBtn.svelte';
 	import Modal from '$lib/components/Modal.svelte';
+	import { onMount } from 'svelte';
 
 	export let gradient: string = '',
 		rounded: string = '';
 
 	let isLoggedIn: boolean = false; // TODO This will be a store so all urls can access it
 	let username: string = '';
+
+	onMount(async () => {
+		const socket = new WebSocket('ws://django:8000/ws/matchmaking/');
+
+		if (socket) {
+			socket.onopen = (event) => {
+				console.log('Conexion abierta:', event);
+			};
+
+			socket.onmessage = (event) => {
+				const data = JSON.parse(event.data);
+				console.log('Mensaje recibido:', data);
+
+				// Haz algo con los datos recibidos.
+			};
+
+			socket.onclose = (event) => {
+				console.log('Conexion cerrada:', event);
+			};
+		}
+	});
+
 	async function getUser() {
 		if (!isLoggedIn) {
-			const res = await fetch('django:8000/matchmaking/create-usr?mode=casual');
-			if (!res.ok) {
-				throw new Error('Error while creating user');
+			// Ejemplo de creacion de partida casual
+			if (socket)
+			{
+				socket.send(JSON.stringify({
+					action: 'create',
+					mode: 'casual',
+					user: 'usuario123',
+				}));
 			}
-			else
-				console.log("TEST");
-			username = (await res.json()).user;
+			// const res = await fetch('django:8000/matchmaking/create-usr?mode=casual');
+			// if (!res.ok) {
+			// 	throw new Error('Error while creating user');
+			// }
+			// else
+			// 	console.log("TEST");
+			// username = (await res.json()).user;
 		}
 		else
 			console.log("TEST2");

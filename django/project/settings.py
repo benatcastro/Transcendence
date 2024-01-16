@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'watchman',
     "django.contrib.staticfiles",
     "transcendence",
-    'matchmaking',
     'django_extensions',
     'users',
     'intra_auth',
@@ -60,6 +59,8 @@ INSTALLED_APPS = [
     'channels',
     'django_prometheus',
     'drf_yasg',
+    'matchmaking',
+    'game'
 ]
 
 MIDDLEWARE = [
@@ -159,7 +160,8 @@ TEMPLATES = [
 RUNSERVERPLUS_POLLER_RELOADER_INTERVAL = 1
 RUNSERVERPLUS_POLLER_RELOADER_TYPE = 'auto'
 WSGI_APPLICATION = "project.wsgi.application"
-ASGI_APPLICATION = "game.routing.application"
+ASGI_APPLICATION = "matchmaking.routing.application"
+
 WHITENOISE_AUTOREFRESH = True  # Habilita la actualización en tiempo real para archivos estáticos
 
 # Database
@@ -230,7 +232,7 @@ SESSION_COOKIE_SAMESITE = 'None'
 CORS_ALLOW_HEADERS = (
      "accept",
      "authorization",
-    "content-type",
+     "content-type",
      "user-agent",
      "x-csrftoken",
      "x-requested-with",
@@ -240,17 +242,17 @@ CORS_ALLOW_HEADERS = (
 CORS_ALLOW_CREDENTIALS = True
 
 # CON ESTO ALGUNA VARIBLES DE GET NO PASAN DE FRONTEND A BACKED
-CORS_ALLOWED_HOSTS = [
-    'localhost',
-    'frontend:5173',
-]
-
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost',
-    'http://frontend:5173',
-    
-
-]
+# CORS_ALLOWED_HOSTS = [
+#     'http://localhost',
+#     'http://frontend:5173',
+# ]
+#
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost',
+#     'http://frontend:5173',
+#
+#
+# ]
 
 CORS_ALLOWED_HOSTS = ["*"]
 CORS_ALLOW_ALL_ORIGINS = True
