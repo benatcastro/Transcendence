@@ -12,5 +12,6 @@ export VAULT_TOKEN='myroot'
 
 # Agrega un secreto de prueba
 vault kv put secret/hello foo=world
+vault kv put secret/data/mi-secret valor="tu_valor_secreto"
 
 wait

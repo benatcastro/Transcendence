@@ -15,6 +15,21 @@ services:
     volumes:
       - ./init-vault.sh:/usr/local/bin/init-vault.sh
     entrypoint: ["sh", "/usr/local/bin/init-vault.sh"]
+  consul-template:
+    image: hashicorp/consul-template:latest
+    container_name: consul-template
+    volumes:
+      - ./consul-template-config:/etc/consul-template  # Directorio de configuración
+      - ./consul-template-templates:/etc/consul-template/templates # Directorio para templates
+      - ./output:/output                              # Directorio para archivos generados
+    environment:
+      VAULT_ADDR: http://vault:8200                   # Dirección del servidor de Vault
+      VAULT_TOKEN: myroot                             # Token para Vault
+    depends_on:
+      - vault                                         # Dependencia del servicio Vault
+    command: >
+      consul-template -config="/etc/consul-template/config.hcl"
+    restart: "on-failure"  
   frontend:
     container_name: frontend
     restart: always
