@@ -14,6 +14,7 @@ services:
     restart: "on-failure"
     volumes:
       - ./init-vault.sh:/usr/local/bin/init-vault.sh
+      - ./secrets.txt:/usr/local/bin/secrets.txt  
     entrypoint: ["sh", "/usr/local/bin/init-vault.sh"]
   consul-template:
     image: hashicorp/consul-template:latest
