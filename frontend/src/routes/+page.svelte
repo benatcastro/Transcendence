@@ -17,21 +17,12 @@
 		}
 	];
 
-	/* $: menuOpts = isLoggedIn
-		? menuItems.filter((item) => item.props.title !== 'Log in')
-		: menuItems.filter((item) => item.props.title !== 'Log out'); Not working as expected at the moment */
-
 	loginStorage.subscribe((loginSelection) => {
 		if (browser && loginSelection) {
 			goto(`http://localhost:8000/auth/${loginSelection}/login`);
 		}
 	});
-
-
 </script>
-
-
-  
 
 <svelte:head>
 	<title>CyberPong</title>
@@ -50,34 +41,53 @@
 </svelte:head>
 
 <div class="d-flex flex-column flex-center">
-	<h1 class="font-cr">CyberPong</h1>
 	<nav>
-		<ul class="list-unstyled">
-			{#each menuItems as item}
-				<li class="font-xe"><svelte:component this={item.component} {...item.props} /></li>
-			{/each}
+		<ul class="list-unstyled d-flex flex-column align-items-center">
+			<li class="font-xe btn-lg w-100">
+				<div class="card mb-3 p-5 m-3 btn cyberpunk-background">
+					<svelte:component this={menuItems[0].component} {...menuItems[0].props} />
+				</div>
+			</li>
+			<li class="d-flex justify-content-around w-100">
+				<div class="card mb-3 p-5 m-3 btn cyberpunk-background">
+					<svelte:component this={menuItems[1].component} {...menuItems[1].props} />
+				</div>
+				<div class="card mb-3 p-5 m-3 btn cyberpunk-background">
+					<svelte:component this={menuItems[2].component} {...menuItems[2].props} />
+				</div>
+			</li>
 		</ul>
 	</nav>
 </div>
 
 <style>
-	main {
-	  text-align: center;
-	  margin-top: 50px;
+	.cyberpunk-background {
+		background: linear-gradient(90deg, rgba(204,0,255,0.8) 35%, rgba(0,255,255,0.8) 100%);
+		border: 1px solid #00ffff;
+		box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff, 0 0 40px #00ffff;
 	}
 
-	@font-face {
-		font-family: 'Cyberway Riders';
-		src: url('/fonts/cyberway_riders/Cyberway Riders.otf') format('opentype');
+	.btn:hover {
+		background-color: rgba(0, 255, 255, 0.5);
+		border-color: #00ffff;
+		box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff, 0 0 40px #00ffff;
+	}
+
+	.btn {
+		background-color: transparent;
+		border: 1px solid #00ffff;
+		color: #00ffff;
+		text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+	}
+
+	main {
+		text-align: center;
+		margin-top: 50px;
 	}
 
 	@font-face {
 		font-family: 'xenotron';
 		src: url('/fonts/xenotron/XENOTRON.TTF') format('truetype');
-	}
-
-	.font-cr {
-		font-family: 'Cyberway Riders', sans-serif;
 	}
 
 	.font-xe {
