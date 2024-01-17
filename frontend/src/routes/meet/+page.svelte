@@ -31,18 +31,25 @@
 			<div class="card">
 				<div class="wrapper">
 					<img src="https://assets.codepen.io/527512/zelda_cover-image.webp" class="cover-image" alt="cover image" />
+
 				</div>
 				<img src={image[1]} class="character" alt={image[0]} />
+				<img src="https://assets.codepen.io/527512/zelda_title.webp" class="title" />
 			</div>
 		{/each}
     </div>
 </div>
 
 <style>
-	:root {
-		--card-height: 15vh;
-		--card-width: calc(var(--card-height) / 1.5);
+	.container {
+		margin-top: 5%;
 	}
+	
+	:root {
+		--card-height: 31.4vh;
+		--card-width: calc(var(--card-height) / 1.5 );
+	}
+
 
 	* {
 		box-sizing: border-box;
@@ -52,18 +59,19 @@
 		width: var(--card-width);
 		height: var(--card-height);
 		position: relative;
-		display: flex;
+		display: inline-flex;
 		justify-content: center;
 		align-items: flex-end;
+		flex-direction: row;
 		padding: 0 36px;
 		perspective: 2500px;
-		margin: 0 50px;
+		margin: 0 10px;
 	}
 
 	.cover-image {
 		width: 100%;
 		height: 100%;
-		object-fit: cover;
+		object-fit: cover ; 
 	}
 
 	.wrapper {
@@ -71,10 +79,12 @@
 		position: absolute;
 		width: 100%;
 		z-index: -1;
+
 	}
 
 	.card:hover .wrapper {
 		transform: perspective(900px) translateY(-5%) rotateX(25deg) translateZ(0);
+		background-color: black !important;
 		box-shadow: 2px 35px 32px -8px rgba(0, 0, 0, 0.75);
 		-webkit-box-shadow: 2px 35px 32px -8px rgba(0, 0, 0, 0.75);
 		-moz-box-shadow: 2px 35px 32px -8px rgba(0, 0, 0, 0.75);
@@ -128,10 +138,23 @@
 		transition: all 0.5s;
 		position: absolute;
 		z-index: -1;
+
 	}
 
 	.card:hover .character {
 		opacity: 1;
 		transform: translate3d(0%, -30%, 100px);
 	}
+	.title {
+	width: 100%;
+	transition: transform 0.5s;
+
+}
+.card:hover .title {
+	transform: translate3d(0%, -50px, 100px);
+}
+h2 {
+  text-shadow: 2px 2px 4px rgba(0, 255, 204, 0.8); /* Sombra con color neón */
+}
+
 </style>
