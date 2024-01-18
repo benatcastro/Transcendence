@@ -27,6 +27,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('auth/', include('rest_auth.urls')),
     path('logout/', LogoutView.as_view(), name='logout'),
-    path('metrics/', include('django_prometheus.urls')),
+    path('', include('django_prometheus.urls')),
     path('transcendence/', include('transcendence.urls')),
 ]
