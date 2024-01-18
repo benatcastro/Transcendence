@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     'watchman',
+    'daphne',
     "django.contrib.staticfiles",
     "transcendence",
     'django_extensions',
@@ -60,8 +61,8 @@ INSTALLED_APPS = [
     'django_prometheus',
     'drf_yasg',
     'matchmaking',
-    'game',
-    'daphne'
+    'game'
+    
 ]
 
 MIDDLEWARE = [

@@ -11,7 +11,7 @@
 	let username: string = '';
 
 	onMount(async () => {
-		socket = new WebSocket('wss://localhost/ws/matchmaking/');
+		socket = new WebSocket('wss://django:8000/ws/matchmaking/');
 
 		if (socket) {
 			socket.onopen = (event) => {
