@@ -4,6 +4,7 @@
 	import { loginStorage } from '$lib/stores/stores';
 	import PlayModal from '$lib/components/PlayModal.svelte';
 	import Button from '$lib/components/Button.svelte';
+	import LogInModal from '$lib/components/LogInModal.svelte';
 
 	let menuItems = [
 		{ component: PlayModal, props: { gradient: 'aqua' } },
@@ -54,6 +55,7 @@
 				</div>
 				<div class="card mb-3 p-5 m-3 btn cyberpunk-background">
 					<svelte:component this={menuItems[2].component} {...menuItems[2].props} />
+					<LogInModal />
 				</div>
 			</li>
 		</ul>
