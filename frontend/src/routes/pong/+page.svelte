@@ -29,7 +29,7 @@
 		console.log('room: ' + $room);
 
 		// Crea tu WebSocket
-		ws.set(new WebSocket('ws://localhost:8000/ws/game/?room_code=' + $room + '&username=' + $page.url.searchParams.get('user')?.toString()));
+		ws.set(new WebSocket('wss://localhost/ws/game/?room_code=' + $room + '&username=' + $page.url.searchParams.get('user')?.toString()));
 		
 		if ($ws) {
 			$ws.onopen = () => {

@@ -1,5 +1,6 @@
-FROM nginx:1.19.0-alpine
+FROM nginx:stable-alpine
 
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d
-copy .htpasswd /etc/nginx/.htpasswd
+COPY server.crt /etc/nginx/server.crt
+COPY server.key /etc/nginx/server.key

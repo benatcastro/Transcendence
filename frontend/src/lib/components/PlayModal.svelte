@@ -11,7 +11,7 @@
 	let username: string = '';
 
 	onMount(async () => {
-		const socket = new WebSocket('ws://django:8000/ws/matchmaking/');
+		socket = new WebSocket('wss://localhost/ws/matchmaking/');
 
 		if (socket) {
 			socket.onopen = (event) => {
@@ -42,13 +42,13 @@
 					user: 'usuario123',
 				}));
 			}
-			// const res = await fetch('django:8000/matchmaking/create-usr?mode=casual');
-			// if (!res.ok) {
-			// 	throw new Error('Error while creating user');
-			// }
-			// else
-			// 	console.log("TEST");
-			// username = (await res.json()).user;
+			 const res = await fetch('localhost:8000/matchmaking/create-usr?mode=casual');
+			 if (!res.ok) {
+			 	throw new Error('Error while creating user');
+			 }
+			 else
+			console.log("TEST");
+			 username = (await res.json()).user;
 		}
 		else
 			console.log("TEST2");

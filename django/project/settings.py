@@ -60,7 +60,8 @@ INSTALLED_APPS = [
     'django_prometheus',
     'drf_yasg',
     'matchmaking',
-    'game'
+    'game',
+    'daphne'
 ]
 
 MIDDLEWARE = [
@@ -160,7 +161,7 @@ TEMPLATES = [
 RUNSERVERPLUS_POLLER_RELOADER_INTERVAL = 1
 RUNSERVERPLUS_POLLER_RELOADER_TYPE = 'auto'
 WSGI_APPLICATION = "project.wsgi.application"
-ASGI_APPLICATION = "matchmaking.routing.application"
+ASGI_APPLICATION = "project.asgi.application"
 
 WHITENOISE_AUTOREFRESH = True  # Habilita la actualización en tiempo real para archivos estáticos
 

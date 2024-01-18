@@ -11,7 +11,7 @@
 	let response_json;
 
 	onMount(async () => {
-		const res = await fetch(`django:8000/matchmaking/search?mode=${mode}&user=${user}`);
+		const res = await fetch(`localhost:8000/matchmaking/search?mode=${mode}&user=${user}`);
 		if (res.ok) {
 			response_json = await res.json();
 			rival = response_json['rival'];
@@ -27,7 +27,7 @@
 	});
 
 	addEventListener('beforeunload', () => {
-		fetch(`django:8000/matchmaking/delete?mode=${mode}&user=${user}`);
+		fetch(`localhost:8000/matchmaking/delete?mode=${mode}&user=${user}`);
 	});
 </script>
 
