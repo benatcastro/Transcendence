@@ -10,21 +10,60 @@
 	let room: string;
 	let response_json;
 
-	onMount(async () => {
-		const res = await fetch(`localhost:8000/matchmaking/search?mode=${mode}&user=${user}`);
-		if (res.ok) {
-			response_json = await res.json();
-			rival = response_json['rival'];
-			room = response_json['room'];
-			console.log(rival);
-			console.log(room);
-			goto(`http://localhost/pong?user=${user}&rival=${rival}&room=${room}`);
-		}
-		else {
-			console.error("fetch request didn't resolve");
-			throw new Error("Couldn't fetch rival");
-		}
-	});
+	const socket = new WebSocket('wss://localhost/ws/matchmaking/');
+
+	if (socket) {
+		socket.onopen = (event) => {
+			console.log('Conexion abierta:', event);
+			socket.send(JSON.stringify({
+				action: 'search',
+				mode: 'casual',
+				user: user.toString(),
+			}));
+		};
+
+		socket.onmessage = (event) => {
+			const data = JSON.parse(event.data);
+			console.log('Mensaje recibido:', data);
+
+
+			rival = data.rival.toString();
+			room = data.room.toString();
+			socket.close();
+			goto(`https://localhost/pong?user=${user}&rival=${rival}&room=${room}`);
+		};
+
+		socket.onclose = (event) => {
+			console.log('Conexion cerrada:', event);
+		};
+	}
+
+	// onMount(async () => {
+		// const res = await fetch(`localhost:8000/matchmaking/search?mode=${mode}&user=${user}`);
+		// if (res.ok) {
+		// 	response_json = await res.json();
+		// 	rival = response_json['rival'];
+		// 	room = response_json['room'];
+		// 	console.log(rival);
+		// 	console.log(room);
+		// 	goto(`http://localhost/pong?user=${user}&rival=${rival}&room=${room}`);
+		// }
+		// else {
+		// 	console.error("fetch request didn't resolve");
+		// 	throw new Error("Couldn't fetch rival");
+		// }
+
+		// socket.send(JSON.stringify({
+		// 	action: 'search',
+		// 	mode: 'casual',
+		// 	user: user.toString(),
+		// }));
+	// });
+	socket.send(JSON.stringify({
+		action: 'search',
+		mode: 'casual',
+		user: user.toString(),
+	}));
 
 	addEventListener('beforeunload', () => {
 		fetch(`localhost:8000/matchmaking/delete?mode=${mode}&user=${user}`);

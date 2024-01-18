@@ -9,27 +9,28 @@
 
 	let isLoggedIn: boolean = false; // TODO This will be a store so all urls can access it
 	let username: string = '';
+	let optionType: string = '';
 
-	onMount(async () => {
-		socket = new WebSocket('wss://django:8000/ws/matchmaking/');
+	const socket = new WebSocket('wss://localhost/ws/matchmaking/');
 
-		if (socket) {
-			socket.onopen = (event) => {
-				console.log('Conexion abierta:', event);
-			};
+	if (socket) {
+		socket.onopen = (event) => {
+			console.log('Conexion abierta:', event);
+		};
 
-			socket.onmessage = (event) => {
-				const data = JSON.parse(event.data);
-				console.log('Mensaje recibido:', data);
+		socket.onmessage = (event) => {
+			const data = JSON.parse(event.data);
+			console.log('Mensaje recibido:', data);
 
-				// Haz algo con los datos recibidos.
-			};
+			username = data.user.toString();
+			socket.close();
+			goto(`/matchmaking?mode=${optionType}&user=${username}`);
+		};
 
-			socket.onclose = (event) => {
-				console.log('Conexion cerrada:', event);
-			};
-		}
-	});
+		socket.onclose = (event) => {
+			console.log('Conexion cerrada:', event);
+		};
+	}
 
 	async function getUser() {
 		if (!isLoggedIn) {
@@ -39,16 +40,8 @@
 				socket.send(JSON.stringify({
 					action: 'create',
 					mode: 'casual',
-					user: 'usuario123',
 				}));
 			}
-			 const res = await fetch('localhost:8000/matchmaking/create-usr?mode=casual');
-			 if (!res.ok) {
-			 	throw new Error('Error while creating user');
-			 }
-			 else
-			console.log("TEST");
-			 username = (await res.json()).user;
 		}
 		else
 			console.log("TEST2");
@@ -58,14 +51,15 @@
 	async function handlePlayClick(option: string) {
 		try {
 			if (option !== 'ranked' || isLoggedIn) {
+				optionType = option;
 				await getUser();
-				
-				await goto(`/matchmaking?mode=${option}&user=${username}`);
+
+				//await goto(`/matchmaking?mode=${option}&user=${username}`);
 			}
 			else
 				console.log("TEST3");
 		} catch (e) {
-			console.error("error_aherrero_____" + option + "____" + isLoggedIn + getUser());
+			console.error("error_aherrero_____" + option + "____" + isLoggedIn);
 		}
 	}
 </script>
