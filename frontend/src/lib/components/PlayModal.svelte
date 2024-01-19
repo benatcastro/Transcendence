@@ -10,8 +10,61 @@
 	let isLoggedIn: boolean = false; // TODO This will be a store so all urls can access it
 	let username: string = '';
 	let optionType: string = '';
+	let token;
+	let usernameDjango;
+  	let error;
+	let socket;
 
-	const socket = new WebSocket('wss://localhost/ws/matchmaking/');
+
+
+	const login = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/api-token-auth/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          usernameDjango: "test",
+          password: "mypass123",
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        token = data.token;
+        error = null;
+        openWebSocket();
+      } else {
+        const data = await response.json();
+        error = data.non_field_errors[0];
+        token = null;
+      }
+    } catch (error) {
+      console.error("Error al realizar la solicitud:", error);
+      error = "Error al realizar la solicitud.";
+      token = null;
+    }
+  };
+
+  const openWebSocket = () => {
+    if (token) {
+	console.log("token " + token);
+      const socketUrl = `wss://localhost/ws/matchmaking/?token=${token}`;
+      socket = new WebSocket(socketUrl);
+
+      //socket.onopen = handleSocketOpen;
+      //socket.onmessage = handleSocketMessage;
+      //socket.onclose = handleSocketClose;
+    } else {
+      console.error("No se ha encontrado un token válido.");
+    }
+  };
+
+  onMount(() => {
+    login();
+  });
+	//socket = new WebSocket('wss://localhost/ws/matchmaking/');
 
 	if (socket) {
 		socket.onopen = (event) => {

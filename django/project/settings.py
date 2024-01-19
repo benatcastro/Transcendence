@@ -61,7 +61,7 @@ INSTALLED_APPS = [
     'django_prometheus',
     'drf_yasg',
     'matchmaking',
-    'game'
+    'game',
     
 ]
 
@@ -78,6 +78,17 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
     'django_prometheus.middleware.PrometheusAfterMiddleware',  #importante que este middleware este colocado el ultimo
 ]
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+    ],
+        'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
@@ -108,11 +119,6 @@ SOCIALACCOUNT_PROVIDERS = {
 
 SITE_ID = 1
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
-    )
-}
 
 SLIDING_TOKEN_LIFETIME = timedelta(hours=4),
 
@@ -244,19 +250,20 @@ CORS_ALLOW_HEADERS = (
 CORS_ALLOW_CREDENTIALS = True
 
 # CON ESTO ALGUNA VARIBLES DE GET NO PASAN DE FRONTEND A BACKED
-# CORS_ALLOWED_HOSTS = [
-#     'http://localhost',
-#     'http://frontend:5173',
-# ]
-#
-# CORS_ALLOWED_ORIGINS = [
-#     'http://localhost',
-#     'http://frontend:5173',
-#
-#
-# ]
+CORS_ALLOWED_HOSTS = [
+    'http://localhost',
+    'http://frontend:5173',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost',
+    'http://frontend:5173',
+
+
+]
 
 CORS_ALLOWED_HOSTS = ["*"]
+CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_ALL_ORIGINS = True
 CHANNEL_LAYERS = {
     "default": {

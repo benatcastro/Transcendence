@@ -22,3 +22,4 @@ django-prometheus
 drf-yasg
 Twisted[tls,http2]
 pyOpenSSL
+django-rest-authtoken
