@@ -11,5 +11,8 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       - targets: ['cadvisor:8080']
-
+  - job_name: 'django'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['django:8000']
 

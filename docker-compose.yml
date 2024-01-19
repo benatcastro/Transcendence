@@ -1,36 +1,5 @@
 version: '3.7'
 services:
-  vault:
-    image: hashicorp/vault:latest
-    container_name: vault
-    ports:
-      - "8200:8200"
-    environment:
-      VAULT_DEV_ROOT_TOKEN_ID: "myroot"
-      VAULT_DEV_LISTEN_ADDRESS: "0.0.0.0:8200"
-      VAULT_ADDR: "http://0.0.0.0:8200"
-    cap_add:
-      - IPC_LOCK
-    restart: "on-failure"
-    volumes:
-      - ./init-vault.sh:/usr/local/bin/init-vault.sh
-      - ./secrets.txt:/usr/local/bin/secrets.txt  
-    entrypoint: ["sh", "/usr/local/bin/init-vault.sh"]
-  consul-template:
-    image: hashicorp/consul-template:latest
-    container_name: consul-template
-    volumes:
-      - ./consul-template-config:/etc/consul-template  # Directorio de configuración
-      - ./consul-template-templates:/etc/consul-template/templates # Directorio para templates
-      - ./output:/output                              # Directorio para archivos generados
-    environment:
-      VAULT_ADDR: http://vault:8200                   # Dirección del servidor de Vault
-      VAULT_TOKEN: myroot                             # Token para Vault
-    depends_on:
-      - vault                                         # Dependencia del servicio Vault
-    command: >
-      consul-template -config="/etc/consul-template/config.hcl"
-    restart: "on-failure"  
   frontend:
     container_name: frontend
     restart: always

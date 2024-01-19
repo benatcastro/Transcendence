@@ -10,8 +10,7 @@ sleep 5
 export VAULT_ADDR='http://127.0.0.1:8200'
 export VAULT_TOKEN='myroot'
 
-# Agrega un secreto de prueba
-# vault kv put secret/myapp clave1="valor1" clave2="valor2" clave3="valor3"
+# Agrega secretos desde un archivo de texto (solo para corrección)
 while IFS='=' read -r key value; do
     vault kv put secret/myapp/$key value="$value"
 done < usr/local/bin/secrets.txt
