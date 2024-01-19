@@ -3,12 +3,13 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework import status
 from rest_framework.permissions import AllowAny
-
+rom rest_framework.authentication import SessionAuthentication, BasicAuthentication
 class ObtainAuthToken(APIView):
-    permission_classes = [AllowAny]
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
-        username = request.data.get('username')
+        username = request.data.get('usernameDjango')
         password = request.data.get('password')
 
         if username is None or password is None:
@@ -25,18 +26,18 @@ class ObtainAuthToken(APIView):
     
 
 
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.views import APIView
+# from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+# from rest_framework.permissions import IsAuthenticated
+# from rest_framework.response import Response
+# from rest_framework.views import APIView
 
-class ObtainAuthToken(APIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+# class ObtainAuthToken(APIView):
+#     authentication_classes = [SessionAuthentication, BasicAuthentication]
+#     permission_classes = [IsAuthenticated]
 
-    def get(self, request, format=None):
-        content = {
-            'user': str(request.usernameDjango),  # `django.contrib.auth.User` instance.
-            'auth': str(request.auth),  # None
-        }
-        return Response(content)
+#     def get(self, request, format=None):
+#         content = {
+#             'user': str(request.usernameDjango),  # `django.contrib.auth.User` instance.
+#             'auth': str(request.auth),  # None
+#         }
+#         return Response(content)
