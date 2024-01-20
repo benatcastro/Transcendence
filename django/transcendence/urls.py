@@ -1,9 +1,9 @@
 from django.urls import path, include
 from .views import index
 from . import views
-from users.urls import urlpatterns as users_urls
+# from users.urls import urlpatterns as users_urls
 
-from users.urls import v
+# from users.urls import users_urls
 from rest_framework.routers import DefaultRouter
 
 from rest_framework import permissions
@@ -31,7 +31,9 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('home', index, name='home'),
     path('', views.getData, name='getData'),
-    path('api/', include(users_urls)),
+    # path('api/', include(users_urls)),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('api/users/', include('users.urls')),
+
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
