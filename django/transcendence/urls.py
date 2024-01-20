@@ -1,8 +1,9 @@
 from django.urls import path, include
 from .views import index
 from . import views
+from users.urls import urlpatterns as users_urls
 
-from .views import DataUsersViewSet
+from users.urls import v
 from rest_framework.routers import DefaultRouter
 
 from rest_framework import permissions
@@ -11,7 +12,7 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Andy String API",
+        title="Transcendence API",
         default_version='v1',
         description="goodbye c practice",
         terms_of_service="https://www.youtube.com/watch?v=8YCCauW8m0o",
@@ -22,15 +23,15 @@ schema_view = get_schema_view(
     permission_classes=(permissions.AllowAny,),
 )
 
-router = DefaultRouter()
-router.register(r'users', DataUsersViewSet, basename='user')
+# router = DefaultRouter()
+# router.register(r'users', DataUsersViewSet, basename='user')
 
 
 
 urlpatterns = [
     path('home', index, name='home'),
     path('', views.getData, name='getData'),
-    path('api/', include(router.urls)),
+    path('api/', include(users_urls)),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]

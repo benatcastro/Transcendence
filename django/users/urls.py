@@ -11,3 +11,4 @@ urlpatterns = router.urls
 urlpatterns += [
     path('me', MeView.as_view(), name='me'),
 ]
+

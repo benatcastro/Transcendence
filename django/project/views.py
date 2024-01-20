@@ -4,25 +4,25 @@ from rest_framework.authtoken.models import Token
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-class ObtainAuthToken(APIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+# class ObtainAuthToken(APIView):
+#     authentication_classes = [SessionAuthentication, BasicAuthentication]
+#     permission_classes = [IsAuthenticated]
 
-    def post(self, request, *args, **kwargs):
-        username = request.data.get('usernameDjango')
-        password = request.data.get('password')
+#     def post(self, request, *args, **kwargs):
+#         username = request.data.get('usernameDjango')
+#         password = request.data.get('password')
 
-        if username is None or password is None:
-            return Response({'error': 'Se requiere un nombre de usuario y una contraseña'}, status=status.HTTP_400_BAD_REQUEST)
+#         if username is None or password is None:
+#             return Response({'error': 'Se requiere un nombre de usuario y una contraseña'}, status=status.HTTP_400_BAD_REQUEST)
 
-        user = authenticate(username=username, password=password)
+#         user = authenticate(username=username, password=password)
 
-        if user is None:
-            return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
+#         if user is None:
+#             return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
 
-        token, created = Token.objects.get_or_create(user=user)
+#         token, created = Token.objects.get_or_create(user=user)
 
-        return Response({'token': token.key})
+#         return Response({'token': token.key})
     
 
 

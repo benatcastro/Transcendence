@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
 from django.urls import path, include
-from .views import ObtainAuthToken
+# from .views import ObtainAuthToken
 
 
 urlpatterns = [
@@ -30,5 +30,5 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('metrics/', include('django_prometheus.urls')),
     path('transcendence/', include('transcendence.urls')),
-    path('api-token-auth/', ObtainAuthToken.as_view(), name='api_token_auth'),
+    # path('api-token-auth/', ObtainAuthToken.as_view(), name='api_token_auth'),
 ]
