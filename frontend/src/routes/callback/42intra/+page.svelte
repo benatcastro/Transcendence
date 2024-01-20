@@ -10,7 +10,7 @@
     onMount( async() => {
         async function getToken() {
             try {
-                const response = await fetch('django:8000/auth/42intra/', {
+                const response = await fetch('http://localhost:8000/auth/42intra/', {
                     method: 'POST',
                     credentials: 'include',
                     headers: {
@@ -27,8 +27,8 @@
                     goto('/')
 
                 } else {
-                    console.log(data)
                     console.error('Failed to post code');
+                    console.log(await response.json())
                 }
             } catch (error) {
                 console.error('Error posting code:', error);
