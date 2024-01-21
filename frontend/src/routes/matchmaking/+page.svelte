@@ -10,12 +10,12 @@
 	let response_json;
 
 	onMount(async () => {
-		const res = await fetch(`http://localhost:8000/matchmaking/search?mode=${mode}&user=${user}`);
+		const res = await fetch(`http://localhost/matchmaking/search?mode=${mode}&user=${user}`);
 		if (res.ok) {
 			response_json = await res.json();
 			rival = response_json['rival'];
 			room = response_json['room'];
-			await goto(`http://localhost:5173/pong?user=${user}&rival=${rival}&room=${room}`);
+			await goto(`https://localhost/pong?user=${user}&rival=${rival}&room=${room}`);
 		}
 		else {
 			console.error("fetch request didn't resolve");
@@ -24,7 +24,7 @@
 	});
 
 	addEventListener('beforeunload', () => {
-		fetch(`http://localhost:8000/matchmaking/delete?mode=${mode}&user=${user}`);
+		fetch(`http://localhost/matchmaking/delete?mode=${mode}&user=${user}`);
 	});
 </script>
 
