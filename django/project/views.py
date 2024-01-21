@@ -4,9 +4,11 @@ from rest_framework.authtoken.models import Token
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+
+
 class ObtainAuthToken(APIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [SessionAuthentication, BasicAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
         username = request.data.get('usernameDjango')

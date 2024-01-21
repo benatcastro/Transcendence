@@ -7,9 +7,9 @@ from random import randint
 casual_ids = []
 ranked_ids = []
 
-GenericNames1 = ["Gatita", "Capitan", "Tiburon", "Humano", "Alienigena", "Boss", "Dragon", "Watashi wa", "Mamut"]
+GenericNames1 = ["Gatita", "Capitan", "Tiburon", "Humano", "Alienigena", "Boss", "Dragon", "WatashiWa", "Mamut"]
 GenericNames2 = ["Generico", "Sexy", "Badass", "Basado", "Magica", "Heteronormativo", "Ancestral", "Destroyer", "Fuerte"]
-GenericNames3 = ["69", "XD", "10/10", "Lvl100", "Amateur", "Facha", "Random", "CSM", "Legendario", "Andy String"]
+GenericNames3 = ["69", "XD", "10/10", "Lvl100", "Amateur", "Facha", "Random", "CSM", "Legendario", "AndyString"]
 
 
 class MatchmakingConsumer(AsyncWebsocketConsumer):

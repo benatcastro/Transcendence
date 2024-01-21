@@ -29,9 +29,9 @@ application = ProtocolTypeRouter({
     ),
 })
 
-application = ProtocolTypeRouter({
-    "http": get_asgi_application(),
-    "websocket": URLRouter(
-            matchmaking.routing.websocket_urlpatterns
-        ),
-})
+# application = ProtocolTypeRouter({
+#     "http": get_asgi_application(),
+#     "websocket": URLRouter(
+#             game.routing.websocket_urlpatterns
+#         ),
+# })

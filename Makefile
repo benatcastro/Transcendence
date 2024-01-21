@@ -21,6 +21,7 @@ down:
 
 prune:
 	yes | docker system prune -a
+	yes | docker system prune --volumes
 
 clean: down prune
 

@@ -251,13 +251,13 @@ CORS_ALLOW_CREDENTIALS = True
 
 # CON ESTO ALGUNA VARIBLES DE GET NO PASAN DE FRONTEND A BACKED
 CORS_ALLOWED_HOSTS = [
-    'http://localhost',
-    'http://frontend:5173',
+    'https://localhost',
+    'https://frontend:5173',
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost',
-    'http://frontend:5173',
+    'https://localhost',
+    'https://frontend:5173',
 
 
 ]
