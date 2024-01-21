@@ -21,9 +21,22 @@ services:
       - "443:443"
     volumes:
       - ./static_volume:/home/app/microservice/static
+      #- ./nginx/conf.d:/etc/nginx/conf.d
+      #- ./nginx/html:/usr/share/nginx/html
     depends_on:
       - django
     restart: "on-failure"
+
+  #certbot:
+   # image: certbot/certbot:latest
+    #container_name: certbot
+    #volumes:
+     # - ./nginx/conf.d:/etc/nginx/conf.d
+      #- ./certbot/conf:/etc/letsencrypt
+      #- ./certbot/www:/var/www/certbot
+    #depends_on:
+     # - nginx
+    #command: ${CERTBOT_CONFIG}
   redis:
     container_name: redis
     image: "redis:latest"
