@@ -12,6 +12,7 @@ class TranscendenceUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
+    score = models.IntegerField(default=500)
 
     groups = models.ManyToManyField(
         'auth.Group',
