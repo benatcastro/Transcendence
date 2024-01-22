@@ -1,4 +1,5 @@
 .idea
+.data/grafana-data/
 
 .DS_Store
 
