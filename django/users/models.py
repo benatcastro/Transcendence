@@ -14,6 +14,8 @@ class TranscendenceUser(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(default=timezone.now)
     score = models.IntegerField(default=500)
 
+    friends = models.ManyToManyField('self', symmetrical=True, related_name='friends')
+
     groups = models.ManyToManyField(
         'auth.Group',
         related_name='transcendence_user_groups',
@@ -48,4 +50,9 @@ class TranscendenceUser(AbstractBaseUser, PermissionsMixin):
     objects = TranscendenceUserManager()
 
     def __str__(self):
-        return self.email
+        return f"email: {self.email}"
+
+
+# class FriendRelationship(models.Model):
+#     from_person = models.ForeignKey(TranscendenceUser, related_name='from_people')
+#     to_person = models.ForeignKey(TranscendenceUser, related_name='to_people')
