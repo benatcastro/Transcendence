@@ -77,6 +77,8 @@
 			credentials: 'include',
 		});
         if (response.ok) {
+            const data = await response.json();
+            username = data.username;
             isLoggedIn = true;
         }
 	}
@@ -116,7 +118,7 @@
             </li>
             <li class="font-xe d-flex justify-content-around w-100">
                 {#if isLoggedIn}
-                    <div class="card mb-3 p-5 m-3 btn cyberpunk-background" role="button" on:click={() => goto('/profile')}>
+                    <div class="card mb-3 p-5 m-3 btn cyberpunk-background" role="button" on:click={() => goto(`/profile/${username}`)}>
                         <button class="btn btn-link border-0"><span>Profile</span></button>
                     </div>
                 {:else}
