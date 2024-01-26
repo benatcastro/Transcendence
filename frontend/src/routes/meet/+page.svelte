@@ -6,6 +6,7 @@
 		['Beñat Castro', '/assets/team/beñat.jpg'],
 		['Cristian Bustamante', '/assets/team/cristian.jpg']
 	];
+	https://www.youtube.com/watch?v=vKqWED-aPMg
 </script>
 
 <svelte:head>
