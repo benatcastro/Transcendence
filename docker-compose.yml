@@ -23,6 +23,12 @@ services:
     depends_on:
       - django
     restart: "on-failure"
+    environment:
+      - PARANOIA=1
+      - EXECUTING_PARANOIA=2
+      - ENFORCE_BODYPROC_URLENCODED=1
+      - ANOMALY_INBOUND=10
+      - ANOMALY_OUTBOUND=5
   redis:
     container_name: redis
     image: "redis:latest"
