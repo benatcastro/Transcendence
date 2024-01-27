@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'matchmaking',
     'django_extensions',
     'users',
+    'friends',
     'intra_auth',
     'allauth',
     'allauth.account',
