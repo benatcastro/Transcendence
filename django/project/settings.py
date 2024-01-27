@@ -113,22 +113,22 @@ REST_FRAMEWORK = {
 
 SLIDING_TOKEN_LIFETIME = timedelta(hours=4),
 
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
 REST_AUTH = {
     'USE_JWT': True,
     'JWT_AUTH_COOKIE': 'transcendence-jwt',
     'JWT_AUTH_REFRESH_COOKIE': 'transcendence-refresh-jwt',
 }
 
-ACCOUNT_EMAIL_VERIFICATION = "none"
-
 AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+# ACCOUNT_AUTHENTICATION_METHOD = 'email'
+# ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 FRONTEND_LOGIN_CALLBACK = 'localhost:5173/mockups/callback'
 
