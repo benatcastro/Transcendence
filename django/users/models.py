@@ -14,6 +14,7 @@ class TranscendenceUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
     score = models.IntegerField(default=500)
+    last_activity = models.DateTimeField(auto_now=True)
 
     friends = models.ManyToManyField('self', symmetrical=True)
 
