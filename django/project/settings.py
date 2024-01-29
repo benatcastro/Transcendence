@@ -113,7 +113,8 @@ REST_FRAMEWORK = {
     )
 }
 
-SLIDING_TOKEN_LIFETIME = timedelta(hours=4),
+
+# Authentication
 
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
@@ -123,14 +124,13 @@ REST_AUTH = {
     'JWT_AUTH_REFRESH_COOKIE': 'transcendence-refresh-jwt',
 }
 
+ACCESS_TOKEN_LIFETIME = timedelta(hours=4),
+SLIDING_TOKEN_LIFETIME = timedelta(hours=4),
+
 AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
-
-# ACCOUNT_AUTHENTICATION_METHOD = 'email'
-# ACCOUNT_EMAIL_REQUIRED = True
-# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 FRONTEND_LOGIN_CALLBACK = 'localhost:5173/mockups/callback'
 
@@ -207,6 +207,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Users
 AUTH_USER_MODEL = 'users.TranscendenceUser'
 
+USER_AWAY_THRESHOLD_MINUTES = 5
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
