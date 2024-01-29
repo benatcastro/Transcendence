@@ -34,32 +34,90 @@
 </svelte:head>
 
 <div class="d-flex flex-column flex-center">
-	<h2>Settings</h2>
-	<menu class="d-flex flex-column p-2">
-		<!-- Volume on click opens sub-menu for music and sound effects -->
-		<!-- Graphics click opens sub-menu for animations and effects, as well as general graphics -->
-		<!-- Game click opens sub-menu for skins and personalization -->
-		{#each menuOpts as opt}
-			{#if opt === 'Volume'}
-				<p class="mx-auto">Volume</p>
-				<input type="range" min="0" max="100" step="1" on:input={handleVolumeChange} />
-			{:else}
-				<button class="my-2">{opt}</button>
-			{/if}
-		{/each}
-	</menu>
+ <h2>Settings</h2>
+ <menu class="d-flex flex-column p-2">
+  {#each menuOpts as opt}
+   <div class="setting-container">
+    <h3>{opt}</h3>
+    {#if opt === 'Volume'}
+     <label for="volume">Volume</label>
+     <input id="volume" type="range" class="form-range" min="0" max="100" step="1" on:input={handleVolumeChange} />
+    {:else}
+    {/if}
+   </div>
+  {/each}
+ </menu>
 </div>
 <a on:click={() => goto('/')} href="/">&lt;</a>
 
 <style>
-	/*
-        Not decided yet, probably will try to simulate some electronic components
-        and reflect how the electronics change as the settings do.
+.form-range {
+  -webkit-appearance: none !important;
+  width: 100% !important;
+  background: #000000 !important; /* Black background */
+  border-radius: 10px !important;
+  overflow: hidden !important;
+}
 
-        I.E. You turn up the volume, and a bar connected to a sound system in the
-        background goes up and changes on a gradient. Similar to electronic music
-        components.
-    */
+.form-range::-webkit-slider-thumb {
+  -webkit-appearance: none !important;
+  height: 20px !important;
+  width: 20px !important;
+  background: #f0f !important; /* Neon pink slider */
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  box-shadow: 0 0 10px #f0f, 0 0 20px #f0f, 0 0 30px #f0f, 0 0 40px #f0f !important; /* Neon pink glow */
+}
 
-	/* P.S.: Do not fucking touch my styles or I will eat your god damn eyeballs */
+.form-range::-webkit-slider-runnable-track {
+  width: 100% !important;
+  height: 10px !important;
+  cursor: pointer !important;
+  background: #000000 !important; /* Black track */
+  border-radius: 10px !important;
+  border: 0 !important;
+}
+
+.form-range::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 10px;
+  cursor: pointer;
+  background: #FFB6C1; /* Light pink track */
+  border-radius: 10px;
+  border: 0;
+}
+
+.form-range::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 10px;
+  cursor: pointer;
+  background: #333;
+  border-radius: 10px;
+  border: 0;
+}
+
+.setting-container {
+  border: 1px solid #80d4ff; /* Bright cyan border */
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  background: rgba(0,128,255,0.8); /* Less transparent blue background */
+  color: #0ff; /* Neon blue text */
+  box-shadow: 0 0 10px #f0f; /* Neon pink glow */
+}
+
+.setting-container h3 {
+  margin-bottom: 10px;
+  text-shadow: 0 0 10px #f0f; /* Neon pink text shadow */
+}
+
+.form-range::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 10px;
+  cursor: pointer;
+  background: rgba(0,128,255,0.8); /* Less transparent blue track */
+  border-radius: 10px;
+  border: 0;
+}
+
 </style>

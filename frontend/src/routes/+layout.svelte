@@ -23,8 +23,8 @@
 	preload="none"
 />
 
-<div class="d-flex justify-content-between fixed-top">
-	<button class="btn shadow-none p-0" on:click={toggleMusic}>
+<div class="d-flex fixed-top">
+	<button class="btn shadow-none mr-auto py-3" on:click={toggleMusic}>
 		<img
 			loading="lazy"
 			src={volImageSrc}
@@ -32,8 +32,11 @@
 			class="w-header h-auto"
 		/>
 	</button>
-	<div>
-		<button class="btn shadow-none p-0" on:click={() => goto('/profile')}>
+	<button type="button" class="btn btn-link btn-extra-lg py-3 font-cr" on:click={() => goto('/')}>
+		CYBERPONG
+	</button>
+	<div class="ml-auto">
+		<button class="btn shadow-none px-0 py-3" on:click={() => goto('/profile')}>
 			<img
 				loading="lazy"
 				src={'/assets/icons/profile.svg'}
@@ -41,7 +44,7 @@
 				class="w-header h-auto"
 			/>
 		</button>
-		<button class="btn shadow-none p-0" on:click={() => goto('/settings')}>
+		<button class="btn shadow-none px-0 py-3" on:click={() => goto('/settings')}>
 			<!-- Change to dropdown when on game -->
 			<img
 				loading="lazy"
@@ -57,15 +60,67 @@
 	<slot />
 </div>
 
-<footer class="fixed-bottom text-center py-3">
+<footer class="fixed-bottom text-center py-3 font-cr">
 	<a href="/meet">Meet the team</a>
 </footer>
 
 <style>
+	.btn-extra-lg {
+		font-size: 2em;
+		padding: 1em 2em;
+	}
+	footer a {
+		color: #0ff;
+		text-decoration: none;
+	}
+
+	footer a:hover {
+		text-shadow: 0 0 5px #0ff,
+		0 0 10px #0ff,
+		0 0 15px #0ff,
+		0 0 20px #0ff;
+		animation: glow 1.5s infinite;
+	}
+
+	@keyframes glow {
+		0%, 100% {
+			text-shadow: none;
+		}
+
+		10%, 20% {
+			text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 15px #0ff, 0 0 20px #0ff;
+		}
+
+		30% {
+			text-shadow: none;
+		}
+
+		50%, 60% {
+			text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 15px #0ff, 0 0 20px #0ff;
+		}
+
+		70%, 80% {
+			text-shadow: none;
+		}
+
+		90% {
+			text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 15px #0ff, 0 0 20px #0ff;
+		}
+	}
+
 	:global(body) {
 		background-image: url('/assets/backgrounds/light.webp');
 		background-position: center;
 		background-repeat: no-repeat;
 		background-size: cover;
+	}
+
+	@font-face {
+		font-family: 'Cyberway Riders';
+		src: url('/fonts/cyberway_riders/Cyberway Riders.otf') format('opentype');
+	}
+
+	.font-cr {
+		font-family: 'Cyberway Riders', sans-serif;
 	}
 </style>
