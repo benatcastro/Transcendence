@@ -207,6 +207,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Users
 AUTH_USER_MODEL = 'users.TranscendenceUser'
 
+USER_AWAY_THRESHOLD_MINUTES = 5
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
