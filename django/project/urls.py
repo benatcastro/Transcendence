@@ -23,6 +23,7 @@ from .views import ObtainAuthToken
 urlpatterns = [
     path('', include('transcendence.urls')),
     path('users/', include('users.urls')),
+    path('friends/', include('friends.urls')),
     path('matchmaking/', include('matchmaking.urls')),
     path('watchman/', include('watchman.urls')),
     path("admin/", admin.site.urls),
