@@ -18,8 +18,10 @@
     import { goto } from '$app/navigation';
     import { browser } from '$app/environment';
     import { loginStorage } from '$lib/stores/stores';
+    import {onMount} from "svelte";
 
-    let showModal: boolean = false;
+    let playModal: boolean = false;
+    let logInModal: boolean = false;
     let isLoggedIn: boolean = false;
     let username: string = '';
 
@@ -29,8 +31,15 @@
         }
     });
 
-    function toggleModal() {
-        showModal = !showModal;
+    function toggleModal(modalName: string) {
+        switch (modalName) {
+            case 'login':
+                logInModal = !logInModal;
+                break;
+            case 'play':
+                playModal = !playModal;
+                break;
+        }
     }
 
 	async function getUser() {
@@ -54,29 +63,69 @@
 			console.error(e.message);
 		}
 	}
+
+    async function handleLoginClick(option: string) {
+        try {
+            await goto(`http://localhost:8000/auth/${option}/login`);
+        } catch (e) {
+            console.error(e.message);
+        }
+    }
+
+    async function loadProfile() {
+		const response = await fetch("http://localhost:8000/users/me", {
+			credentials: 'include',
+		});
+        if (response.ok) {
+            const data = await response.json();
+            username = data.username;
+            isLoggedIn = true;
+        }
+	}
+
+    onMount(async () => {
+        await loadProfile();
+    });
 </script>
 
 <div class="d-flex flex-column flex-center">
     <nav>
         <ul class="list-unstyled d-flex flex-column align-items-center">
             <li class="font-xe btn-lg w-100">
-                <div class="card mb-3 p-5 m-3 btn cyberpunk-background" role="button" on:click={toggleModal}>
+                <div class="card mb-3 p-5 m-3 btn cyberpunk-background" role="button" on:click={() => toggleModal('play')}>
                     <button class="btn btn-link border-0"><span>Play</span></button>
                 </div>
-                {#if showModal}
-                    <div class="modal-background" on:click={toggleModal}>
+                {#if playModal}
+                    <div class="modal-background" on:click={() => toggleModal('play')}>
                         <div class="modal-content" on:click|stopPropagation>
+                            <button class="close-button" on:click={() => toggleModal('play')}>X</button>
                             <p class="modal-title">Select Mode</p>
                             <button type="button" class="btn btn-primary" on:click={() => handlePlayClick('casual')}>Casual</button>
                             <button type="button" class="btn btn-secondary" on:click={() => handlePlayClick('ranked')}>Ranked</button>
                         </div>
                     </div>
-                {/if}I
+                {/if}
+                {#if logInModal}
+                    <div class="modal-background" on:click={() => toggleModal('login')}>
+                        <div class="modal-content" on:click|stopPropagation>
+                            <button class="close-button" on:click={() => toggleModal('login')}>X</button>
+                            <p class="modal-title">Login</p>
+                            <button type="button" class="btn btn-primary" on:click={() => handleLoginClick('google')}>Google</button>
+                            <button type="button" class="btn btn-secondary" on:click={() => handleLoginClick('42intra')}>42Intranet</button>
+                        </div>
+                    </div>
+                {/if}
             </li>
             <li class="font-xe d-flex justify-content-around w-100">
-                <div class="card mb-3 p-5 m-3 btn cyberpunk-background" role="button" on:click={() => goto('/profile')}>
-                    <button class="btn btn-link border-0"><span>Profile</span></button>
-                </div>
+                {#if isLoggedIn}
+                    <div class="card mb-3 p-5 m-3 btn cyberpunk-background" role="button" on:click={() => goto(`/profile/${username}`)}>
+                        <button class="btn btn-link border-0"><span>Profile</span></button>
+                    </div>
+                {:else}
+                    <div class="card mb-3 p-5 m-3 btn cyberpunk-background" role="button" on:click={() => toggleModal('login')}>
+                        <button class="btn btn-link border-0"><span>Login</span></button>
+                    </div>
+                {/if}
                 <div class="card mb-3 p-5 m-3 btn cyberpunk-background" role="button" on:click={() => goto('/rank')}>
                     <button class="btn btn-link border-0"><span>Leaderboard</span></button>
                 </div>
@@ -86,6 +135,16 @@
 </div>
 
 <style>
+    .close-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        cursor: pointer;
+    }
+
     .modal-background {
         position: fixed;
         top: 0;
