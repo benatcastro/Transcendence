@@ -55,10 +55,13 @@
 
 	async function handlePlayClick(option: string) {
 		try {
-			if (option !== 'ranked' || isLoggedIn) {
+			if (option !== 'tournament') {
 				await getUser();
-				await goto(`/matchmaking?mode=${option}&user=${username}`);
-			}
+            } else if (option == 'tournament' && !isLoggedIn) {
+                toggleModal('login');
+                return;
+            }
+            await goto(`/matchmaking?mode=${option}&user=${username}`);
 		} catch (e) {
 			console.error(e.message);
 		}
@@ -101,7 +104,7 @@
                             <button class="close-button" on:click={() => toggleModal('play')}>X</button>
                             <p class="modal-title">Select Mode</p>
                             <button type="button" class="btn btn-primary" on:click={() => handlePlayClick('casual')}>Casual</button>
-                            <button type="button" class="btn btn-secondary" on:click={() => handlePlayClick('ranked')}>Ranked</button>
+                            <button type="button" class="btn btn-secondary" on:click={() => handlePlayClick('tournament')}>Tournament</button>
                         </div>
                     </div>
                 {/if}
