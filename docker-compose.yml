@@ -151,8 +151,21 @@ services:
     image: prom/prometheus
     volumes: 
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./rules.yml:/etc/prometheus/rules.yml
     expose:
       - "9090"
+  alertmanager:
+    container_name: alertmanager
+    image: prom/alertmanager
+    volumes:
+      - ./alertmanager/config_mod.yml:/etc/alertmanager/config_mod.yml
+    ports:
+      - "9093:9093"
+    env_file:
+      - .env
+    command:
+      - '--config.file=/etc/alertmanager/config_mod.yml'
+    restart: always
 
 volumes:
   postgres_data:

@@ -3,7 +3,7 @@
 # Cambia al directorio donde se encuentra vault.yml si es necesario
 # cd /path/to/your/vault/directory
 
-echo "Creando variables de entorno..."
+echo "Generando Secretos..."
 docker compose -f vault.yml build
 docker compose -f vault.yml up -d
 
@@ -13,6 +13,20 @@ while [ ! -f ".env" ]; do
   sleep 5
 done
 
-echo "Archivo .env encontrado. Ejecutando Secuencia de inicio de Cyberpong..."
+echo "Archivo .env encontrado."
+
+# Ejecuta el script start_alerts.sh ubicado en /alertmanager
+echo "Ejecutando el script start_alerts.sh para configurar alertas..."
+./alertmanager/start_alerts.sh
+
+# Espera a que se genere el archivo /alertmanager/config_mod.yml
+echo "Esperando a generar archivo de configuracion de AlertManager de manera segura..."
+while [ ! -f "./alertmanager/config_mod.yml" ]; do
+  sleep 5
+done
+
+echo "Archivo /alertmanager/config_mod.yml encontrado. Continuando con la secuencia de inicio."
+
+echo "Ejecutando Secuencia de inicio de Cyberpong..."
 make
 
