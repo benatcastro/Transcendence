@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { PageData} from './$types';
     import { page } from '$app/stores';
+    import { loginStorage } from '$lib/stores/stores';
     import { goto } from "$app/navigation";
     import {onMount} from "svelte";
 
@@ -20,6 +21,8 @@
             });
             if (response.ok) {
                 data = await response.json();
+                $loginStorage = data
+                console.log(data.user.email.split('@')[0]);
                 await goto('/')
             } else {
                 console.error('Failed to post code');

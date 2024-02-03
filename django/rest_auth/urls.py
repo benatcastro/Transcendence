@@ -8,13 +8,13 @@ urlpatterns = [
     path('', include('dj_rest_auth.urls')),
     # Google api endpoints
     path('google/', GoogleLogin.as_view(), name='google_login'),
-    path('google/login/callback/', google_callback, name="google_callback"),
     path('google/login/', google_views.oauth2_login),
+    path('google/login/callback/', google_callback, name="google_callback"),
 
     # Intra api endpoints
     path('42intra/', FtIntraLogin.as_view(), name='ftintra_login'),
-    path('42intra/login/callback/', ftintra_callback, name="ftintra_callback"),
     path('42intra/login/', intra_views.oauth2_login),
+    path('42intra/login/callback/', ftintra_callback, name="ftintra_callback"),
 
     # General auth endpoints
     path('', include('allauth.urls')),

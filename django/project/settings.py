@@ -254,12 +254,15 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_HOSTS = [
     'https://localhost',
     'https://frontend:5173',
+    'http://frontend:5173',
+    'http://localhost',
 ]
 
 CORS_ALLOWED_ORIGINS = [
     'https://localhost',
     'https://frontend:5173',
-
+    'http://frontend:5173',
+    'http://localhost',
 
 ]
 
