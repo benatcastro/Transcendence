@@ -207,6 +207,12 @@ AUTH_PASSWORD_VALIDATORS = [
 # Users
 AUTH_USER_MODEL = 'users.TranscendenceUser'
 
+# Images
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+print("Media root ->", MEDIA_ROOT)
+
 USER_AWAY_THRESHOLD_MINUTES = 5
 
 # Internationalization
