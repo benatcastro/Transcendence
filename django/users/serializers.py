@@ -15,7 +15,7 @@ def is_user_online(user):
 class TranscendenceUserSerializer(ModelSerializer):
     class Meta:
         model = TranscendenceUser
-        fields = ("id", "username", "email", "profile_picture", "score")
+        fields = ("id", "username", "email", "score", "pfp", "friends")
 
     def to_representation(self, instance):
         user_representation = super().to_representation(instance)

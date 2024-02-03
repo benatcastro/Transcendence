@@ -5,10 +5,9 @@ from django.utils.translation import gettext_lazy as _
 
 from .manager import TranscendenceUserManager
 
-
 class TranscendenceUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=55, unique=True)
-    profile_picture = models.CharField(max_length=100, default='default.webp')
+    pfp = models.ImageField(upload_to="pfp", default="default.webp")
     email = models.EmailField("email address", unique=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
