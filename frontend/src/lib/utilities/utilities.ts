@@ -64,12 +64,18 @@ export async function addFriends(fromUser: string, toUser: string) {
 }
 
 export async function modifyUser(user: string, newValues: any) {
+
+    console.log("Modifiying User}", user)
+    console.log(newValues)
+    const cookiePair = document.cookie.split("=")
     const response = async () => {
-        const data = await fetch("http://localhost:8000/friends/", {
+        const data = await fetch("http://localhost:8000/users/" + user + "/" , {
             method: 'PATCH',
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
+                "x-csrftoken": cookiePair[1],
+                
             },
             body: newValues
         })

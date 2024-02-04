@@ -282,9 +282,9 @@ CSRF_TRUSTED_ORIGINS = [
     'https://localhost'
 ]
 
-# CORS_ALLOWED_HOSTS = ["*"]
-# CORS_ORIGIN_ALLOW_ALL = True
-# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_HOSTS = ["*"]
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_ALL_ORIGINS = True
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",

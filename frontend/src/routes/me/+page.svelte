@@ -37,23 +37,12 @@
 
     let searchInput = "";
 
-    async function uploadImage() {
+    async function formatImageData() {
+
         const formData = new FormData();
-        formData.append('image', selectedFile[0]);
+        formData.append('pfp', selectedFile[0]);
 
-        console.log(formData)
-        const response = await fetch(`http://localhost:8000/users/${user.username}/`, {
-            method: 'PATCH',
-            credentials: 'include',
-            body: formData,
-            // body: JSON.stringify({ image: formData})
-        });
-
-        if (response.ok) {
-            const updatedUser = await response.json();
-            user.image = updatedUser.image;
-        }
-        console.log(response)
+        return formData
     }
 
     function triggerFileInput() {
@@ -114,10 +103,10 @@
                 <img class="profile-image m-5" src={user.pfp} alt="Profile image" on:click={triggerFileInput}>
                 <span class="change-image-text">Change image</span>
             </div>
-            <input type="file" bind:files={selectedFile} bind:this={fileInput} style="display: none;" on:change={uploadImage} />
+            <input type="file" bind:files={selectedFile} bind:this={fileInput} style="display: none;" on:change={modifyUser(user.username, await formatImageData())} />
             <div class="edit-username-wrapper">
                 <input bind:value={newUsername} class="placeholder p-2 m-2" placeholder={user.username} readonly={!editing}/>
-                <button on:click={editing ? changeUsername : () => editing = !editing} class="btn btn-primary">
+                <button on:click={editing ? modifyUser(user.username, JSON.stringify({username: newUsername})) : () => editing = !editing} class="btn btn-primary">
                     {#if editing}
                         <span class="material-symbols-outlined">check</span>
                     {:else}
