@@ -28,7 +28,7 @@ def ftintra_callback(request):
 
 class GoogleLogin(SocialLoginView):
     adapter_class = GoogleOAuth2Adapter
-    callback_url = 'https://localhost'
+    #callback_url = 'http://localhost:5173'
     client_class = OAuth2Client
 
     print("TEST")

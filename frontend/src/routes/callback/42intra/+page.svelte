@@ -2,6 +2,7 @@
     import type {PageData} from './$types';
     import { page } from '$app/stores';
 	import { onMount } from 'svelte';
+    import { loginStorage } from '$lib/stores/stores';
     import { goto } from "$app/navigation";
 
     export let data: PageData;
@@ -21,6 +22,7 @@
             });
             if (response.ok) {
                 data = await response.json();
+                $loginStorage = data;
                 await goto('/')
 
             } else {

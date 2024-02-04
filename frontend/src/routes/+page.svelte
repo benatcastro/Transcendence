@@ -17,7 +17,7 @@
 <script lang="ts">
     import { goto } from '$app/navigation';
     import { browser } from '$app/environment';
-    import { loginStorage } from '$lib/stores/stores';
+    import { loginStorage, loginType } from '$lib/stores/stores';
     import {onMount} from "svelte";
 
     let playModal: boolean = false;
@@ -25,11 +25,15 @@
     let isLoggedIn: boolean = false;
     let username: string = '';
 
-    loginStorage.subscribe((loginSelection) => {
-        if (browser && loginSelection) {
-            goto(`http://localhost:8000/auth/${loginSelection}/login`);
-        }
-    });
+    // loginStorage.subscribe((loginSelection) => {
+    //     if (browser && $loginStorage && $loginType) {
+    //         goto(`http://localhost:8000/auth/${loginSelection}/login`);
+    //     }
+    // });
+
+    // if (browser && $loginStorage && $loginType) {
+    //     goto(`http://localhost:8000/auth/${loginType}/login`);
+    // }
 
     function toggleModal(modalName: string) {
         switch (modalName) {
@@ -82,6 +86,8 @@
             console.log(username);
             isLoggedIn = true;
         }
+        else
+            console.log(response.json());
 	}
 
     onMount(async () => {

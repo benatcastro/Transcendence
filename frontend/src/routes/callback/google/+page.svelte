@@ -21,10 +21,11 @@
             });
             if (response.ok) {
                 data = await response.json();
-                $loginStorage = data
+                $loginStorage = data;
                 console.log(data.user.email.split('@')[0]);
                 await goto('/')
             } else {
+                console.log(response.json());
                 console.error('Failed to post code');
             }
         } catch (error) {
@@ -32,7 +33,5 @@
         }
     }
 
-    onMount(() => {
-        getToken();
-    })
+    getToken();
 </script>

@@ -62,5 +62,6 @@ class MeView(RetrieveAPIView):
 
     def get_object(self):
         queryset = self.get_queryset()
+        print("\n\n", queryset, "\n\n")
         obj = get_object_or_404(queryset)
         return obj
