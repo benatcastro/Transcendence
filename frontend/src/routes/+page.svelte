@@ -25,15 +25,11 @@
     let isLoggedIn: boolean = false;
     let username: string = '';
 
-    // loginStorage.subscribe((loginSelection) => {
-    //     if (browser && $loginStorage && $loginType) {
-    //         goto(`http://localhost:8000/auth/${loginSelection}/login`);
-    //     }
-    // });
-
-    // if (browser && $loginStorage && $loginType) {
-    //     goto(`http://localhost:8000/auth/${loginType}/login`);
-    // }
+    loginStorage.subscribe((loginSelection) => {
+        if (browser && loginSelection) {
+            goto(`http://localhost:8000/auth/${loginSelection}/login`);
+        }
+    });
 
     function toggleModal(modalName: string) {
         switch (modalName) {
@@ -91,7 +87,7 @@
 	}
 
     onMount(async () => {
-        console.log($loginStorage);
+        //console.log($loginStorage);
         await loadProfile();
     });
 </script>

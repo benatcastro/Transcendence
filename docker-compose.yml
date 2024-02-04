@@ -47,7 +47,7 @@ services:
     build: ./django
     command: sh -c "python manage.py makemigrations &&
                     python manage.py migrate &&
-                    daphne project.asgi:application -b 0.0.0.0 -p ${APP_PORT} -e ssl:443:privateKey=server.crt:certKey=server.key --verbosity 3" #https://github.com/django/daphne
+                    daphne project.asgi:application -b 0.0.0.0 -p ${APP_PORT} -e ssl:443:privateKey=server.crt:certKey=server.key --verbosity 3 || tail -f" #https://github.com/django/daphne
     volumes:
       - .:/microservice
       - ./static_volume:/home/app/microservice/static
