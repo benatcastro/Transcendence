@@ -255,3 +255,32 @@ pip3 install -r requirements.txt
   -  PYTHONDONTWRITEBYTECODE=1: Evita que Python genere archivos de bytecode (.pyc) al importar módulos. Estos archivos no son necesarios en entornos de contenedor y desarrollo, y desactivarlos puede reducir el tamaño del contenedor.
 
   - PYTHONUNBUFFERED=1: Deshabilita el búfer de salida en Python, asegurando que la salida esté disponible de inmediato en la consola. Esto es útil para obtener logs y mensajes de salida sin esperar a que se llene un búfer, especialmente en entornos de contenedor y desarrollo.
+
+# USUARIOS
+## Modificar los usuarios
+Para modificar los usuarios haremos peticiones del tipo PATCH a localhost:8000/users/
+
+Funcion ejemplo:
+``` javascript
+       const response = await fetch(`http://localhost:8000/api/users/john/`, {
+            method: 'PATCH',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: "nuevo_email@mail.com" })
+        });}
+```
+#### Explicacion
+
+- Determinamos un usuario concreto poniendo su nombre de usuario despues de .../users/ en la url de la peticion
+``` javascript
+       fetch(`http://localhost:8000/api/users/john/`, {
+```
+
+- En el body pasaremos los valores que querramos actualizar. No se pueden crear nuevos atributos, solo actualizarlos!
+``` javascript
+      ...
+      body: JSON.stringify({ email: "nuevo_email@mail.com" })
+      ...
+```
