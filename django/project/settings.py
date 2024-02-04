@@ -72,6 +72,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     'whitenoise.middleware.WhiteNoiseMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
+    'django.middleware.csrf.CsrfViewMiddleware',
     "django.middleware.common.CommonMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -252,13 +253,14 @@ CORS_ALLOW_CREDENTIALS = True
 
 # CON ESTO ALGUNA VARIBLES DE GET NO PASAN DE FRONTEND A BACKED
 CORS_ALLOWED_HOSTS = [
-    'https://localhost',
+    'https://localhost:443',
     'https://frontend:5173',
     'http://frontend:5173',
     'http://localhost',
 ]
 
 CORS_ALLOWED_ORIGINS = [
+    'https://localhost:443',
     'https://localhost',
     'https://frontend:5173',
     'http://frontend:5173',
@@ -266,9 +268,13 @@ CORS_ALLOWED_ORIGINS = [
 
 ]
 
-CORS_ALLOWED_HOSTS = ["*"]
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_ALL_ORIGINS = True
+CSRF_TRUSTED_ORIGINS = [
+    'https://localhost'
+]
+
+# CORS_ALLOWED_HOSTS = ["*"]
+# CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ALLOW_ALL_ORIGINS = True
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
