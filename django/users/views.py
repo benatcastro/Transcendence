@@ -54,13 +54,11 @@ class MeView(RetrieveAPIView):
         - get_object(): returns the currently authenticated user
 
     """
+    queryset = TranscendenceUser.objects.all()
     serializer_class = TranscendenceUserSerializer
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        return TranscendenceUser.objects.filter(email=self.request.user)
-
     def get_object(self):
-        queryset = self.get_queryset()
-        obj = get_object_or_404(queryset)
+        obj = get_object_or_404(self.queryset, email=self.request.user.email)
+        print("\n\n", obj, "\n\n")
         return obj

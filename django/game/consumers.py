@@ -42,7 +42,7 @@ class Ball():
 		self.name: str = "ball"
 		self.x: float = 0
 		self.z: float = 0
-		self.speed: float = 0.05
+		self.speed: float = 0.25
 		self.SetNewDirection()
 
 	def SetNewDirection(self):
@@ -87,32 +87,24 @@ class Ball():
 		if (self.z <= -14.5):
 			if (player1.y < 0):
 				if (abs(self.x - player1.x) <= 3):
-					if (self.x - player1.x < 0):
-						self.dirX = -1
-					else:
-						self.dirX = 1
+					angle = (self.x - player1.x) / 3
+					self.dirX = math.sin(angle)
 					self.dirZ *= -1
 			else:
 				if (abs(self.x - -player2.x) <= 3):
-					if (self.x - -player2.x < 0):
-						self.dirX = -1
-					else:
-						self.dirX = 1
+					angle = (self.x - -player2.x) / 3
+					self.dirX = math.sin(angle)
 					self.dirZ *= -1
 		if (self.z >= 14.5):
 			if (player1.y > 0):
 				if (abs(self.x - player1.x) <= 3):
-					if (self.x - player1.x < 0):
-						self.dirX = -1
-					else:
-						self.dirX = 1
+					angle = (self.x - player1.x) / 3
+					self.dirX = math.sin(angle)
 					self.dirZ *= -1
 			else:
 				if (abs(self.x - -player2.x) <= 3):
-					if (self.x - -player2.x < 0):
-						self.dirX = -1
-					else:
-						self.dirX = 1
+					angle = (self.x - -player2.x) / 3
+					self.dirX = math.sin(angle)
 					self.dirZ *= -1
 			
 # salas_activas = {}
@@ -191,7 +183,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 		# Procesar el mensaje recibido desde el cliente
 		# message = f'Hola desde el servidor {self.room_name}'
 					
-		message = json.dumps(self.player1.__dict__) + "_" + json.dumps(self.player2.__dict__) + "_" + json.dumps(self.ball.__dict__)
+		message = (json.dumps(self.player1.__dict__) + "_" + json.dumps(self.player2.__dict__) + "_" + json.dumps(self.ball.__dict__))
 		# print(self.ball.__dict__)
 
 		# Ejemplo: Enviar el mensaje recibido a todos en el grupo

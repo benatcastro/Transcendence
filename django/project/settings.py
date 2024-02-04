@@ -43,9 +43,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     'watchman',
+    'daphne',
     "django.contrib.staticfiles",
     "transcendence",
-    'matchmaking',
     'django_extensions',
     'users',
     'friends',
@@ -61,6 +61,9 @@ INSTALLED_APPS = [
     'channels',
     'django_prometheus',
     'drf_yasg',
+    'matchmaking',
+    'game',
+
 ]
 
 MIDDLEWARE = [
@@ -68,7 +71,9 @@ MIDDLEWARE = [
  'corsheaders.middleware.CorsMiddleware',
     "django.middleware.security.SecurityMiddleware",
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    "project.middleware.MyMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    'django.middleware.csrf.CsrfViewMiddleware',
     "django.middleware.common.CommonMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -77,6 +82,17 @@ MIDDLEWARE = [
     'users.middleware.TranscendenceUserActivityMiddleware',
     'django_prometheus.middleware.PrometheusAfterMiddleware',  #importante que este middleware este colocado el ultimo
 ]
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+    ],
+        'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
@@ -107,11 +123,6 @@ SOCIALACCOUNT_PROVIDERS = {
 
 SITE_ID = 1
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
-    )
-}
 
 
 # Authentication
@@ -132,7 +143,10 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-FRONTEND_LOGIN_CALLBACK = 'localhost:5173/mockups/callback'
+# ACCOUNT_AUTHENTICATION_METHOD = 'email'
+# ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
 
 REST_USE_JWT = True
 
@@ -161,7 +175,8 @@ TEMPLATES = [
 RUNSERVERPLUS_POLLER_RELOADER_INTERVAL = 1
 RUNSERVERPLUS_POLLER_RELOADER_TYPE = 'auto'
 WSGI_APPLICATION = "project.wsgi.application"
-ASGI_APPLICATION = "game.routing.application"
+ASGI_APPLICATION = "project.asgi.application"
+
 WHITENOISE_AUTOREFRESH = True  # Habilita la actualización en tiempo real para archivos estáticos
 
 # Database
@@ -211,8 +226,6 @@ AUTH_USER_MODEL = 'users.TranscendenceUser'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-print("Media root ->", MEDIA_ROOT)
-
 USER_AWAY_THRESHOLD_MINUTES = 5
 
 # Internationalization
@@ -239,7 +252,7 @@ SESSION_COOKIE_SAMESITE = 'None'
 CORS_ALLOW_HEADERS = (
      "accept",
      "authorization",
-    "content-type",
+     "content-type",
      "user-agent",
      "x-csrftoken",
      "x-requested-with",
@@ -250,18 +263,28 @@ CORS_ALLOW_CREDENTIALS = True
 
 # CON ESTO ALGUNA VARIBLES DE GET NO PASAN DE FRONTEND A BACKED
 CORS_ALLOWED_HOSTS = [
-    'localhost',
-    'localhost:5173',
+    'https://localhost:443',
+    'https://frontend:5173',
+    'http://frontend:5173',
+    'http://localhost',
 ]
 
 CORS_ALLOWED_ORIGINS = [
+    'https://localhost:443',
+    'https://localhost',
+    'https://frontend:5173',
+    'http://frontend:5173',
     'http://localhost',
-    'http://localhost:5173',
 
 ]
 
-CORS_ALLOWED_HOSTS = ["*"]
-CORS_ALLOW_ALL_ORIGINS = True
+CSRF_TRUSTED_ORIGINS = [
+    'https://localhost'
+]
+
+# CORS_ALLOWED_HOSTS = ["*"]
+# CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ALLOW_ALL_ORIGINS = True
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
@@ -270,6 +293,11 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+SESSION_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

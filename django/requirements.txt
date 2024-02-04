@@ -16,8 +16,11 @@ channels
 channels-redis
 websockets
 websocket-client==0.57.0
-uvicorn[standard]
+daphne
 redis
 django-prometheus
 drf-yasg
+Twisted[tls,http2]
+pyOpenSSL
+django-rest-authtoken
  pillow==10.2.0

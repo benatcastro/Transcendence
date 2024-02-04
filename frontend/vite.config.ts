@@ -6,5 +6,12 @@ export default defineConfig({
 	plugins: [sveltekit()],
 	ssr: {
 		noExternal: ['three', 'postprocessing']
-	}
+	},
+	server: {
+		port: 5173,
+		strictPort: true,
+		hmr: {
+		  port: 5173,
+		},
+	  },
 });

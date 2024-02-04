@@ -5,7 +5,7 @@ services:
     restart: always
     build:
       context: ./frontend
-    ports:
+    expose:
       - "5173:5173"
     volumes:
       - ./frontend:/app
@@ -47,7 +47,7 @@ services:
     build: ./django
     command: sh -c "python manage.py makemigrations &&
                     python manage.py migrate &&
-                    uvicorn project.asgi:application --host 0.0.0.0 --port ${APP_PORT} --reload"
+                    daphne project.asgi:application -b 0.0.0.0 -p ${APP_PORT} -e ssl:443:privateKey=server.crt:certKey=server.key --verbosity 3 || tail -f" #https://github.com/django/daphne
     volumes:
       - .:/microservice
       - ./static_volume:/home/app/microservice/static
@@ -56,7 +56,7 @@ services:
     environment:
       - DJANGO_SETTINGS_MODULE=project.settings
     ports:
-      - "8000:8000"
+       - "8000:8000"
     image: trascendence_app
     expose:
       - ${APP_PORT}

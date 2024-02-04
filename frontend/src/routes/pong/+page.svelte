@@ -19,19 +19,21 @@
 	let path = './'
 	let files: string | string[] = 'Skybox.png'
 
-	//ws.set(new WebSocket('ws://localhost:8000/ws/game/?room_code=' + room))
 	onMount(() => {
-		userName.set($page.url.searchParams.get('user')?.toString());
-		rivalName.set($page.url.searchParams.get('rival')?.toString());
-		room.set($page.url.searchParams.get('room')?.toString());
+	});
 
-		console.log('user: ' + $page.url.searchParams.get('user')?.toString());
-		console.log('rival: ' + $page.url.searchParams.get('rival')?.toString());
-		console.log('room: ' + $room);
+	userName.set($page.url.searchParams.get('user')?.toString());
+	rivalName.set($page.url.searchParams.get('rival')?.toString());
+	room.set($page.url.searchParams.get('room')?.toString());
 
+	console.log('user: ' + $page.url.searchParams.get('user')?.toString());
+	console.log('rival: ' + $page.url.searchParams.get('rival')?.toString());
+	console.log('room: ' + $room);
+
+	onMount(() => {
 		// Crea tu WebSocket
-		ws.set(new WebSocket('ws://localhost:8000/ws/game/?room_code=' + $room + '&username=' + $page.url.searchParams.get('user')?.toString()));
-		
+		ws.set(new WebSocket('wss://localhost/ws/game/?room_code=' + $room + '&username=' + $page.url.searchParams.get('user')?.toString()));
+
 		if ($ws) {
 			$ws.onopen = () => {
 				console.log('WebSocket connection opened');
@@ -57,7 +59,6 @@
 			};
 		}
 	});
-
 </script>
 
 <!-- <h1>Ander mariquita hihi</h1> -->

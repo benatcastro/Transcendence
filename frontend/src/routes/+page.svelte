@@ -17,7 +17,7 @@
 <script lang="ts">
     import { goto } from '$app/navigation';
     import { browser } from '$app/environment';
-    import { loginStorage } from '$lib/stores/stores';
+    import { loginStorage, loginType } from '$lib/stores/stores';
     import {onMount} from "svelte";
 
     let playModal: boolean = false;
@@ -44,7 +44,7 @@
 
 	async function getUser() {
 		if (!isLoggedIn) {
-			const res = await fetch('http://localhost:8000/matchmaking/create-usr?mode=casual');
+			const res = await fetch('http://localhost/matchmaking/create-usr?mode=casual');
 			if (!res.ok) {
 				throw new Error('Error while creating user');
 			}
@@ -79,11 +79,15 @@
         if (response.ok) {
             const data = await response.json();
             username = data.username;
+            console.log(username);
             isLoggedIn = true;
         }
+        else
+            console.log(response.json());
 	}
 
     onMount(async () => {
+        //console.log($loginStorage);
         await loadProfile();
     });
 </script>
@@ -101,7 +105,7 @@
                             <button class="close-button" on:click={() => toggleModal('play')}>X</button>
                             <p class="modal-title">Select Mode</p>
                             <button type="button" class="btn btn-primary" on:click={() => handlePlayClick('casual')}>Casual</button>
-                            <button type="button" class="btn btn-secondary" on:click={() => handlePlayClick('ranked')}>Ranked</button>
+                            <button type="button" class="btn btn-secondary" on:click={() => handlePlayClick('ranked')}>Tournament</button>
                         </div>
                     </div>
                 {/if}
