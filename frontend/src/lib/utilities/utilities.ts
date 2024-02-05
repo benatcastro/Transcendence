@@ -1,7 +1,7 @@
 export async function get_user_and_refresh() {
 
     const user = async () => {
-        const response = await fetch("http://localhost:8000/users/me", {
+        const response = await fetch("https://localhost:1024/users/me", {
             credentials: 'include',
         });
         const data = await response.json();
@@ -20,7 +20,7 @@ export async function get_user_and_refresh() {
 }
 export async function refresh() {
     try {
-        const response = await fetch("http://localhost:8000/auth/token/refresh/", {
+        const response = await fetch("https://localhost:1024/auth/token/refresh/", {
             method: 'POST',
             credentials: "include"
         })
@@ -37,7 +37,7 @@ export async function refresh() {
 
 export async function addFriends(fromUser: string, toUser: string) {
     const response = async () => {
-        const data = await fetch("http://localhost:8000/friends/", {
+        const data = await fetch("https://localhost:1024/friends/", {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -69,7 +69,7 @@ export async function modifyUser(user: string, newValues: any) {
     console.log(newValues)
     const cookiePair = document.cookie.split("=")
     const response = async () => {
-        const data = await fetch("http://localhost:8000/users/" + user + "/" , {
+        const data = await fetch("https://localhost:442/users/" + user + "/" , {
             method: 'PATCH',
             credentials: 'include',
             headers: {

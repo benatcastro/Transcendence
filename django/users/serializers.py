@@ -2,6 +2,11 @@ from .models import TranscendenceUser
 from rest_framework.serializers import ModelSerializer
 from django.utils import timezone
 from django.conf import settings
+from .models import UserProfile
+from rest_framework import serializers
+
+
+
 
 
 def is_user_online(user):
@@ -13,6 +18,7 @@ def is_user_online(user):
 
 
 class TranscendenceUserSerializer(ModelSerializer):
+
     class Meta:
         model = TranscendenceUser
         fields = ("id", "username", "email", "score", "pfp", "friends")
@@ -24,3 +30,8 @@ class TranscendenceUserSerializer(ModelSerializer):
         user_representation['status'] = "online" if is_user_online(instance) else "away"
 
         return user_representation
+
+class UploadImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TranscendenceUser
+        fields = ('pfp', )

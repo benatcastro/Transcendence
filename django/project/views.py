@@ -10,7 +10,7 @@ class ObtainAuthToken(APIView):
     # authentication_classes = [SessionAuthentication, BasicAuthentication]
     # permission_classes = [IsAuthenticated]
 
-    def post(self, request, *args, **kwargs):
+    def post(self):
         username = request.data.get('usernameDjango')
         password = request.data.get('password')
 

@@ -10,11 +10,15 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import DataUsersSerializer  # Asegúrate de que el nombre sea correcto
-
+from users.serializers import UploadImageSerializer
 
 class DataUsersViewSet(viewsets.ModelViewSet):
     queryset = TranscendenceUser.objects.all()
     serializer_class = DataUsersSerializer
+
+class UplaodViewSet(viewsets.ModelViewSet):
+    queryset = TranscendenceUser.objects.all()
+    serializer_class = UploadImageSerializer
 
 def getData(request):
     # Obtener información sobre la tabla

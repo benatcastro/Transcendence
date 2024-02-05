@@ -91,7 +91,9 @@ REST_FRAMEWORK = {
     ],
         'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
+        
     ),
+
 }
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -247,44 +249,52 @@ STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # CORS
-
-SESSION_COOKIE_SAMESITE = 'None'
-CORS_ALLOW_HEADERS = (
-     "accept",
-     "authorization",
-     "content-type",
-     "user-agent",
-     "x-csrftoken",
-     "x-requested-with",
-)
+#SESSION_COOKIE_SAMESITE = 'None'
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
 
 
 CORS_ALLOW_CREDENTIALS = True
 
 # CON ESTO ALGUNA VARIBLES DE GET NO PASAN DE FRONTEND A BACKED
+
 CORS_ALLOWED_HOSTS = [
-    'https://localhost:443',
-    'https://frontend:5173',
-    'http://frontend:5173',
+    'https://localhost',
     'http://localhost',
+    'http://localhost:8000',
+    'https://localhost:1024',
+    'https://localhost:442',
+   
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'https://localhost:443',
     'https://localhost',
-    'https://frontend:5173',
-    'http://frontend:5173',
+
     'http://localhost',
+    'http://localhost:8000',
+    'https://localhost:1024',
+    'https://localhost:442',
+   
 
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://localhost'
+    'https://localhost',
+    'https://localhost:442',
 ]
 
+
+
 CORS_ALLOWED_HOSTS = ["*"]
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ORIGIN_ALLOW_ALL =False
+CORS_ALLOW_ALL_ORIGINS = False
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
@@ -298,6 +308,9 @@ SESSION_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+
+#SECURE_SSL_REDIRECT = True
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

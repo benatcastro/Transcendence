@@ -12,7 +12,7 @@
 
 <script lang="ts">
     import type {PageData} from './$types';
-
+   
     export let data: PageData;
     const user = data.user;
 
@@ -25,20 +25,30 @@
     let newPassword: string = '';
     let newUsername: string = '';
 
+   
+
     async function uploadImage() {
-        const formData = new FormData();
-        formData.append('image', selectedFile[0]);
+    const cookiePair = document.cookie.split("=");
+    const csrfToken = cookiePair ? cookiePair[1] : null;
+    const formData = new FormData();
 
-        const response = await fetch('http://localhost:8000/users/uploadImage', {
-            method: 'POST',
-            body: formData
-        });
+    formData.append('pfp', selectedFile[0]);
 
-        if (response.ok) {
-            const updatedUser = await response.json();
-            user.image = updatedUser.image;
-        }
+    const response = await fetch('https://localhost:442/upload/', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'X-CSRFToken': csrfToken,
+        },
+        body: formData,
+    });
+
+    if (response.ok) {
+        const updatedUser = await response.json();
+        user.pfp = updatedUser.pfp;
     }
+}
+
 
     function triggerFileInput() {
         fileInput.click();
@@ -83,11 +93,14 @@
     }
 
     async function changeUsername() {
+        const cookiePair = document.cookie.split("=")
+        const csrfToken = cookiePair ? cookiePair[1] : null;
         const response = await fetch(`http://localhost:8000/api/users/${user.id}/`, {
             method: 'PATCH',
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
             },
             body: JSON.stringify({ username: newUsername })
         });
@@ -105,11 +118,11 @@
 <div class="d-flex vh-100 flex-center">
     <div class="d-flex h-75 w-75 cyberpunk-container">
         <div class="d-flex flex-column mt-5 mx-5">
-            <img class="profile-image m-5" src={user.image || '/assets/blank_profile.jpg'} alt="Profile image" on:click={triggerFileInput}>
+            <img class="profile-image m-5" src={user.pfp || '/assets/blank_profile.jpg'} alt="Profile image" on:click={triggerFileInput}>
             <span class="change-image-text">Change image</span>
             <input type="file" bind:files={selectedFile} bind:this={fileInput} style="display: none;" on:change={uploadImage} />
             <p class="placeholder p-2 m-2">{user.username}</p>
-            <p class="placeholder p-2 m-2">{user.points}</p>
+            <p class="placeholder p-2 m-2">{user.score}</p>
         </div>
         <div class="d-flex flex-column mt-5 mx-5">
             <input type="email" bind:value={newEmail} placeholder="New Email" class="form-control" />

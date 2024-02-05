@@ -12,6 +12,30 @@ from django.shortcuts import get_object_or_404
 from .models import TranscendenceUser
 from .serializers import TranscendenceUserSerializer
 
+from drf_yasg.utils import swagger_auto_schema
+from .serializers import UploadImageSerializer
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.views import APIView
+from rest_framework import status
+from rest_framework.response import Response
+
+from drf_yasg import openapi
+
+from rest_framework.exceptions import ParseError
+from rest_framework import status
+from .serializers import UploadImageSerializer
+
+# views.py
+class UploadImageView(APIView):
+    def post(self, request):
+        serializer = UploadImageSerializer(instance=request.user, data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Imagen cargada exitosamente', 'image_url': serializer.data['pfp']}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'No se proporcionó ninguna imagen'}, status=status.HTTP_400_BAD_REQUEST)
+
 class TranscendenceUserViewSet(ModelViewSet):
     """
 .   View class-set for all the user handling endpoints.

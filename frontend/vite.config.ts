@@ -7,11 +7,20 @@ export default defineConfig({
 	ssr: {
 		noExternal: ['three', 'postprocessing']
 	},
+
 	server: {
-		port: 5173,
+		port:443,
 		strictPort: true,
-		hmr: {
-		  port: 5173,
-		},
+		watch: {
+			usePolling: true,
+		  },
 	  },
+	  proxy: {
+		'/ws': {
+		  target: 'https://localhost:442',
+		  ws: true,
+		  changeOrigin: true,
+		  Clientport: 442,
+		},
+	},
 });

@@ -73,7 +73,7 @@
     }
 
     async function loadProfile() {
-		const response = await fetch("http://localhost:8000/users/me", {
+		const response = await fetch("https://localhost:442/users/me", {
 			credentials: 'include',
 		});
         if (response.ok) {

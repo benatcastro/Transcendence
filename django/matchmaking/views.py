@@ -69,4 +69,4 @@ def delete(request):
 def clear(request):
     casual_ids.clear()
     ranked_ids.clear()
-    return redirect("http://localhost:8000/matchmaking/")
+    return redirect("https://localhost:1024/matchmaking/")

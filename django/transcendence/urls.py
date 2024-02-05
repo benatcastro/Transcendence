@@ -2,7 +2,8 @@ from django.urls import path, include
 from .views import index
 from . import views
 
-from .views import DataUsersViewSet
+from .views import DataUsersViewSet, UplaodViewSet
+from users.views import UploadImageView
 from rest_framework.routers import DefaultRouter
 
 from rest_framework import permissions
@@ -24,6 +25,7 @@ schema_view = get_schema_view(
 
 router = DefaultRouter()
 router.register(r'users', DataUsersViewSet, basename='user')
+router.register(r'upload', UplaodViewSet, basename='uploadImage')
 
 
 
@@ -33,4 +35,5 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path('upload/', UploadImageView.as_view(), name='uploadImage'),
 ]

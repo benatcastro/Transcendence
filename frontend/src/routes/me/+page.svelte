@@ -29,6 +29,7 @@
 
     console.log("status", data.status)
     console.log("user", user)
+   
     $: editing = false
 
     let selectedFile;
@@ -41,10 +42,9 @@
 
         const formData = new FormData();
         formData.append('pfp', selectedFile[0]);
-
         return formData
     }
-
+console.log(selectedFile)
     function triggerFileInput() {
         fileInput.click();
     }
@@ -54,7 +54,7 @@
         if (searchInput === undefined)
             return
 
-        let url = new URL("http://localhost:8000/users/?")
+        let url = new URL("http://8000:1024/users/?")
         let params = new URLSearchParams(url)
         params.append("search", searchInput)
 
@@ -73,7 +73,7 @@
 
     async function changeUsername() {
         console.log("new username: ", newUsername)
-        const response = await fetch(`http://localhost:8000/users/${user.username}/`, {
+        const response = await fetch(`https://localhost:442/users/${user.username}/`, {
             method: 'PATCH',
             credentials: 'include',
             headers: {
@@ -100,6 +100,9 @@
 
             <h1 class="cyber-text center">User Details</h1>
             <div class="pfp-wrapper center">
+                
+                    
+                
                 <img class="profile-image m-5" src={user.pfp} alt="Profile image" on:click={triggerFileInput}>
                 <span class="change-image-text">Change image</span>
             </div>
@@ -129,7 +132,7 @@
                     <div>
                         <div class="user-search">
                             <img class="user-search-pfp" src={search_user.pfp} alt="pfp">
-                            <a href={"http://localhost:5173/profile/" + search_user.username}><h4>{search_user.username}</h4></a>
+                            <a href={"https://localhost/profile/" + search_user.username}><h4>{search_user.username}</h4></a>
                         </div>
                         <div class="user-search">
                             <h5>{search_user.status}</h5>

@@ -31,7 +31,6 @@ class GoogleLogin(SocialLoginView):
     #callback_url = 'http://localhost:5173'
     client_class = OAuth2Client
 
-    print("TEST")
     @property
     def callback_url(self):
         print("\n\n", self.request.build_absolute_uri(reverse('google_callback')), "\n\n")

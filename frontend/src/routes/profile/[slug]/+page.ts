@@ -3,7 +3,7 @@ export async function load({params}){
 
     const data = async () => {
          try {
-             const response = await fetch("http://localhost:8000/users/" + slug, {
+             const response = await fetch("https://localhost:442/users/" + slug, {
                  credentials: 'include',
              });
              if (response.ok) {

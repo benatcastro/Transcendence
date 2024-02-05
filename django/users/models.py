@@ -5,6 +5,9 @@ from django.utils.translation import gettext_lazy as _
 
 from .manager import TranscendenceUserManager
 
+class UserProfile(models.Model):
+    image = models.ImageField(upload_to="pfp", default="default.webp")
+
 class TranscendenceUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=55, unique=True)
     pfp = models.ImageField(upload_to="pfp", default="default.webp")
