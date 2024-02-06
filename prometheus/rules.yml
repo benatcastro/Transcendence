@@ -1,0 +1,29 @@
+groups:
+- name: AllInstances
+  rules:
+  - alert: InstanceDown
+    # Condition for alerting
+    expr: up == 0
+    for: 1m
+    # Annotation - additional informational labels to store more information
+    annotations:
+      title: 'Instance {{ $labels.instance }} down'
+      description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 1 minute.'
+    # Labels - additional labels to be attached to the alert
+    labels:
+      severity: 'critical'
+
+  - record: job:django_db_new_connections_total:sum_rate30s
+    expr: sum(rate(django_db_new_connections_total[30s])) BY (alias, vendor)
+  - record: job:django_db_new_connection_errors_total:sum_rate30s
+    expr: sum(rate(django_db_new_connection_errors_total[30s])) BY (alias, vendor)
+  - record: job:django_db_execute_total:sum_rate30s
+    expr: sum(rate(django_db_execute_total[30s])) BY (alias, vendor)
+  - record: job:django_db_execute_many_total:sum_rate30s
+    expr: sum(rate(django_db_execute_many_total[30s])) BY (alias, vendor)
+  - record: job:django_db_errors_total:sum_rate30s
+    expr: sum(rate(django_db_errors_total[30s])) BY (alias, vendor, type)
+  - record: job:django_migrations_applied_total:max
+    expr: max(django_migrations_applied_total) BY (job, connection)
+  - record: job:django_migrations_unapplied_total:max
+    expr: max(django_migrations_unapplied_total) BY (job, connection)

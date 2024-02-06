@@ -150,8 +150,8 @@ services:
     restart: "on-failure"
     image: prom/prometheus
     volumes: 
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-      - ./rules.yml:/etc/prometheus/rules.yml
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/rules.yml:/etc/prometheus/rules.yml
     expose:
       - "9090"
   alertmanager:

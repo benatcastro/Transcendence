@@ -3,6 +3,8 @@
 # Cambia al directorio donde se encuentra vault.yml si es necesario
 # cd /path/to/your/vault/directory
 
+
+
 echo "Generando Secretos..."
 docker compose -f vault.yml build
 docker compose -f vault.yml up -d
