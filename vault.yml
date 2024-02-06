@@ -14,7 +14,6 @@ services:
     restart: "on-failure"
     volumes:
       - ./vault/init-vault.sh:/usr/local/bin/init-vault.sh
-        #  - ./consul-template-templates/secrets.txt:/usr/local/bin/secrets.txt
     healthcheck:
       test: ["CMD", "vault", "status"]
       interval: 10s

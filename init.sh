@@ -1,9 +1,12 @@
-#!/bin/bash
+
 
 # Cambia al directorio donde se encuentra vault.yml si es necesario
 # cd /path/to/your/vault/directory
 
 
+echo "recuperando token del Host..."
+
+./vault/start_vault.sh
 
 echo "Generando Secretos..."
 docker compose -f vault.yml build
