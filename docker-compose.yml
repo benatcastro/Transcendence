@@ -113,9 +113,9 @@ services:
       - "3000"
     volumes:
       - ./data/grafana-data:/var/lib/grafana
-      - ./grafana/config_data_sources.yml:/usr/share/grafana/conf/provisioning/datasources/config_data_sources.yml
+      - ./grafana/config_data_sources.yml:/etc/grafana/provisionig/datasources/config_data_sources.yml
       - ./grafana/default.yml/:/etc/grafana/provisioning/dashboards/default.yml
-      - ./grafana/dashboards/.:/usr/share/grafana/public/mydashboards
+        #      - ./grafana/dashboards/.:/usr/share/grafana/public/mydashboards
     user: "${UID}:${GID}"
     environment:
       - GF_AUTH_GITHUB_ENABLED=${ENABLE_GIT}
