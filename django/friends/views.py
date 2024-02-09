@@ -44,7 +44,7 @@ class TranscendenceUserFriendViewSet(GenericViewSet, RetrieveModelMixin):
 
         to_user.friends.add(from_user)
 
-        return Response(data={'message': f'{from_user} and {to_user} friendship added succesfully'}, status=status.HTTP_200_OK)
+        return Response(data={'message': f'{from_user} and {to_user} friendship added succesfully', "new_friend": from_user}, status=status.HTTP_200_OK)
 
     def destroy(self, request, *args, **kwargs):
         """

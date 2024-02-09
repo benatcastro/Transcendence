@@ -22,34 +22,45 @@
 <script lang="ts">
     import type {PageData} from './$types';
     import {addFriends} from "$lib/utilities/utilities";
+    import {deleteFriends} from "$lib/utilities/utilities";
     import {modifyUser} from "$lib/utilities/utilities";
 
     export let data: PageData;
-    const user = data.user;
+
+
+    let user = data.user;
+    let friends = data.friends.friends;
 
     console.log("status", data.status)
     console.log("user", user)
+    console.log("friends", data.friends.friends)
     $: editing = false
 
-    let selectedFile;
-    let fileInput;
+    let selectedFile: (string | Blob)[];
+    let fileInput: HTMLInputElement;
     let newUsername: string = user.username;
-
     let searchInput = "";
+    // let friends: any[] = []
+    let searchingUsers = "";
 
-    async function formatImageData() {
+    function formatImageData() {
 
         const formData = new FormData();
-        formData.append('pfp', selectedFile[0]);
+        formData.set("pfp", selectedFile[0])
+        // formData.append(selectedFile[0]);
+        // console.log(formData.);
+        
+
 
         return formData
     }
+
+    
 
     function triggerFileInput() {
         fileInput.click();
     }
 
-    let searchingUsers = "";
     async function updateSearchedUserList() {
         if (searchInput === undefined)
             return
@@ -71,27 +82,27 @@
     }
 
 
-    async function changeUsername() {
-        console.log("new username: ", newUsername)
-        const response = await fetch(`http://localhost:8000/users/${user.username}/`, {
-            method: 'PATCH',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username: newUsername })
-        });
-
-        if (response.ok) {
-            const updatedUser = await response.json();
-            console.log(updatedUser)
-            $: {
-                user.username = updatedUser.username;
-            }
-        }
-        editing = false
-        console.log(response)
+    async function modifyAndUpdate(userID: string, newValues: any) {
+        const updatedUser = await modifyUser(userID, newValues);
+        console.log("Update:", updatedUser)
+        console.log("og:", user)
+        user = updatedUser;
+        console.log("after:", user)
     }
+
+    async function addFriendWrapper(fromUser: string, toUser: any) {
+        const updatedFriends = await  addFriends(fromUser, toUser)
+        console.log("UpdateAddFriend:", updatedFriends)
+        console.log("data:", updatedFriends)
+    }
+
+    async function deleteFriendWrapper(fromUser: string, toUser: any) {
+        const updatedFriends = await  deleteFriends(fromUser, toUser)
+        console.log("Updatedeleteriend:", updatedFriends)
+        console.log("data:", updatedFriends)
+    }
+    
+
 </script>
 {#if user !== "404"}
 <div class="wrapper">
@@ -103,10 +114,10 @@
                 <img class="profile-image m-5" src={user.pfp} alt="Profile image" on:click={triggerFileInput}>
                 <span class="change-image-text">Change image</span>
             </div>
-            <input type="file" bind:files={selectedFile} bind:this={fileInput} style="display: none;" on:change={modifyUser(user.username, await formatImageData())} />
+            <input type="file" bind:files={selectedFile} bind:this={fileInput} style="display: none;" on:change={() => modifyAndUpdate(user.username, formatImageData())} />
             <div class="edit-username-wrapper">
                 <input bind:value={newUsername} class="placeholder p-2 m-2" placeholder={user.username} readonly={!editing}/>
-                <button on:click={editing ? modifyUser(user.username, JSON.stringify({username: newUsername})) : () => editing = !editing} class="btn btn-primary">
+                <button on:click={editing ? () => modifyAndUpdate(user.username, JSON.stringify({username: newUsername})) : () => editing = !editing} class="btn btn-primary">
                     {#if editing}
                         <span class="material-symbols-outlined">check</span>
                     {:else}
@@ -122,8 +133,20 @@
     <div class="d-flex center h-70 w-70 cyberpunk-container">
         <div class="user-search">
             <div class="flex-column mt-5 mx-5">
-                <h1 class="cyber-text">Search Users</h1>
-                <input type="text"  placeholder="Search Friends" bind:value={searchInput} on:input={updateSearchedUserList} class="placeholder p-2 m-2">
+                <h1 class="cyber-text">Friends</h1>
+                <div class="friend-list">
+                    {#each friends as friend}
+                        <div class="user-search">
+                            <img class="user-search-pfp" src={friend.pfp} alt="pfp">
+                            <a href={"http://localhost:5173/profile/" + friend.username}><h4>{friend.username}</h4></a>
+                        </div>
+                        <div class="center">
+                            <h5>{friend.status}</h5>
+                            <button type="button" class="btn btn-primary btn-sm" on:click={() => deleteFriendWrapper(user.username, search_username.username)}>Delete Friend</button>
+                        </div>
+                    {/each}
+                </div>
+                <input type="text"  placeholder="Search new Friends" bind:value={searchInput} on:input={updateSearchedUserList} class="placeholder p-2 m-2">
                 {#each searchingUsers as search_user}
                     {#if user.username !== search_user.username}
                     <div>
@@ -134,7 +157,7 @@
                         <div class="user-search">
                             <h5>{search_user.status}</h5>
                             {#if !(user.friends.includes(search_user.id))}
-                                <button type="button" class="btn btn-primary btn-sm" on:click={() => addFriends(user.username, search_user.username)}>Add Friend</button>
+                                <button type="button" class="btn btn-primary btn-sm" on:click={() => addFriendWrapper(user.username, search_user.username)}>Add Friend</button>
                             {:else}
                                 <p>Already friends</p>
                             {/if}
@@ -162,12 +185,10 @@
 {/if}
 
 <style>
-
     .user-search {
         display: flex;
         gap: 1em;
         align-items: center;
-
     }
 
     .user-search-pfp {
