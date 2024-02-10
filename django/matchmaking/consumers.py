@@ -1,4 +1,4 @@
-# consumers.py
+# manager.py
 import json
 import asyncio
 from channels.generic.websocket import AsyncWebsocketConsumer

@@ -17,7 +17,7 @@
 <script lang="ts">
     import { goto } from '$app/navigation';
     import { browser } from '$app/environment';
-    import { loginStorage, loginType } from '$lib/stores/stores';
+    import { loginStorage, userName } from '$lib/stores/stores';
     import {onMount} from "svelte";
 
     let playModal: boolean = false;
@@ -55,7 +55,11 @@
 
 	async function handlePlayClick(option: string) {
 		try {
-			if (option !== 'ranked' || isLoggedIn) {
+            if (option === 'tournament' && isLoggedIn)
+            {
+                await goto(`/tournament`);
+            }
+			else if (option !== 'tournament' || isLoggedIn) {
 				await getUser();
 				await goto(`/matchmaking?mode=${option}&user=${username}`);
 			}
@@ -67,7 +71,8 @@
     async function handleLoginClick(option: string) {
         try {
             await goto(`http://localhost:8000/auth/${option}/login`);
-        } catch (e) {
+        }
+        catch (e) {
             console.error(e.message);
         }
     }
@@ -79,11 +84,9 @@
         if (response.ok) {
             const data = await response.json();
             username = data.username;
-            console.log(username);
+            $userName = data.username;
             isLoggedIn = true;
         }
-        else
-            console.log(response.json());
 	}
 
     onMount(async () => {
@@ -105,7 +108,7 @@
                             <button class="close-button" on:click={() => toggleModal('play')}>X</button>
                             <p class="modal-title">Select Mode</p>
                             <button type="button" class="btn btn-primary" on:click={() => handlePlayClick('casual')}>Casual</button>
-                            <button type="button" class="btn btn-secondary" on:click={() => handlePlayClick('ranked')}>Tournament</button>
+                            <button type="button" class="btn btn-secondary" on:click={() => handlePlayClick('tournament')}>Tournament</button>
                         </div>
                     </div>
                 {/if}

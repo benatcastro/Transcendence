@@ -1,4 +1,4 @@
-## game/consumers.py
+## game/manager.py
 import asyncio
 import random
 import math
