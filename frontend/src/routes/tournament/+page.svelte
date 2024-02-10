@@ -20,9 +20,15 @@
     import { userName } from '$lib/stores/stores';
     import {onMount} from "svelte";
 	import { ws } from './tournament';
-	import {ball, isPlayer1, rival, room, user} from "../pong/store";
 
 	let tournamentName: string = "";
+
+	const send_json = {"type": "get_tournament",
+		"user": $userName,
+		"t_name": tournamentName,
+	}
+
+	let response_json: JSON | undefined = undefined;
 
     onMount(async () => {
         console.log($userName);
@@ -34,7 +40,8 @@
 				console.log('WebSocket connection opened');
 			};
 			$ws.onmessage = (event) => {
-				console.log('WebSocket message received:', event.data);
+				console.log('WebSocket message received:', JSON.parse(event.data));
+				response_json = JSON.parse(event.data);
 			};
 			$ws.onclose = () => {
 				console.log('WebSocket connection closed');
@@ -45,7 +52,36 @@
 
 	async function handleSearchClick() {
 		if ($ws)
-			$ws?.send("get_tournaments");
+		{
+			send_json.type = "get_tournament";
+			$ws?.send(JSON.stringify(send_json));
+		}
+	}
+
+	async function handleCreateClick() {
+		if ($ws && tournamentName != "")
+		{
+			send_json.type = "create_tournament";
+			send_json.t_name = tournamentName;
+			$ws?.send(JSON.stringify(send_json));
+		}
+	}
+
+	async function handleJoinClick(name: string) {
+		if ($ws)
+		{
+			send_json.type = "join_tournament";
+			send_json.t_name = name;
+			$ws?.send(JSON.stringify(send_json));
+		}
+	}
+	async function handleLeaveClick(name: string) {
+		if ($ws)
+		{
+			send_json.type = "leave_tournament";
+			send_json.t_name = name;
+			$ws?.send(JSON.stringify(send_json));
+		}
 	}
 </script>
 
@@ -53,8 +89,14 @@
 	<div class="modal-content" on:click|stopPropagation>
 		<h1 class="modal-title">Create Tournament</h1>
 		<input bind:value={tournamentName} placeholder="Enter name for tournament" />
-		<button type="button" class="btn btn-secondary" on:click={() => handleSearchClick()}>Create Tournament</button>
+		<button type="button" class="btn btn-secondary" on:click={() => handleCreateClick()}>Create Tournament</button>
 		<button type="button" class="btn btn-secondary" on:click={() => handleSearchClick()}>Search Tournaments</button>
+		-------------------------------------------------------------------
+		{#if (response_json)}
+			{#each Object.values(response_json) as tournament}
+				<button type="button" class="btn btn-secondary" on:click={() => handleJoinClick(tournament.name)}>{tournament.name}</button>
+			{/each}
+		{/if}
 	</div>
 </div>
 
