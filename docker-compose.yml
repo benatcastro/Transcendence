@@ -115,7 +115,7 @@ services:
       - ./data/grafana-data:/var/lib/grafana
       - ./grafana/config_data_sources.yml:/etc/grafana/provisionig/datasources/config_data_sources.yml
       - ./grafana/default.yml/:/etc/grafana/provisioning/dashboards/default.yml
-        #      - ./grafana/dashboards/.:/usr/share/grafana/public/mydashboards
+      - ./grafana/dashboards/.:/usr/share/grafana/public/mydashboards
     user: "${UID}:${GID}"
     environment:
       - GF_AUTH_GITHUB_ENABLED=${ENABLE_GIT}
@@ -169,6 +169,12 @@ services:
     command:
       - '--config.file=/etc/alertmanager/config_mod.yml'
     restart: always
+  blackbox_exporter:
+    image: prom/blackbox-exporter:latest
+    volumes:
+      - ./blackbox_exporter/config.yml:/etc/blackbox_exporter/config.yml
+    ports:
+      - "9115:9115"
 
 volumes:
   postgres_data:
