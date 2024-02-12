@@ -14,44 +14,28 @@ services:
     container_name: nginx
     build: ./nginx
     ports:
-      - "80:80"
-      - "90:90"
       - "8080:8080"
-      - "82:82"
       - "443:443"
+      - "1024:1024"
     volumes:
       - ./static_volume:/home/app/microservice/static
-      #- ./nginx/conf.d:/etc/nginx/conf.d
-      #- ./nginx/html:/usr/share/nginx/html
     depends_on:
       - django
-    restart: "on-failure"
-
-  #certbot:
-   # image: certbot/certbot:latest
-    #container_name: certbot
-    #volumes:
-     # - ./nginx/conf.d:/etc/nginx/conf.d
-      #- ./certbot/conf:/etc/letsencrypt
-      #- ./certbot/www:/var/www/certbot
-    #depends_on:
-     # - nginx
-    #command: ${CERTBOT_CONFIG}
+    restart: always
   redis:
     container_name: redis
     image: "redis:latest"
     expose:
       - "6379"
+    restart: always
   django:
     container_name: django
     build: ./django
     command: sh -c "python manage.py makemigrations &&
                     python manage.py migrate &&
-                    daphne project.asgi:application -b 0.0.0.0 -p ${APP_PORT} -e ssl:443:privateKey=server.crt:certKey=server.key --verbosity 3 || tail -f" #https://github.com/django/daphne
+                    daphne project.asgi:application -b 0.0.0.0  -e ssl:442:privateKey=localhost.crt:certKey=localhost.key --verbosity 3 || tail -f" #https://github.com/django/daphne
     volumes:
-      - .:/microservice
       - ./static_volume:/home/app/microservice/static
-      - ./django:/home/app/webapp
     env_file: .env
     environment:
       - DJANGO_SETTINGS_MODULE=project.settings
@@ -60,7 +44,8 @@ services:
     image: trascendence_app
     expose:
       - ${APP_PORT}
-    restart: "on-failure"
+      - "442"
+    restart: always
     depends_on:
       - db
       - redis
@@ -109,7 +94,7 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
     ports:
       - "5432:5432"
-    restart: "on-failure"
+    restart: always
   
   postgres_exporter:
     image: wrouesnel/postgres_exporter
@@ -119,6 +104,7 @@ services:
       - "9187:9817"
     depends_on:
       - db
+    restart: always
 
   grafana:
     container_name: grafana
@@ -128,40 +114,12 @@ services:
     volumes:
       - ./data/grafana-data:/var/lib/grafana
     user: "${UID}:${GID}"
-    environment:
-      - GF_AUTH_GITHUB_ENABLED=${ENABLE_GIT}
-      - GF_AUTH_DISABLE_LOGIN_FORM=${GRAFANA_DISABLE_LOGIN_BASIC}
-        #- GF_AUTH_GENERIC_OAUTH_ENABLED=true
-      - GF_AUTH_GITHUB_CLIENT_ID=${G_CLIENT}
-      - GF_AUTH_GITHUB_CLIENT_SECRET=${G_SECRETS}
-      - GF_AUTH_GENERIC_OAUTH_NAME=${AUTH_NAME}
-      - GF_AUTH_GENERIC_OAUTH_URL=${GENERIC_OUTH_URL}
-      - GF_AUTH_GENERIC_OAUTH_TOKEN_URL=${GENERIC_OUT_PATH}
-      - GF_PROMETHEUS_DATASOURCE_HTTP_ENCRYPTION=${PROMETHEUS_HTTP_ENC}
-      - GF_PROMETHEUS_DATASOURCE_HTTP_ENCRYPTION_KEY=${PROMETHEUS_PASS_ENC}
-      - GF_PROMETHEUS_DATASOURCE_URL=${PROMETHEUS_DATASOURCE}
-        #- GF_AUTH_GENERIC_OAUTH_REQUIRE_2FA=true
-      - GF_AUTH_GENERIC_OAUTH_ALLOWED_ORGANIZATIONS=outhcyberpunk
-        #- GF_LOG_LEVEL=debug
-      - GF_AUTH_GITHUB_ALLOWED_ORGANIZATIONS=${GIT_ORG}
-      - GF_AUTH_GITHUB_AUTO_LOGIN=${GIT_AUTH_LOGIN}
-      - GF_AUTH_GENERIC_OAUTH_SCOPES=${GF_SCOPE}
-      - GF_AUTH_GENERIC_OAUTH_ALLOW_SIGN_UP=${GIT_AUTH_LOGIN}
-        #- GF_AUTH_GITHUB_ALLOW_ASSIGN_GRAFANA_ADMIN=true
-        #- GF_SERVER_ROOT_URL=http://localhost:3000
-        #- GF_AUTH_GENERIC_OAUTH_ALLOW_ASSIGN_GRAFANA_ADMIN=true
-      - GF_SERVER_HTTP_PORT=${GF_PORT}
-      - GF_SERVER_PROTOCOL=${GF_PROTOCOL}
-      - GF_SERVER_DOMAIN=${GF_DOMAIN}
-      - GF_SERVER_ROOT_URL=${GF_SERV_ROOT}
-      - GF_SERVER_SERVE_FROM_SUB_PATH=${ACTIVATE_SERV_ROOT}
-      - GF_AUTH_GITHUB_ROLE_ATTRIBUTE_PATH=${GIT_ROLE}
-      - GF_AUTH_GITHUB_API_URL=${GIT_USER_API}
-      - GF_AUTH_GITHUB_ALLOW_SIGN_UP=true
-    restart: "on-failure"
+    env_file: .env
+
+    restart: always
   prometheus:
     container_name: prometheus
-    restart: "on-failure"
+    restart: always
     image: prom/prometheus
     volumes: 
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
@@ -170,6 +128,5 @@ services:
 
 volumes:
   postgres_data:
-  django_sources:
   static_volume:
   grafana-data:
