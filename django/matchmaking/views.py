@@ -1,7 +1,10 @@
 from django.shortcuts import redirect
 from django.http import JsonResponse
 from random import randint
+import os, environ
 
+env = environ.Env()
+environ.Env.read_env()
 
 GenericNames1 = ["Gatita", "Capitan", "Tiburon", "Humano", "Alienigena", "Boss", "Dragon", "WatashiWa", "Mamut"]
 GenericNames2 = ["Generico", "Sexy", "Badass", "Basado", "Magica", "Heteronormativo", "Ancestral", "Destroyer", "Fuerte"]
@@ -69,4 +72,5 @@ def delete(request):
 def clear(request):
     casual_ids.clear()
     ranked_ids.clear()
-    return redirect("http://localhost:8000/matchmaking/")
+
+    return redirect("https://" + env('IP_BACKEND') + "/1024/matchmaking/")

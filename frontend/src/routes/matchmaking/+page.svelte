@@ -10,7 +10,7 @@
 	let response_json;
 
 	onMount(async () => {
-		const res = await fetch(`http://localhost/matchmaking/search?mode=${mode}&user=${user}`);
+		const res = await fetch(`https://localhost:1024/matchmaking/search?mode=${mode}&user=${user}`);
 		if (res.ok) {
 			response_json = await res.json();
 			rival = response_json['rival'];
@@ -24,7 +24,7 @@
 	});
 
 	addEventListener('beforeunload', () => {
-		fetch(`http://localhost/matchmaking/delete?mode=${mode}&user=${user}`);
+		fetch(`https://localhost:1024/matchmaking/delete?mode=${mode}&user=${user}`);
 	});
 </script>
 

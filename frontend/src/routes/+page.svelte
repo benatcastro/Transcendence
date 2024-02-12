@@ -44,7 +44,7 @@
 
 	async function getUser() {
 		if (!isLoggedIn) {
-			const res = await fetch('http://localhost/matchmaking/create-usr?mode=casual');
+			const res = await fetch('https://localhost:1024/matchmaking/create-usr?mode=casual');
 			if (!res.ok) {
 				throw new Error('Error while creating user');
 			}
@@ -73,7 +73,7 @@
     }
 
     async function loadProfile() {
-		const response = await fetch("http://localhost:8000/users/me", {
+		const response = await fetch("https://localhost:1024/users/me", {
 			credentials: 'include',
 		});
         if (response.ok) {

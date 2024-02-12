@@ -32,7 +32,7 @@
 
 	onMount(() => {
 		// Crea tu WebSocket
-		ws.set(new WebSocket('wss://localhost/ws/game/?room_code=' + $room + '&username=' + $page.url.searchParams.get('user')?.toString()));
+		ws.set(new WebSocket('wss://localhost:443/ws/game/?room_code=' + $room + '&username=' + $page.url.searchParams.get('user')?.toString()));
 
 		if ($ws) {
 			$ws.onopen = () => {

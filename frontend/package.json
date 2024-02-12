@@ -33,8 +33,13 @@
     "@types/three": "^0.159.0",
     "bootstrap": "^5.3.2",
     "bootstrap-icons": "^1.11.2",
+    "dotenv": "^16.4.2",
     "mdbsvelte": "^1.0.12",
     "postprocessing": "^6.33.4",
-    "three": "^0.159.0"
+    "three": "^0.159.0",
+    "vite-plugin-compress": "^2.1.1",
+    "vite-plugin-env-compatible": "^2.0.1",
+    "vite-plugin-prerender": "^1.0.8",
+    "vite-plugin-ssr": "^0.4.142"
   }
 }
