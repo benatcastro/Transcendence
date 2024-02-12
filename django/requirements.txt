@@ -20,3 +20,4 @@ uvicorn[standard]
 redis
 django-prometheus
 drf-yasg
+elastic-apm

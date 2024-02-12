@@ -46,6 +46,8 @@ services:
     image: trascendence_app
     expose:
       - ${APP_PORT}
+    logging:
+      driver: "json-file"
     restart: "on-failure"
     depends_on:
       - db
@@ -115,7 +117,7 @@ services:
       - ./data/grafana-data:/var/lib/grafana
       - ./grafana/config_data_sources.yml:/etc/grafana/provisionig/datasources/config_data_sources.yml
       - ./grafana/default.yml/:/etc/grafana/provisioning/dashboards/default.yml
-        #      - ./grafana/dashboards/.:/usr/share/grafana/public/mydashboards
+      - ./grafana/dashboards/.:/usr/share/grafana/public/mydashboards
     user: "${UID}:${GID}"
     environment:
       - GF_AUTH_GITHUB_ENABLED=${ENABLE_GIT}
@@ -155,6 +157,11 @@ services:
     volumes: 
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./prometheus/rules.yml:/etc/prometheus/rules.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus/'
+      - '--storage.tsdb.retention.time=30d'
     expose:
       - "9090"
   alertmanager:
@@ -169,9 +176,58 @@ services:
     command:
       - '--config.file=/etc/alertmanager/config_mod.yml'
     restart: always
-
+  blackbox_exporter:
+    image: prom/blackbox-exporter:latest
+    volumes:
+      - ./blackbox_exporter/config.yml:/etc/blackbox_exporter/config.yml
+    ports:
+      - "9115:9115"
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.11.0
+    container_name: logstash
+    volumes:
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./logstash/pipeline:/usr/share/logstash/pipeline
+      - ./django/project/logs:/app/logs
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5000:5000"
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - ./elastic/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.0
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_HOST=https://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME=cyberpong
+      - ELASTICSEARCH_PASSWORD=tuContraseña
+      - ELASTICSEARCH_SSL_VERIFICATIONMODE=none    
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5601:5601"
+  apm-server:
+    image: docker.elastic.co/apm/apm-server:7.12.0
+    command: >
+      apm-server -e
+        -E apm-server.rum.enabled=true
+        -E setup.kibana.host=kibana:5601
+        -E output.elasticsearch.hosts=["elasticsearch:9200"]
+    ports:
+      - "8300:8200"    
 volumes:
   postgres_data:
   django_sources:
   static_volume:
   grafana-data:
+  elasticsearch_data:
+  prometheus_data:
