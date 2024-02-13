@@ -29,3 +29,17 @@ scrape_configs:
     scrape_interval: 15s
     static_configs:
       - targets: ['django:8000']
+  - job_name: 'blackbox'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]  # Usa el módulo definido en la configuración de Blackbox Exporter
+    static_configs:
+      - targets: ['django:8000', 'frontend:5173'] # Reemplaza esto con la URL de tu servicio Django
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox_exporter:9115  # El host y puerto de Blackbox Exporter
+
