@@ -7,20 +7,21 @@ export default defineConfig({
     noExternal: ['three', 'postprocessing']
   },
   server: {
-    hmr: {
-      host: 'localhost',
-      port: 443,
-      protocol: 'wss'
+    host: true,
+    watch:{
+        usePolling: true,
     },
     port:443,
     strictPort: true,
-
   },
-  proxy: {
-    '/ws/game': {
-      target: 'https://localhost/',
-      ws: true,
-      changeOrigin: true,
+  hmr: {
+      protocol: 'wss',
+      host: 'localhost',
+      port: 443,
+      path:'/ws/game',
     },
-  },
+    optimizeDeps: {
+      include: ['three', 'postprocessing']
+    },
+
 });
