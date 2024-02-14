@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os, environ
 from datetime import timedelta
-
 # Init env variable handler
 env = environ.Env()
 environ.Env.read_env()
@@ -266,3 +265,51 @@ CHANNEL_LAYERS = {
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+#LOGGING = {
+ #   'version': 1,
+  #  'disable_existing_loggers': False,
+   # 'handlers': {
+    #    'file': {
+     #       'level': 'DEBUG',
+      #      'class': 'logging.FileHandler',
+       #     'filename': BASE_DIR / 'logs/django.log',  # Esta ruta debe ser la misma que el volumen montado
+       # },
+   # },
+   # 'loggers': {
+    #    'django': {
+     #       'handlers': ['file'],
+       #     'level': 'DEBUG',
+        #    'propagate': True,
+       # },
+   # },
+#}
+
+from pythonjsonlogger import jsonlogger
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'json': {
+            '()': 'pythonjsonlogger.jsonlogger.JsonFormatter',
+            'fmt': '%(levelname)s %(name)s %(message)s',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs/django.log',  # Asegúrate de que esta ruta sea accesible y correcta.
+            'formatter': 'json',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
