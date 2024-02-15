@@ -4,7 +4,7 @@
 	let users = [];
 
 	onMount(async () => {
-		const response = await fetch("http://localhost:8000/api/users/");
+		const response = await fetch("http://localhost:8000/users/");
 		users = await response.json();
 		users.sort((a, b) => a.username.localeCompare(b.username));
 	});
@@ -40,7 +40,7 @@
           <div class="row">
             <div class="col list-group-item">{user.id}</div>
             <div class="col list-group-item">{user.username}</div>
-            <div class="col list-group-item">{user.email}</div>
+            <div class="col list-group-item">{user.score}</div>
           </div>
         {/each}
       </div>

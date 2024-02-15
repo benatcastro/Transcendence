@@ -5,14 +5,15 @@ from django.utils.translation import gettext_lazy as _
 
 from .manager import TranscendenceUserManager
 
-
 class TranscendenceUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=55, unique=True)
+    pfp = models.ImageField(upload_to="pfp", default="default.webp")
     email = models.EmailField("email address", unique=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
     score = models.IntegerField(default=500)
+    last_activity = models.DateTimeField(auto_now=True)
 
     friends = models.ManyToManyField('self', symmetrical=True)
 
@@ -50,7 +51,7 @@ class TranscendenceUser(AbstractBaseUser, PermissionsMixin):
     objects = TranscendenceUserManager()
 
     def __str__(self):
-        return f"email: {self.email}"
+        return self.email
 
 
 # class FriendRelationship(models.Model):

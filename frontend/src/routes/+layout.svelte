@@ -36,7 +36,7 @@
 		CYBERPONG
 	</button>
 	<div class="ml-auto">
-		<button class="btn shadow-none px-0 py-3" on:click={() => goto('/profile')}>
+		<button class="btn shadow-none px-0 py-3" on:click={() => goto('/me')}>
 			<img
 				loading="lazy"
 				src={'/assets/icons/profile.svg'}
