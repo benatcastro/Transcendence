@@ -63,7 +63,7 @@ export async function getFriends(userID: string) {
 export async function deleteFriends(fromUser: string, toUser: string) {
     const response = async () => {
         const cookiePair = document.cookie.split("=")
-        const data = await fetch("http://localhost:8000/friends/", {
+        const data = await fetch("http://localhost:8000/friends/" + fromUser + "/", {
             method: 'DELETE',
             credentials: 'include',
             headers: {
@@ -71,7 +71,7 @@ export async function deleteFriends(fromUser: string, toUser: string) {
                 "x-csrftoken": cookiePair[1],
             },
             body: JSON.stringify({
-                "from_user": fromUser,
+                // "from_user": fromUser,
                 "to_user": toUser
             })
         })

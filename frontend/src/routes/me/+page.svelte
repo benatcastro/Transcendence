@@ -94,12 +94,14 @@
         const updatedFriends = await  addFriends(fromUser, toUser)
         console.log("UpdateAddFriend:", updatedFriends)
         console.log("data:", updatedFriends)
+        friends = updatedFriends.update.friends
     }
 
     async function deleteFriendWrapper(fromUser: string, toUser: any) {
         const updatedFriends = await  deleteFriends(fromUser, toUser)
         console.log("Updatedeleteriend:", updatedFriends)
         console.log("data:", updatedFriends)
+        friends = updatedFriends.update.friends
     }
     
 
@@ -142,7 +144,7 @@
                         </div>
                         <div class="center">
                             <h5>{friend.status}</h5>
-                            <button type="button" class="btn btn-primary btn-sm" on:click={() => deleteFriendWrapper(user.username, search_username.username)}>Delete Friend</button>
+                            <button type="button" class="btn btn-primary btn-sm" on:click={() => deleteFriendWrapper(user.username, friend.username)}>Delete Friend</button>
                         </div>
                     {/each}
                 </div>
