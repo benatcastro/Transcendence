@@ -44,11 +44,18 @@
 				console.log('WebSocket message received:', JSON.parse(event.data));
 				response_json = JSON.parse(event.data);
 
+				if (Object.values(response_json)[0] == undefined)
+				{
+					$tournamentName = undefined;
+					myTournament = undefined;
+				}
 				for (let i = 0; i < Object.values(response_json).length; i++)
 				{
 					let players: Array<string> = Object.values(response_json)[i].players;
 					if (players.includes($userName))
+					{
 						myTournament = Object.values(response_json)[i];
+					}
 				}
 			};
 			$ws.onclose = () => {
@@ -90,6 +97,7 @@
 		{
 			send_json.type = "leave_tournament";
 			send_json.t_name = $tournamentName;
+			send_json.user = $userName;
 			$ws?.send(JSON.stringify(send_json));
 
 			myTournament = undefined;
@@ -99,7 +107,7 @@
 	async function handleStartClick() {
 		if ($ws)
 		{
-			send_json.type = "leave_tournament";
+			send_json.type = "start_tournament";
 			send_json.t_name = $tournamentName;
 			$ws?.send(JSON.stringify(send_json));
 		}
@@ -127,7 +135,7 @@
 		<div class="modal-content" on:click|stopPropagation>
 			{#if (response_json && myTournament)}
 				<h1 class="modal-title">Create Tournament</h1>
-				{#if (myTournament.owner == $userName)}
+				{#if (myTournament.owner == $userName && myTournament.players.length >= 4)}
 					<button type="button" class="btn btn-secondary" on:click={() => handleStartClick()}>Start Tournament</button>
 				{/if}
 				<button type="button" class="btn btn-secondary" on:click={() => handleLeaveClick()}>Leave Tournaments</button>

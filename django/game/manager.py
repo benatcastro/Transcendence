@@ -106,6 +106,6 @@ class TournamentManager(AsyncWebsocketConsumer):
 		for tournament in self.tournaments:
 			if tournament.name == name and tournament.players.__contains__(user):
 				tournament.players.remove(user)
-				if tournament.owner == name:
+				if tournament.owner == user:
 					self.tournaments.remove(tournament)
 				return
