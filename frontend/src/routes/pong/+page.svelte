@@ -14,6 +14,7 @@
 
     import Player1 from './Player1.svelte'
     import Player2 from './Player2.svelte'
+	import {host} from "$lib/stores/stores";
 	//import { esbuildVersion } from 'vite';
 
 	let path = './'
@@ -32,7 +33,7 @@
 
 	onMount(() => {
 		// Crea tu WebSocket
-		ws.set(new WebSocket('wss://localhost/ws/game/?room_code=' + $room + '&username=' + $page.url.searchParams.get('user')?.toString()));
+		ws.set(new WebSocket("wss://" + $host + "/ws/game/?room_code=" + $room + '&username=' + $page.url.searchParams.get('user')?.toString()));
 
 		if ($ws) {
 			$ws.onopen = () => {

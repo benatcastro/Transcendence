@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { PageData} from './$types';
     import { page } from '$app/stores';
-    import { loginStorage } from '$lib/stores/stores';
+    import { host } from '$lib/stores/stores';
     import { goto } from "$app/navigation";
     import {onMount} from "svelte";
 
@@ -16,7 +16,7 @@
     const code = $page.url.searchParams.get('code');
     async function getToken(csrf: string) {
         try {
-            const response = await fetch('http://localhost:8000/auth/google/', {
+            const response = await fetch("http://" + $host + ":8000/auth/google/", {
                 method: 'POST',
                 credentials: 'include',
                 headers: {

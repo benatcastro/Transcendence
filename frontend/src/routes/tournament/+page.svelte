@@ -17,7 +17,7 @@
 <script lang="ts">
     import { goto } from '$app/navigation';
     import { browser } from '$app/environment';
-    import { userName } from '$lib/stores/stores';
+    import { userName, host } from '$lib/stores/stores';
     import {onMount} from "svelte";
 	import { ws, tournamentName } from './tournament';
 
@@ -34,7 +34,7 @@
     onMount(async () => {
         console.log($userName);
 
-		ws.set(new WebSocket('wss://localhost/ws/tournament/'));
+		ws.set(new WebSocket("wss://" + $host + "/ws/tournament/"));
 
 		if ($ws) {
 			$ws.onopen = () => {
