@@ -10,20 +10,32 @@ class Tournament:
 	def __init__(self, owner: str, name: str):
 		self.owner: str = owner
 		self.name: str = name
-		self.players = [self.owner]
+		self.players = []
+		self.status = []
 		self.started = False
+		self.add_player(owner)
 
 	def add_player(self, username: str):
 		if len(self.players) == 0:
 			self.owner = username
-			self.players.append(username)
+		self.players.append(username)
+		self.status.append(0)
 
 	def get_players(self):
 		return self.players
 
 	def remove_player(self, username: str):
+		for idx, player in enumerate(self.players):
+			if player == username:
+				self.status[idx] = -1
 		self.players.remove(username)
+		if not self.started:
+			self.status.remove(-1)
 
+	def set_status(self, username: str, n: int):
+		for idx, player in enumerate(self.players):
+			if player == username:
+				self.status[idx] = n
 
 class TournamentManager(AsyncWebsocketConsumer):
 
@@ -62,6 +74,23 @@ class TournamentManager(AsyncWebsocketConsumer):
 			await self.join_tournaments(data["user"], data["t_name"])
 		if data["type"] == "leave_tournament":
 			await self.leave_tournaments(data["user"], data["t_name"])
+		if data["type"] == "start_tournament":
+			await self.start_tournaments(data["user"], data["t_name"])
+			for tournament in self.tournaments:
+				if tournament.name == data["t_name"]:
+					p1: str = ""
+					p2: str = ""
+					for i, player in enumerate(tournament.players):
+						if tournament.status[i] == 0:
+							if p1 == "":
+								p1 = player
+							elif p1 != "" and p2 == "":
+								p2 = player
+							if p1 != "" and p2 != "":
+								await self.send_group_message(p1 + "_" + p2)
+								p1 = ""
+								p2 = ""
+
 
 		await self.send_group_message(json.dumps(await self.get_tournaments()))
 
@@ -99,13 +128,19 @@ class TournamentManager(AsyncWebsocketConsumer):
 	async def join_tournaments(self, user: str, name: str):
 		for tournament in self.tournaments:
 			if tournament.name == name and not tournament.players.__contains__(user):
-				tournament.players.append(user)
+				tournament.add_player(user)
 				return
 
 	async def leave_tournaments(self, user: str, name: str):
 		for tournament in self.tournaments:
 			if tournament.name == name and tournament.players.__contains__(user):
-				tournament.players.remove(user)
+				tournament.remove_player(user)
 				if tournament.owner == user:
-					self.tournaments.remove(tournament)
+					self.tournaments.remove(name)
+				return
+
+	async def start_tournaments(self, user: str, name: str):
+		for tournament in self.tournaments:
+			if tournament.name == name and tournament.owner == user:
+				tournament.started = True
 				return

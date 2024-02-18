@@ -27,7 +27,7 @@
 
     loginStorage.subscribe((loginSelection) => {
         if (browser && loginSelection) {
-            goto("http://" + $host + ":8000/auth/" + loginSelection + "/login");
+            goto(`http://localhost:8000/auth/${loginSelection}/login`);
         }
     });
 
@@ -44,7 +44,7 @@
 
 	async function getUser() {
 		if (!isLoggedIn) {
-			const res = await fetch("http://" + $host + ":8000/matchmaking/create-usr?mode=casual");
+			const res = await fetch('http://localhost/matchmaking/create-usr?mode=casual');
 			if (!res.ok) {
 				throw new Error('Error while creating user');
 			}
@@ -70,7 +70,7 @@
 
     async function handleLoginClick(option: string) {
         try {
-            await goto("http://" + $host + "/auth/" + option + "/login");
+            await goto(`http://localhost:8000/auth/${option}/login`);
         }
         catch (e) {
             console.error(e.message);
@@ -78,7 +78,7 @@
     }
 
     async function loadProfile() {
-		const response = await fetch("http://" + $host + ":8000/users/me", {
+		const response = await fetch("http://localhost:8000/users/me", {
 			credentials: 'include',
 		});
         if (response.ok) {

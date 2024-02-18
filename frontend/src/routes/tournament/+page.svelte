@@ -34,28 +34,35 @@
     onMount(async () => {
         console.log($userName);
 
-		ws.set(new WebSocket("wss://" + $host + "/ws/tournament/"));
+		ws.set(new WebSocket("wss://localhost/ws/tournament/"));
 
 		if ($ws) {
 			$ws.onopen = () => {
 				console.log('WebSocket connection opened');
 			};
 			$ws.onmessage = (event) => {
-				console.log('WebSocket message received:', JSON.parse(event.data));
-				response_json = JSON.parse(event.data);
+				console.log('WebSocket message received:', event.data);
+				try {
+					response_json = JSON.parse(event.data);
 
-				if (Object.values(response_json)[0] == undefined)
-				{
-					$tournamentName = undefined;
-					myTournament = undefined;
-				}
-				for (let i = 0; i < Object.values(response_json).length; i++)
-				{
-					let players: Array<string> = Object.values(response_json)[i].players;
-					if (players.includes($userName))
+					if (Object.values(response_json)[0] == undefined)
 					{
-						myTournament = Object.values(response_json)[i];
+						$tournamentName = undefined;
+						myTournament = undefined;
 					}
+					for (let i = 0; i < Object.values(response_json).length; i++)
+					{
+						let players: Array<string> = Object.values(response_json)[i].players;
+						//players[$userName]
+						//console.log("player2: " + Object.values(JSON.parse(players));
+						if (players.includes($userName))
+						{
+							myTournament = Object.values(response_json)[i];
+						}
+					}
+				}
+				catch (e) {
+					goToPong(event.data);
 				}
 			};
 			$ws.onclose = () => {
@@ -63,6 +70,18 @@
 			};
 		}
     });
+
+	async function goToPong(msg: string) {
+		if (msg.includes($userName))
+		{
+			let rival = "";
+			if (msg.startsWith($userName))
+				rival = msg.replace($userName + "_", "");
+			else
+				rival = msg.replace("_" + $userName, "");
+			await goto("https://" + $host + "/pong?user=" + $userName + "&rival=" + rival + "&room=" + msg);
+		}
+	}
 
 	async function handleSearchClick() {
 		if ($ws)

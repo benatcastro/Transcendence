@@ -255,23 +255,23 @@ CORS_ALLOW_CREDENTIALS = True
 
 # CON ESTO ALGUNA VARIBLES DE GET NO PASAN DE FRONTEND A BACKED
 CORS_ALLOWED_HOSTS = [
-    f'https://{env("IP_BACKEND")}:443',
-    f'https://frontend:5173',
-    f'http://frontend:5173',
-    f'http://{env("IP_BACKEND")}',
+    'https://localhost:443',
+    'https://frontend:5173',
+    'http://frontend:5173',
+    'http://localhost',
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    f'https://{env("IP_BACKEND")}:443',
-    f'https://{env("IP_BACKEND")}',
-    f'https://frontend:5173',
-    f'http://frontend:5173',
-    f'http://{env("IP_BACKEND")}',
+    'https://localhost:443',
+    'https://localhost',
+    'https://frontend:5173',
+    'http://frontend:5173',
+    'http://localhost',
 
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    f'https://{env("IP_BACKEND")}',
+    'https://localhost'
 ]
 
 # CORS_ALLOWED_HOSTS = ["*"]

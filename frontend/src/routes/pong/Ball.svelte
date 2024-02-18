@@ -16,9 +16,9 @@
 		timer = setInterval(() => {
 			if ($ball && $ws)
 			{
-				$ws?.send("ball_move:")
 				if ($isPlayer1 == true)
 				{
+					$ws?.send("ball_move:")
 					ballX = $ball.x;
 					ballZ = $ball.z;
 				}

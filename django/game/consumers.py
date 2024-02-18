@@ -5,9 +5,10 @@ import math
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 
-class Player():
-	def __init__(self):
-		self.name: str = ""
+
+class Player:
+	def __init__(self, name: str = ""):
+		self.name: str = name
 		self.x: float = 0
 		self.y: float = 0
 		self.left: bool = False
@@ -19,25 +20,26 @@ class Player():
 		self.limit: int = 10
 
 	def Move(self, direction: str):
-		if (direction == "left"):
+		if direction == "left":
 			self.dirX = -1	
-		if (direction == "right"):
+		if direction == "right":
 			self.dirX = 1
 		self.x += self.speed * self.dirX
-		if (self.x >= self.limit):
+		if self.x >= self.limit:
 			self.x = self.limit
-		if (self.x <= -self.limit):
+		if self.x <= -self.limit:
 			self.x = -self.limit
 		
 	def AddPoint(self):
 		self.points += 1
-		if (self.points == 7):
+		if self.points == 7:
 			self.winner = True
 
 	def GetName(self):
 		return self.name
 
-class Ball():
+
+class Ball:
 	def __init__(self):
 		self.name: str = "ball"
 		self.x: float = 0
@@ -48,7 +50,7 @@ class Ball():
 	def SetNewDirection(self):
 		dirxList = [0.25, 0.5, -0.25, -0.5]
 		dirzList = random.randint(0, 1)
-		if (dirzList == 0):
+		if dirzList == 0:
 			self.dirZ = -1
 		else:
 			self.dirZ = 1
@@ -62,10 +64,10 @@ class Ball():
 	def Move(self, player1: Player, player2: Player):
 		self.x += self.speed * self.dirX
 		self.z += self.speed * self.dirZ
-		if (self.x >= 14.5 or self.x <= -14.5):
+		if self.x >= 14.5 or self.x <= -14.5:
 			self.dirX *= -1
-		if (self.z <= -16):
-			if (player1.y < 0):
+		if self.z <= -16:
+			if player1.y < 0:
 				player2.AddPoint()
 			else:
 				player1.AddPoint()
@@ -74,8 +76,8 @@ class Ball():
 
 			self.SetNewDirection()
 
-		if (self.z >= 16):
-			if (player1.y > 0):
+		if self.z >= 16:
+			if player1.y > 0:
 				player2.AddPoint()
 			else:
 				player1.AddPoint()
@@ -84,47 +86,51 @@ class Ball():
 			
 			self.SetNewDirection()
 
-		if (self.z <= -14.5):
-			if (player1.y < 0):
-				if (abs(self.x - player1.x) <= 3):
+		if self.z <= -14.5:
+			if player1.y < 0:
+				if abs(self.x - player1.x <= 3):
 					angle = (self.x - player1.x) / 3
 					self.dirX = math.sin(angle)
 					self.dirZ *= -1
 			else:
-				if (abs(self.x - -player2.x) <= 3):
+				if abs(self.x - -player2.x) <= 3:
 					angle = (self.x - -player2.x) / 3
 					self.dirX = math.sin(angle)
 					self.dirZ *= -1
-		if (self.z >= 14.5):
-			if (player1.y > 0):
-				if (abs(self.x - player1.x) <= 3):
+		if self.z >= 14.5:
+			if player1.y > 0:
+				if abs(self.x - player1.x) <= 3:
 					angle = (self.x - player1.x) / 3
 					self.dirX = math.sin(angle)
 					self.dirZ *= -1
 			else:
-				if (abs(self.x - -player2.x) <= 3):
+				if abs(self.x - -player2.x) <= 3:
 					angle = (self.x - -player2.x) / 3
 					self.dirX = math.sin(angle)
 					self.dirZ *= -1
-			
-# salas_activas = {}
+
+
+class Games:
+	def __init__(self, room: str):
+		self.room = room
+		self.player1 = ""
+		self.player2 = ""
+		self.ball = Ball()
+
 
 class GameConsumer(AsyncWebsocketConsumer):
 	player1 = Player()
 	player2 = Player()
 	ball = Ball()
+	games = []
 	
 	async def connect(self):
 		self.room_name = self.scope['query_string'].decode().split('&')[0].split('=')[1]
+		print("\n\nROOM_NAME: ", self.room_name, "\n\n")
 		self.room_group_name = f'pong_{self.room_name}'
 
-		# if self.room_name not in salas_activas:
-		# 	salas_activas[self.room_name] = 1
-		# else:
-		# 	salas_activas[self.room_name] += 1
-
-		if (self.player1.GetName() == "" or self.player2.GetName() == ""):
-			if (self.player1.GetName() == ""):
+		if self.player1.GetName() == "" or self.player2.GetName() == "":
+			if self.player1.GetName() == "":
 				self.player1.name = self.scope['query_string'].decode().split('&')[1].split('=')[1]
 				self.player1.y = 1
 			else:
@@ -163,18 +169,18 @@ class GameConsumer(AsyncWebsocketConsumer):
 		incoming_type: str = text_data.split('_')[1].split(':')[0]
 		incoming_value: str = text_data.split('_')[1].split(':')[1]
 
-		if (incoming_user == self.player1.GetName()):
-			if (incoming_type == "move"):
+		if incoming_user == self.player1.GetName():
+			if incoming_type == "move":
 				self.player1.Move(incoming_value)
-			if (incoming_type == "point"):
+			if incoming_type == "point":
 				self.player1.AddPoint()
-		if (incoming_user == self.player2.GetName()):
-			if (incoming_type == "move"):
+		if incoming_user == self.player2.GetName():
+			if incoming_type == "move":
 				self.player2.Move(incoming_value)
-			if (incoming_type == "point"):
+			if incoming_type == "point":
 				self.player2.AddPoint()
-		if (incoming_user == "ball"):
-			if (incoming_type == "move"):
+		if incoming_user == "ball":
+			if incoming_type == "move":
 				self.ball.Move(self.player1, self.player2)
 		# if (incoming_user == "ball"):
 		# 	if (incoming_type == "move"):
