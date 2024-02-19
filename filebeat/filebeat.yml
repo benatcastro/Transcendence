@@ -1,0 +1,20 @@
+filebeat.autodiscover:
+  providers:
+    - type: docker
+      templates:
+        - condition:
+            contains:
+              docker.container.name: "django"
+          config:
+            - type: container
+              paths:
+                - "/var/lib/docker/containers/${data.docker.container.id}/*.log"
+        - condition:
+            contains:
+              docker.container.name: "frontend"
+          config:
+            - type: container
+              paths:
+                - "/var/lib/docker/containers/${data.docker.container.id}/*.log"
+output.logstash:
+  hosts: ["logstash:5000"]

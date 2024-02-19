@@ -186,17 +186,23 @@ services:
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
+      - ELASTIC_PASSWORD="123456"
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
       - ./elastic/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./elastic/elastic.sh:/usr/share/elasticsearch/config/elastic.sh
     ports:
       - "9200:9200"
     restart: always
+    entrypoint: ["sh", "/usr/share/elasticsearch/config/elastic.sh"]
+
   kibana:
     image: docker.elastic.co/kibana/kibana:7.10.0
     container_name: kibana
     environment:
-      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - ELASTICSEARCH_URL="http://elasticsearch:9200"
+      - ELASTICSEARCH_USERNAME="kibana_system"
+      - ELASTICSEARCH_PASSWORD="123456"
     depends_on:
       - elasticsearch
     ports:
@@ -204,6 +210,9 @@ services:
   logstash:
     image: docker.elastic.co/logstash/logstash:7.10.0
     container_name: logstash
+    environment:
+      - ELASTICSEARCH_USERNAME="elastic"
+      - ELASTICSEARCH_PASSWORD="123456"
     volumes:
       - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
       - ./logstash/pipeline:/usr/share/logstash/pipeline
@@ -212,6 +221,34 @@ services:
       - elasticsearch
     ports:
       - "5000:5000"
+  filebeat:
+    container_name: filebeat
+    image: docker.elastic.co/beats/filebeat:7.10.0
+    user: root
+    volumes:
+      - type: bind
+        source: /var/lib/docker/containers
+        target: /var/lib/docker/containers
+        read_only: true
+      - type: bind
+        source: ./filebeat/filebeat.yml
+        target: /usr/share/filebeat/filebeat.yml
+        read_only: true
+      - type: volume
+        source: filebeat_data
+        target: /usr/share/filebeat/data
+      - ./django/logs:/app/logs:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - ELASTICSEARCH_HOSTS=elasticsearch:9200
+      - LOGSTASH_HOSTS=logstash:5000
+      - ELASTICSEARCH_USERNAME="elastic"
+      - ELASTICSEARCH_PASSWORD="123456"
+    depends_on:
+      - elasticsearch
+      - logstash 
+    command: ["filebeat", "-e", "-strict.perms=false"]
+  
 
 volumes:
   postgres_data:
@@ -220,3 +257,5 @@ volumes:
   grafana-data:
   prometheus_data:
   elasticsearch_data:
+  filebeat_data:
+    driver: local

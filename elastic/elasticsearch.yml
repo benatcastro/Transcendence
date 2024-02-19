@@ -1,6 +1,6 @@
 cluster.name: "docker-cluster"
 network.host: 0.0.0.0
-xpack.security.enabled: false
+xpack.security.enabled: true
   #xpack.security.transport.ssl.enabled: true
   #xpack.security.transport.ssl.verification_mode: certificate
   #xpack.security.transport.ssl.key: /usr/share/elasticsearch/config/key.pem
@@ -10,4 +10,3 @@ xpack.security.enabled: false
   #xpack.security.http.ssl.key: /usr/share/elasticsearch/config/key.pem
   #xpack.security.http.ssl.certificate: /usr/share/elasticsearch/config/cert.pem
   #xpack.security.http.ssl.certificate_authorities: ["/usr/share/elasticsearch/config/cert.pem"]
-

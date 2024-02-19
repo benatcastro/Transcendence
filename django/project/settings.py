@@ -285,31 +285,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
    # },
 #}
 
-from pythonjsonlogger import jsonlogger
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'json': {
-            '()': 'pythonjsonlogger.jsonlogger.JsonFormatter',
-            'fmt': '%(levelname)s %(name)s %(message)s',
-        },
-    },
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': BASE_DIR / 'logs/django.log',  # Asegúrate de que esta ruta sea accesible y correcta.
-            'formatter': 'json',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-}
 

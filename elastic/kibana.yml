@@ -1,0 +1,25 @@
+#
+# ** THIS IS AN AUTO-GENERATED FILE **
+#
+
+# Default Kibana configuration for docker target
+server.name: kibana
+server.host: "0"  # Consider changing this to "0.0.0.0" to listen on all interfaces
+elasticsearch.hosts: [ "http://elasticsearch:9200" ]
+
+# Agregar autenticación de usuario para conectarse a Elasticsearch
+elasticsearch.username: "kibana_system"
+elasticsearch.password: "tu_contraseña_aquí"
+
+# Habilitar el monitoreo del contenedor de Elasticsearch
+monitoring.ui.container.elasticsearch.enabled: true
+
+# Configuraciones para la encriptación
+# Estas son claves de ejemplo; debes generar tus propias claves seguras
+xpack.security.encryptionKey: "algo_super_secreto_aquí"
+xpack.encryptedSavedObjects.encryptionKey: "algo_super_secreto_aquí"
+xpack.reporting.encryptionKey: "algo_super_secreto_aquí"
+
+# Desactivar el sandbox de Chromium si estás en CentOS y tienes problemas
+# xpack.reporting.capture.browser.chromium.disableSandbox: true
+
