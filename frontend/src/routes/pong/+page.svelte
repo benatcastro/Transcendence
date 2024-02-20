@@ -40,7 +40,7 @@
 				console.log('WebSocket connection opened');
 			};
 			$ws.onmessage = (event) => {
-				//console.log('WebSocket message received:', event.data);
+				console.log('WebSocket message received:', event.data);
 				if ($userName == JSON.parse(event.data.split('_')[0]).name)
 				{
 					$user = JSON.parse(event.data.split('_')[0]);

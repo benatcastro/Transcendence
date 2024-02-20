@@ -2,18 +2,29 @@
 	import * as Threlte from '@threlte/core'
 	import { T } from '@threlte/core'
 
-    import { ws, user} from './store'
+    import {ws, user, room} from './store'
+    import {userName} from "$lib/stores/stores";
 
     let playerX = 0;
 
+	const send_json = {"room": $room,
+		"user": $userName,
+		"value": "",
+	}
 
     const onKeyDown = (e: KeyboardEvent) => {
         e.preventDefault()
 
 		if (e.key == 'a' && $ws && $user)
-            $ws?.send($user.name + "_move:left")
+        {
+            send_json.value = "left";
+            $ws?.send(JSON.stringify(send_json))
+        }
 		if (e.key == 'd' && $ws && $user)
-            $ws?.send($user.name + "_move:right")
+        {
+            send_json.value = "right";
+            $ws?.send(JSON.stringify(send_json))
+        }
 	}
 
     Threlte.useFrame(() => {

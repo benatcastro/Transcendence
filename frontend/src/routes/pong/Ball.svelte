@@ -3,13 +3,20 @@
 	import { T } from '@threlte/core';
 	import { useGltf } from '@threlte/extras';
 	import { onMount } from 'svelte';
-	import { ws, ball, isPlayer1 } from './store';
+	import {ws, ball, isPlayer1, room} from './store';
+	import {userName} from "$lib/stores/stores";
 
 	let ballX = 0;
 	let ballZ = 0;
 
 	export let interval = 50;
 	let timer;
+
+	const send_json = {"room": $room,
+		"user": "ball",
+		"value": "move",
+	}
+
 
 	onMount(() => {
 		// Esta función se ejecuta cuando el componente se monta en el DOM
@@ -18,7 +25,7 @@
 			{
 				if ($isPlayer1 == true)
 				{
-					$ws?.send("ball_move:")
+					$ws?.send(JSON.stringify(send_json))
 					ballX = $ball.x;
 					ballZ = $ball.z;
 				}

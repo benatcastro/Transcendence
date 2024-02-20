@@ -113,8 +113,8 @@ class Ball:
 class Games:
 	def __init__(self, room: str):
 		self.room = room
-		self.player1 = ""
-		self.player2 = ""
+		self.player1 = Player()
+		self.player2 = Player()
 		self.ball = Ball()
 
 
@@ -129,13 +129,24 @@ class GameConsumer(AsyncWebsocketConsumer):
 		print("\n\nROOM_NAME: ", self.room_name, "\n\n")
 		self.room_group_name = f'pong_{self.room_name}'
 
-		if self.player1.GetName() == "" or self.player2.GetName() == "":
-			if self.player1.GetName() == "":
-				self.player1.name = self.scope['query_string'].decode().split('&')[1].split('=')[1]
-				self.player1.y = 1
+		game = Games(self.room_name)
+
+		if game.player1.GetName() == "" or game.player2.GetName() == "":
+			if game.player1.GetName() == "":
+				game.player1.name = self.scope['query_string'].decode().split('&')[1].split('=')[1]
+				game.player1.y = 1
 			else:
-				self.player2.name = self.scope['query_string'].decode().split('&')[1].split('=')[1]
-				self.player2.y = -1
+				game.player2.name = self.scope['query_string'].decode().split('&')[1].split('=')[1]
+				game.player2.y = -1
+			self.games.append(game)
+
+		# if self.player1.GetName() == "" or self.player2.GetName() == "":
+		# 	if self.player1.GetName() == "":
+		# 		self.player1.name = self.scope['query_string'].decode().split('&')[1].split('=')[1]
+		# 		self.player1.y = 1
+		# 	else:
+		# 		self.player2.name = self.scope['query_string'].decode().split('&')[1].split('=')[1]
+		# 		self.player2.y = -1
 		
 		# Unirse al grupo de la sala
 		await self.channel_layer.group_add(
@@ -145,10 +156,13 @@ class GameConsumer(AsyncWebsocketConsumer):
 
 		await self.accept()
 
-		message = json.dumps(self.player1.__dict__) + "_" + json.dumps(self.player2.__dict__) + "_" + json.dumps(self.ball.__dict__)
+		for game in self.games:
+			if game.room == self.room_name:
+				message = json.dumps(game.player1.__dict__) + "_" + json.dumps(game.player2.__dict__) + "_" + json.dumps(game.ball.__dict__)
 
-		# Ejemplo: Enviar el mensaje recibido a todos en el grupo
-		await self.send_group_message(message)
+				# Ejemplo: Enviar el mensaje recibido a todos en el grupo
+				await self.send_group_message(message)
+
 
 	async def disconnect(self, close_code):
 		
@@ -165,37 +179,39 @@ class GameConsumer(AsyncWebsocketConsumer):
 		)
 
 	async def receive(self, text_data):
-		incoming_user: str = text_data.split('_')[0]
-		incoming_type: str = text_data.split('_')[1].split(':')[0]
-		incoming_value: str = text_data.split('_')[1].split(':')[1]
+		data = json.loads(text_data)
+		if self.room_name == data["room"]:
+			for game in self.games:
+				if game.room == data["room"]:
+					if data["user"] != "ball":
+						print(data["user"])
+					if game.player1.name == data["user"]:
+						game.player1.Move(data["value"])
+					if game.player2.name == data["user"]:
+						game.player2.Move(data["value"])
+					if data["user"] == "ball":
+						game.ball.Move(game.player1, game.player2)
+					message = json.dumps(game.player1.__dict__) + "_" + json.dumps(game.player2.__dict__) + "_" + json.dumps(game.ball.__dict__)
+					await self.send_group_message(message)
 
-		if incoming_user == self.player1.GetName():
-			if incoming_type == "move":
-				self.player1.Move(incoming_value)
-			if incoming_type == "point":
-				self.player1.AddPoint()
-		if incoming_user == self.player2.GetName():
-			if incoming_type == "move":
-				self.player2.Move(incoming_value)
-			if incoming_type == "point":
-				self.player2.AddPoint()
-		if incoming_user == "ball":
-			if incoming_type == "move":
-				self.ball.Move(self.player1, self.player2)
-		# if (incoming_user == "ball"):
-		# 	if (incoming_type == "move"):
-		# 		self.ball.Move()
-
-		# Procesar el mensaje recibido desde el cliente
-		# message = f'Hola desde el servidor {self.room_name}'
-					
-		message = (json.dumps(self.player1.__dict__) + "_" + json.dumps(self.player2.__dict__) + "_" + json.dumps(self.ball.__dict__))
-		# print(self.ball.__dict__)
-
-		# Ejemplo: Enviar el mensaje recibido a todos en el grupo
-		await self.send_group_message(message)
-
-		# self.receive(text_data)
+		# incoming_user: str = text_data.split('_')[0]
+		# incoming_type: str = text_data.split('_')[1].split(':')[0]
+		# incoming_value: str = text_data.split('_')[1].split(':')[1]
+		#
+		# if incoming_user == self.player1.GetName():
+		# 	if incoming_type == "move":
+		# 		self.player1.Move(incoming_value)
+		# if incoming_user == self.player2.GetName():
+		# 	if incoming_type == "move":
+		# 		self.player2.Move(incoming_value)
+		# if incoming_user == "ball":
+		# 	if incoming_type == "move":
+		# 		self.ball.Move(self.player1, self.player2)
+		#
+		# message = (json.dumps(self.player1.__dict__) + "_" + json.dumps(self.player2.__dict__) + "_" + json.dumps(self.ball.__dict__))
+		#
+		# # Ejemplo: Enviar el mensaje recibido a todos en el grupo
+		# await self.send_group_message(message)
 
 	async def send_group_message(self, message):
 		# Enviar mensaje a todos en el grupo
