@@ -268,6 +268,8 @@ CORS_ALLOWED_HOSTS = [
     'https://frontend:5173',
     'http://frontend:5173',
     'http://localhost',
+    'https://'+env('IP_BACKEND'),
+    'https://'+env('IP_BACKEND')+':1024',
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -276,11 +278,15 @@ CORS_ALLOWED_ORIGINS = [
     'https://frontend:5173',
     'http://frontend:5173',
     'http://localhost',
+    'https://'+env('IP_BACKEND'),
+    'https://'+env('IP_BACKEND')+':1024',
 
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://localhost'
+    'https://localhost',
+    'https://'+env('IP_BACKEND'),
+    'https://'+env('IP_BACKEND')+':1024'
 ]
 
 CORS_ALLOWED_HOSTS = ["*"]
