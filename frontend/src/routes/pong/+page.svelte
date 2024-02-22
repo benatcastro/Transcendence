@@ -15,13 +15,13 @@
     import Player1 from './Player1.svelte'
     import Player2 from './Player2.svelte'
 	import {host} from "$lib/stores/stores";
+	import {goto} from "$app/navigation";
 	//import { esbuildVersion } from 'vite';
 
 	let path = './'
 	let files: string | string[] = 'Skybox.png'
 
-	onMount(() => {
-	});
+	const mode = $page.url.searchParams.get('mode');
 
 	userName.set($page.url.searchParams.get('user')?.toString());
 	rivalName.set($page.url.searchParams.get('rival')?.toString());
@@ -41,6 +41,9 @@
 			};
 			$ws.onmessage = (event) => {
 				console.log('WebSocket message received:', event.data);
+				if (($user && $user["winner"] == true) || ($rival && $rival["winner"] == true)) {
+					$ws?.close()
+				}
 				if ($userName == JSON.parse(event.data.split('_')[0]).name)
 				{
 					$user = JSON.parse(event.data.split('_')[0]);
@@ -56,6 +59,17 @@
 				$ball = JSON.parse(event.data.split('_')[2]);
 			};
 			$ws.onclose = () => {
+				if ($user && $user["winner"] == true) {
+					console.log("ha ganado el usuario " + $user["name"]);
+					if (mode === 'casual') {
+						goto("/");
+					} else {
+						goto("/tournament");
+					}
+				} else if ($rival && $rival["winner"] == true) {
+					console.log("ha ganado el usuario " + $rival["name"]);
+					goto("/");
+				}
 				console.log('WebSocket connection closed');
 			};
 		}

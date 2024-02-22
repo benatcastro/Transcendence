@@ -55,8 +55,10 @@
 
 	async function handlePlayClick(option: string) {
 		try {
-            if (option === 'tournament' && isLoggedIn)
+            if (option === 'tournament')
             {
+                await getUser();
+                userName.set(username);
                 await goto(`/tournament`);
             }
 			else if (option !== 'tournament' || isLoggedIn) {
