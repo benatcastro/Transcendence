@@ -39,19 +39,27 @@
 			$ws.onopen = () => {
 				console.log('WebSocket connection opened');
 			};
-			$ws.onmessage = (event) => {
-				console.log('WebSocket message received:', event.data);
+			$ws.onmessage = async (event) => {
+				//console.log('WebSocket message received:', event.data);
 				if (($user && $user["winner"] == true) || ($rival && $rival["winner"] == true)) {
+					if ($user && $user["winner"] == true) {
+						console.log("ha ganado el usuario " + $user["name"]);
+						if (mode === 'casual') {
+							await goto("/");
+						} else {
+							await goto("/tournament");
+						}
+					} else if ($rival && $rival["winner"] == true) {
+						console.log("ha ganado el usuario " + $rival["name"]);
+						await goto("/");
+					}
 					$ws?.close()
 				}
-				if ($userName == JSON.parse(event.data.split('_')[0]).name)
-				{
+				if ($userName == JSON.parse(event.data.split('_')[0]).name) {
 					$user = JSON.parse(event.data.split('_')[0]);
 					$rival = JSON.parse(event.data.split('_')[1]);
 					$isPlayer1 = true;
-				}
-				else
-				{
+				} else {
 					$rival = JSON.parse(event.data.split('_')[0]);
 					$user = JSON.parse(event.data.split('_')[1]);
 					$isPlayer1 = false;
@@ -59,17 +67,7 @@
 				$ball = JSON.parse(event.data.split('_')[2]);
 			};
 			$ws.onclose = () => {
-				if ($user && $user["winner"] == true) {
-					console.log("ha ganado el usuario " + $user["name"]);
-					if (mode === 'casual') {
-						goto("/");
-					} else {
-						goto("/tournament");
-					}
-				} else if ($rival && $rival["winner"] == true) {
-					console.log("ha ganado el usuario " + $rival["name"]);
-					goto("/");
-				}
+
 				console.log('WebSocket connection closed');
 			};
 		}

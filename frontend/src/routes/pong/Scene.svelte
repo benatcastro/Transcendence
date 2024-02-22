@@ -5,15 +5,15 @@
 	import { Text } from '@threlte/extras'
 	import { useGltf } from '@threlte/extras'
 
-	import { ws, user, rival } from './store';
+	import { ws, user, rival, userName, rivalName } from './store';
 
 	const setText = (): string => {
 		if ($rival && $user)
-			return $rival.name + "\n" + $rival.points.toString() + "\n\n\n\n\n\n\n\n\n" + $user.name + "\n" + $user.points.toString();
+			return $rivalName + "\n" + $rival.points.toString() + "\n\n\n\n\n\n\n\n\n" + $userName + "\n" + $user.points.toString();
 		else if ($rival && !$user)
-			return $rival.name + "\n" + $rival.points.toString() + "\n\n\n\n\n\n\n\n\n" + "UserName\n--";
+			return $rivalName + "\n" + $rival.points.toString() + "\n\n\n\n\n\n\n\n\n" + "UserName\n--";
 		else if (!$rival && $user)
-			return "RivalName\n--" + "\n\n\n\n\n" + $user.name + "\n" + $user.points.toString();
+			return "RivalName\n--" + "\n\n\n\n\n" + $userName + "\n" + $user.points.toString();
 		else
 			return "RivalName\n--" + "\n\n\n\n\n" + "UserName\n--";
 	}
@@ -87,7 +87,7 @@
 
 <T.Group
 	rotation={[DEG2RAD * -90, 0, 0]}
-	position={[0, -1.9, 13]}
+	position={[0, -1.9, 10]}
 >
 	<Text
 		text={PointText}

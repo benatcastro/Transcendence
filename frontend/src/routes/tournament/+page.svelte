@@ -79,7 +79,7 @@
 				rival = msg.replace($userName + "_", "");
 			else
 				rival = msg.replace("_" + $userName, "");
-			await goto("https://" + $host + "/pong?user=" + $userName + "&rival=" + rival + "&room=" + msg);
+			await goto("/pong?user=" + $userName + "&rival=" + rival + "&room=" + msg);
 		}
 	}
 

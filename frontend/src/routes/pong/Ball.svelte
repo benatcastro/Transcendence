@@ -1,10 +1,8 @@
 <script lang="ts">
-	import * as Threlte from '@threlte/core'
 	import { T } from '@threlte/core';
 	import { useGltf } from '@threlte/extras';
 	import { onMount } from 'svelte';
 	import {ws, ball, isPlayer1, room} from './store';
-	import {userName} from "$lib/stores/stores";
 
 	let ballX = 0;
 	let ballZ = 0;

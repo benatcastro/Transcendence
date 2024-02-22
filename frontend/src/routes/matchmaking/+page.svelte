@@ -42,11 +42,6 @@
 
 <div class="d-flex flex-center screen-container">
   <p class="cyber-text side-text">In the year 2077, the world is ruled by corporations...</p> <!-- Cyberpunk paragraph at the start -->
-    {#if rival}
-      <p>Player {rival} wants to play!</p>
-      <p><a href="../pong">Go to game</a></p>
-    {:else}
-    {/if}
     <div class="spinner-border" role="status" />
   <p class="cyber-text side-text">The only hope for humanity is pong... for.. some reason....</p> <!-- Cyberpunk paragraph at the end -->
 </div>
