@@ -9,9 +9,9 @@
 
 	const setText = (): string => {
 		if ($rival && $user)
-			return $rivalName + "\n" + $rival.points.toString() + "\n\n\n\n\n\n\n\n\n" + $userName + "\n" + $user.points.toString();
+			return $rivalName + "\n" + $rival.points.toString() + "\n\n\n\n\n\n\n" + $userName + "\n" + $user.points.toString();
 		else if ($rival && !$user)
-			return $rivalName + "\n" + $rival.points.toString() + "\n\n\n\n\n\n\n\n\n" + "UserName\n--";
+			return $rivalName + "\n" + $rival.points.toString() + "\n\n\n\n\n\n\n" + "UserName\n--";
 		else if (!$rival && $user)
 			return "RivalName\n--" + "\n\n\n\n\n" + $userName + "\n" + $user.points.toString();
 		else
@@ -87,7 +87,7 @@
 
 <T.Group
 	rotation={[DEG2RAD * -90, 0, 0]}
-	position={[0, -1.9, 10]}
+	position={[0, -1.9, 5]}
 >
 	<Text
 		text={PointText}

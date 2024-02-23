@@ -1,24 +1,20 @@
 <script lang="ts">
 	import * as Threlte from '@threlte/core'
-	import { T } from '@threlte/core'
+	//import { T } from '@threlte/core'
 	import { OrbitControls, Environment } from '@threlte/extras'
-	import { Debug } from '@threlte/rapier'
-	import { World } from '@threlte/rapier'
 	import Bloom from './bloom.svelte'
 	import { onMount } from 'svelte';
     import { page } from '$app/stores';
 	import { ws, userName, rivalName, room, ball, user, rival, isPlayer1 } from './store';
-	
+
     import Scene from './Scene.svelte'
     import Ball from './Ball.svelte'
 
     import Player1 from './Player1.svelte'
     import Player2 from './Player2.svelte'
-	import {host} from "$lib/stores/stores";
 	import {goto} from "$app/navigation";
-	//import { esbuildVersion } from 'vite';
 
-	let path = './'
+	let path = '/'
 	let files: string | string[] = 'Skybox.png'
 
 	const mode = $page.url.searchParams.get('mode');
@@ -31,7 +27,7 @@
 	console.log('rival: ' + $page.url.searchParams.get('rival')?.toString());
 	console.log('room: ' + $room);
 
-	onMount(() => {
+	onMount(async () => {
 		// Crea tu WebSocket
 		ws.set(new WebSocket("wss://localhost/ws/game/?room_code=" + $room + '&username=' + $page.url.searchParams.get('user')?.toString()));
 
@@ -74,53 +70,51 @@
 	});
 </script>
 
-<!-- <h1>Ander mariquita hihi</h1> -->
+<!-- <h1>Ander mariquita hihi</h1>-->
 
 <Threlte.Canvas>
-	<World>
-		<Scene />
-		<Player1 />
-		<Player2 />
-		<Ball />
+	<Scene />
+	<Player1 />
+	<Player2 />
+	<Ball />
 
-		<!-- <StarsEmitter /> -->
-		
-		<Environment
-			path={path}
-			files={files}
-			isBackground={true}
-		/>
+	<!-- <StarsEmitter /> -->
 
-		<Bloom />
+	<Environment
+		path={'./'}
+		files={'Skybox.png'}
+		isBackground={true}
+	/>
 
-		<!-- <Grid cellColor="#808080" sectionSize={0} /> -->
-		
-		<T.PerspectiveCamera
-			position={[0, 40, 20]}
-			fov={50}
-			makeDefault
-			on:create={({ ref }) => {
-				ref.lookAt(0, 1, 0)
-			}}
-		>
-		<OrbitControls />
-		</T.PerspectiveCamera>
-		
-		<T.AmbientLight color="#0B0B61" intensity={1} />
-		
-		<T.DirectionalLight
-			color="#0B0B61"
-			intensity={7}
-			position={[10, 10, 0]}
-			shadow.camera.top={8}
-		/>
-		
-		<T.PointLight
-			color="#75a1f9"
-			intensity={500}
-			position={[-1.75, 0, 1.75]}
-		/>
+	<Bloom />
 
-		<T.FogExp2 color={'#dddddd'} density={100} />
-	</World>
+	<!-- <Grid cellColor="#808080" sectionSize={0} /> -->
+
+	<Threlte.T.PerspectiveCamera
+		position={[0, 40, 20]}
+		fov={50}
+		makeDefault
+		on:create={({ ref }) => {
+			ref.lookAt(0, 1, 0)
+		}}
+	>
+	    <OrbitControls />
+	</Threlte.T.PerspectiveCamera>
+
+	<Threlte.T.AmbientLight color="#0B0B61" intensity={1} />
+
+	<Threlte.T.DirectionalLight
+		color="#0B0B61"
+		intensity={7}
+		position={[10, 10, 0]}
+		shadow.camera.top={8}
+	/>
+
+	<Threlte.T.PointLight
+		color="#75a1f9"
+		intensity={500}
+		position={[-1.75, 0, 1.75]}
+	/>
+
+	<Threlte.T.FogExp2 color={'#dddddd'} density={100} />
 </Threlte.Canvas>
