@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as Threlte from '@threlte/core'
-	//import { T } from '@threlte/core'
+	import { T } from '@threlte/core'
 	import { OrbitControls, Environment } from '@threlte/extras'
 	import Bloom from './bloom.svelte'
 	import { onMount } from 'svelte';
@@ -14,9 +14,6 @@
     import Player2 from './Player2.svelte'
 	import {goto} from "$app/navigation";
 
-	let path = '/'
-	let files: string | string[] = 'Skybox.png'
-
 	const mode = $page.url.searchParams.get('mode');
 
 	userName.set($page.url.searchParams.get('user')?.toString());
@@ -27,94 +24,103 @@
 	console.log('rival: ' + $page.url.searchParams.get('rival')?.toString());
 	console.log('room: ' + $room);
 
-	onMount(async () => {
-		// Crea tu WebSocket
-		ws.set(new WebSocket("wss://localhost/ws/game/?room_code=" + $room + '&username=' + $page.url.searchParams.get('user')?.toString()));
+	let isWsInit: boolean = false;
+    try {
+        // Crea tu WebSocket
+        ws.set(new WebSocket("wss://localhost/ws/game/?room_code=" + $room + '&username=' + $page.url.searchParams.get('user')?.toString()));
 
-		if ($ws) {
-			$ws.onopen = () => {
-				console.log('WebSocket connection opened');
-			};
-			$ws.onmessage = async (event) => {
-				//console.log('WebSocket message received:', event.data);
-				if (($user && $user["winner"] == true) || ($rival && $rival["winner"] == true)) {
-					if ($user && $user["winner"] == true) {
-						console.log("ha ganado el usuario " + $user["name"]);
-						if (mode === 'casual') {
-							await goto("/");
-						} else {
-							await goto("/tournament");
-						}
-					} else if ($rival && $rival["winner"] == true) {
-						console.log("ha ganado el usuario " + $rival["name"]);
-						await goto("/");
-					}
-					$ws?.close()
-				}
-				if ($userName == JSON.parse(event.data.split('_')[0]).name) {
-					$user = JSON.parse(event.data.split('_')[0]);
-					$rival = JSON.parse(event.data.split('_')[1]);
-					$isPlayer1 = true;
-				} else {
-					$rival = JSON.parse(event.data.split('_')[0]);
-					$user = JSON.parse(event.data.split('_')[1]);
-					$isPlayer1 = false;
-				}
-				$ball = JSON.parse(event.data.split('_')[2]);
-			};
-			$ws.onclose = () => {
+        if ($ws) {
+            $ws.onopen = () => {
+                console.log('WebSocket connection opened');
+                isWsInit = true;
+            };
+            $ws.onmessage = async (event) => {
+                //console.log('WebSocket message received:', event.data);
+                if (($user && $user["winner"] == true) || ($rival && $rival["winner"] == true)) {
+                    if ($user && $user["winner"] == true) {
+                        console.log("ha ganado el usuario " + $user["name"]);
+                        if (mode === 'casual') {
+                            await goto("/");
+                        } else {
+                            await goto("/tournament");
+                        }
+                    } else if ($rival && $rival["winner"] == true) {
+                        console.log("ha ganado el usuario " + $rival["name"]);
+                        await goto("/");
+                    }
+                    $ws?.close()
+                }
+                if ($userName == JSON.parse(event.data.split('_')[0]).name) {
+                    $user = JSON.parse(event.data.split('_')[0]);
+                    $rival = JSON.parse(event.data.split('_')[1]);
+                    $isPlayer1 = true;
+                } else {
+                    $rival = JSON.parse(event.data.split('_')[0]);
+                    $user = JSON.parse(event.data.split('_')[1]);
+                    $isPlayer1 = false;
+                }
+                $ball = JSON.parse(event.data.split('_')[2]);
+            };
+            $ws.onclose = () => {
 
-				console.log('WebSocket connection closed');
-			};
-		}
-	});
+                console.log('WebSocket connection closed');
+            };
+        }
+    }
+    catch
+    {
+        console.log('Buen intento manin');
+    }
+
 </script>
 
-<!-- <h1>Ander mariquita hihi</h1>-->
+{#if (isWsInit)}
+    <Threlte.Canvas>
+        <Scene />
+        <Player1 />
+        <Player2 />
+        <Ball />
 
-<Threlte.Canvas>
-	<Scene />
-	<Player1 />
-	<Player2 />
-	<Ball />
+        <!-- <StarsEmitter /> -->
 
-	<!-- <StarsEmitter /> -->
+        <Environment
+            path={'/'}
+            files={'Skybox.png'}
+            isBackground={true}
+        />
 
-	<Environment
-		path={'./'}
-		files={'Skybox.png'}
-		isBackground={true}
-	/>
+        <Bloom />
 
-	<Bloom />
+<!--         <T.Grid cellColor="#808080" sectionSize={0} />-->
 
-	<!-- <Grid cellColor="#808080" sectionSize={0} /> -->
+        <T.PerspectiveCamera
+            position={[0, 40, 20]}
+            fov={50}
+            makeDefault
+            on:create={({ ref }) => {
+                ref.lookAt(0, 1, 0)
+            }}
+        >
+            <OrbitControls />
+        </T.PerspectiveCamera>
 
-	<Threlte.T.PerspectiveCamera
-		position={[0, 40, 20]}
-		fov={50}
-		makeDefault
-		on:create={({ ref }) => {
-			ref.lookAt(0, 1, 0)
-		}}
-	>
-	    <OrbitControls />
-	</Threlte.T.PerspectiveCamera>
+        <T.AmbientLight color="#0B0B61" intensity={1} />
 
-	<Threlte.T.AmbientLight color="#0B0B61" intensity={1} />
+        <T.DirectionalLight
+            color="#0B0B61"
+            intensity={7}
+            position={[10, 10, 0]}
+            shadow.camera.top={8}
+        />
 
-	<Threlte.T.DirectionalLight
-		color="#0B0B61"
-		intensity={7}
-		position={[10, 10, 0]}
-		shadow.camera.top={8}
-	/>
+        <T.PointLight
+            color="#75a1f9"
+            intensity={500}
+            position={[-1.75, 0, 1.75]}
+        />
 
-	<Threlte.T.PointLight
-		color="#75a1f9"
-		intensity={500}
-		position={[-1.75, 0, 1.75]}
-	/>
-
-	<Threlte.T.FogExp2 color={'#dddddd'} density={100} />
-</Threlte.Canvas>
+        <T.FogExp2 color={'#dddddd'} density={100} />
+    </Threlte.Canvas>
+{:else}
+    <h1>Ander mariquita hihi</h1>
+{/if}

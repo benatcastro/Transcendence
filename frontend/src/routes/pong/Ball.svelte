@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { T } from '@threlte/core';
+	import * as Threlte from '@threlte/core'
 	import { useGltf } from '@threlte/extras';
 	import { onMount } from 'svelte';
 	import {ws, ball, isPlayer1, room} from './store';
@@ -7,7 +7,7 @@
 	let ballX = 0;
 	let ballZ = 0;
 
-	export let interval = 50;
+	export let interval = 100;
 	let timer;
 
 	const send_json = {"room": $room,
@@ -59,6 +59,6 @@
 </script>
 
 {#await useGltf('/ball.glb') then ball}
-	<T is={ball.scene} position={[ballX, 1, ballZ]} scale={3} />
+	<Threlte.T is={ball.scene} position={[ballX, 1, ballZ]} scale={3} />
 {/await}
 

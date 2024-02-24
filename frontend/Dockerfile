@@ -1,13 +1,12 @@
-#FROM oven/bun:alpine AS builder -> TODO when creating the build release
+FROM node:20-alpine3.18
 
-FROM oven/bun:alpine
+ENV NODE_ENV development
 
 WORKDIR /app
 
-COPY package.json ./
-
-RUN bun install
+COPY package*.json ./
+RUN npm install
 
 EXPOSE 5173
 
-CMD bun --bun run dev -- --host 0.0.0.0
+CMD npm run dev -- --host 0.0.0.0

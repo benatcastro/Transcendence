@@ -23,10 +23,10 @@ prune:
 	yes | docker system prune -a
 	yes | docker system prune --volumes
 
-clean: down prune
+clean: down
 
 fclean: clean
-	docker compose down -v --remove-orphans --rmi all
+	docker compose down -v --remove-orphans all
 
 migrations:
 	docker compose exec django sh -c "python manage.py makemigrations && python manage.py migrate"

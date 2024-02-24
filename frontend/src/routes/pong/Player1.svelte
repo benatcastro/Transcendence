@@ -1,6 +1,5 @@
 <script lang="ts">
 	import * as Threlte from '@threlte/core'
-	import { T } from '@threlte/core'
 
     import {ws, user, room} from './store'
     import {userName} from "$lib/stores/stores";
@@ -36,11 +35,11 @@
 <svelte:window on:keydown={onKeyDown} />
 
 <!-- PLAYER 1 -->
-<T.Group
+<Threlte.T.Group
     position={[playerX, 1, 15]}
 >
-    <T.Mesh let:ref castShadow position={[0, 0, 0.5]} >
-        <T.BoxGeometry args={[5, 2, 1]} />
-        <T.MeshStandardMaterial color="#ffffff" />
-    </T.Mesh>
-</T.Group>
+    <Threlte.T.Mesh let:ref castShadow position={[0, 0, 0.5]} >
+        <Threlte.T.BoxGeometry args={[5, 2, 1]} />
+        <Threlte.T.MeshStandardMaterial color="#ffffff" />
+    </Threlte.T.Mesh>
+</Threlte.T.Group>

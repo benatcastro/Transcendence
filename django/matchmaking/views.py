@@ -45,7 +45,7 @@ def search(request):
             if rival:
                 room = ""
                 if rival > user_id:
-                    room = rival + "" + user_id
+                    room = rival + "_" + user_id
                 else:
                     room = user_id + "_" + rival
                 return JsonResponse({"rival": rival, "room": room})

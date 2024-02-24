@@ -119,9 +119,9 @@ class Games:
 
 
 class GameConsumer(AsyncWebsocketConsumer):
-	player1 = Player()
-	player2 = Player()
-	ball = Ball()
+	# player1 = Player()
+	# player2 = Player()
+	# ball = Ball()
 	games = []
 	
 	async def connect(self):
@@ -184,7 +184,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 			for game in self.games:
 				if game.room == data["room"]:
 					if data["user"] != "ball":
-						print(data["user"])
+						print("TEST: ", data["user"])
 					if game.player1.name == data["user"]:
 						game.player1.Move(data["value"])
 					if game.player2.name == data["user"]:
