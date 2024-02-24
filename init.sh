@@ -3,6 +3,9 @@
 # Cambia al directorio donde se encuentra vault.yml si es necesario
 # cd /path/to/your/vault/directory
 
+curl -H "Authorization: token $GITHUB_TOKEN" -o vault.env  "https://raw.githubusercontent.com/adelcor/secret/main/vault.env"
+
+curl -H "Authorization: token $GITHUB_TOKEN" -o consul.env  "https://raw.githubusercontent.com/adelcor/secret/main/consul.env"
 
 echo "recuperando token del Host..."
 
