@@ -6,19 +6,22 @@ from django.urls import reverse
 import urllib.parse
 from django.shortcuts import redirect
 
+import environ
 
 def google_callback(request):
+    # Init env variable handler
+    env = environ.Env()
+    environ.Env.read_env()
     params = urllib.parse.urlencode(request.GET)
-    print(params)
-    print("TEST_GOOGLE")
-    return redirect(f'https://localhost/callback/google/?{params}')
+    return redirect('https://' + env('IP_BACKEND') + '/callback/google/?' + params)
 
 
 def ftintra_callback(request):
+    # Init env variable handler
+    env = environ.Env()
+    environ.Env.read_env()
     params = urllib.parse.urlencode(request.GET)
-
-    print("TEST_INTRA")
-    response = redirect(f'https://localhost/callback/42intra/?{params}')
+    response = redirect('https://' + env('IP_BACKEND') + '/callback/42intra/' + params)
 
     # print("request headers: ", request.headers)
     # response['Test Header'] = 'Test Header'
@@ -28,10 +31,8 @@ def ftintra_callback(request):
 
 class GoogleLogin(SocialLoginView):
     adapter_class = GoogleOAuth2Adapter
-    #callback_url = 'http://localhost:5173'
     client_class = OAuth2Client
 
-    print("TEST")
     @property
     def callback_url(self):
         print("\n\n", self.request.build_absolute_uri(reverse('google_callback')), "\n\n")

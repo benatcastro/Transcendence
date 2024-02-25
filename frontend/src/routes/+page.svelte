@@ -27,7 +27,7 @@
 
     loginStorage.subscribe((loginSelection) => {
         if (browser && loginSelection) {
-            goto(`https://localhost:8000/auth/${loginSelection}/login`);
+            window.location = `https://${$host}:1024/auth/${loginSelection}/login`;
         }
     });
 
@@ -44,7 +44,7 @@
 
 	async function getUser() {
 		if (!isLoggedIn) {
-			const res = await fetch('https://localhost:1024/matchmaking/create-usr?mode=casual');
+			const res = await fetch(`https://${$host}:1024/matchmaking/create-usr?mode=casual`);
 			if (!res.ok) {
 				throw new Error('Error while creating user');
 			}
@@ -62,9 +62,7 @@
                 await goto(`/tournament`);
             }
 			else if (option !== 'tournament' || isLoggedIn) {
-				console.log("TEST: " + username);
 				await getUser();
-				console.log("TEST: " + username);
 				await goto(`/matchmaking?mode=${option}&user=${username}`);
 			}
 		} catch (e) {
@@ -74,7 +72,7 @@
 
     async function handleLoginClick(option: string) {
         try {
-            await goto(`https://localhost:8000/auth/${option}/login`);
+            window.location = `https://${$host}:1024/auth/${option}/login`;
         }
         catch (e) {
             console.error(e.message);
@@ -82,7 +80,7 @@
     }
 
     async function loadProfile() {
-		const response = await fetch("https://localhost:8000/users/me", {
+		const response = await fetch(`https://${$host}:1024/users/me`, {
 			credentials: 'include',
 		});
         if (response.ok) {

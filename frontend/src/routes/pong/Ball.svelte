@@ -7,7 +7,7 @@
 	let ballX = 0;
 	let ballZ = 0;
 
-	export let interval = 100;
+	export let interval = 50;
 	let timer;
 
 	const send_json = {"room": $room,

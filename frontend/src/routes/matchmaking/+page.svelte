@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import { goto } from "$app/navigation";
+	import { host } from '$lib/stores/stores';
 
 	const mode = $page.url.searchParams.get('mode');
 	const user = $page.url.searchParams.get('user');
@@ -10,7 +11,7 @@
 	let response_json;
 
 	onMount(async () => {
-		const res = await fetch(`https://localhost:1024/matchmaking/search?mode=${mode}&user=${user}`);
+		const res = await fetch(`https://${$host}:1024/matchmaking/search?mode=${mode}&user=${user}`);
 		if (res.ok) {
 			response_json = await res.json();
 			rival = response_json['rival'];
@@ -24,7 +25,7 @@
 	});
 
 	addEventListener('beforeunload', () => {
-		fetch(`https://localhost:1024/matchmaking/delete?mode=${mode}&user=${user}`);
+		fetch(`https://${$host}:1024/matchmaking/delete?mode=${mode}&user=${user}`);
 	});
 </script>
 

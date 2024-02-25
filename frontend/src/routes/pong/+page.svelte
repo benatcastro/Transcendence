@@ -5,7 +5,8 @@
 	import Bloom from './bloom.svelte'
 	import { onMount } from 'svelte';
     import { page } from '$app/stores';
-	import { ws, userName, rivalName, room, ball, user, rival, isPlayer1 } from './store';
+	import { ws, userName, rivalName, room, ball, user, rival, isPlayer1    } from './store';
+    import { host } from '$lib/stores/stores';
 
     import Scene from './Scene.svelte'
     import Ball from './Ball.svelte'
@@ -27,7 +28,7 @@
 	let isWsInit: boolean = false;
     try {
         // Crea tu WebSocket
-        ws.set(new WebSocket("wss://localhost:443/ws/game/?room_code=" + $room + '&username=' + $page.url.searchParams.get('user')?.toString()));
+        ws.set(new WebSocket("wss://" + $host + ":443/ws/game/?room_code=" + $room + '&username=' + $page.url.searchParams.get('user')?.toString()));
 
         if ($ws) {
             $ws.onopen = () => {
