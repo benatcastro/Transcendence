@@ -23,4 +23,4 @@ drf-yasg
 Twisted[tls,http2]
 pyOpenSSL
 django-rest-authtoken
-Faker
+pillow==10.2.0

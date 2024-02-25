@@ -79,6 +79,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    'users.middleware.TranscendenceUserActivityMiddleware',
     'django_prometheus.middleware.PrometheusAfterMiddleware',  #importante que este middleware este colocado el ultimo
 ]
 REST_FRAMEWORK = {
@@ -124,7 +125,8 @@ SOCIALACCOUNT_LOGIN_ON_GET=True
 SITE_ID = 1
 
 
-SLIDING_TOKEN_LIFETIME = timedelta(hours=4),
+
+# Authentication
 
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
@@ -133,6 +135,9 @@ REST_AUTH = {
     'JWT_AUTH_COOKIE': 'transcendence-jwt',
     'JWT_AUTH_REFRESH_COOKIE': 'transcendence-refresh-jwt',
 }
+
+ACCESS_TOKEN_LIFETIME = timedelta(hours=4),
+SLIDING_TOKEN_LIFETIME = timedelta(hours=4),
 
 AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
@@ -143,7 +148,6 @@ AUTHENTICATION_BACKENDS = (
 # ACCOUNT_EMAIL_REQUIRED = True
 # ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
-FRONTEND_LOGIN_CALLBACK = 'frontend:5173/mockups/callback'
 
 REST_USE_JWT = True
 
@@ -219,6 +223,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # Users
 AUTH_USER_MODEL = 'users.TranscendenceUser'
 
+# Images
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+USER_AWAY_THRESHOLD_MINUTES = 5
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -254,29 +263,26 @@ CORS_ALLOW_HEADERS = (
 CORS_ALLOW_CREDENTIALS = True
 
 # CON ESTO ALGUNA VARIBLES DE GET NO PASAN DE FRONTEND A BACKED
-CORS_ALLOWED_HOSTS = [
-    'https://localhost:443',
-    'https://frontend:5173',
-    'http://frontend:5173',
-    'http://localhost',
-]
 
 CORS_ALLOWED_ORIGINS = [
     'https://localhost:443',
     'https://localhost',
-    'https://frontend:5173',
-    'http://frontend:5173',
     'http://localhost',
+    'https://'+env('IP_BACKEND'),
+    'https://'+env('IP_BACKEND')+':1024',
+    'https://localhost:1024',
 
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://localhost'
+    'https://localhost',
+    'https://'+env('IP_BACKEND'),
+    'https://'+env('IP_BACKEND')+':1024'
 ]
 
-# CORS_ALLOWED_HOSTS = ["*"]
-# CORS_ORIGIN_ALLOW_ALL = True
-# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_HOSTS = ["*"]
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_ALL_ORIGINS = True
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",

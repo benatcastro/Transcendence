@@ -1,7 +1,7 @@
 from django.urls import path, include
 from .views import index
 from . import views
-from .views import create_users
+
 from .views import DataUsersViewSet
 from rest_framework.routers import DefaultRouter
 
@@ -33,5 +33,4 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('andy/', create_users, name='create__users'),
 ]

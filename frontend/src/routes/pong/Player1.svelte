@@ -1,8 +1,8 @@
 <script lang="ts">
 	import * as Threlte from '@threlte/core'
 
-    import {ws, user, room} from './store'
-    import {userName} from "$lib/stores/stores";
+    import {ws, user, room, userName} from './store'
+    //import {userName} from "$lib/stores/stores";
 
     let playerX = 0;
 

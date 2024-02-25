@@ -34,7 +34,7 @@
     onMount(async () => {
         console.log($userName);
 
-		ws.set(new WebSocket("wss://localhost/ws/tournament/"));
+		ws.set(new WebSocket("wss://localhost:443/ws/tournament/"));
 
 		if ($ws) {
 			$ws.onopen = () => {

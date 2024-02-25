@@ -20,8 +20,8 @@ down:
 	docker compose down -v
 
 prune:
-	yes | docker system prune -a
-	yes | docker system prune --volumes
+	docker system prune -a -f
+	docker system prune --volumes -f
 
 clean: down
 

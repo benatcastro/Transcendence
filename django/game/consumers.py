@@ -129,16 +129,29 @@ class GameConsumer(AsyncWebsocketConsumer):
 		print("\n\nROOM_NAME: ", self.room_name, "\n\n")
 		self.room_group_name = f'pong_{self.room_name}'
 
-		game = Games(self.room_name)
+		mygame = False
+		for game in self.games:
+			if game.room == self.room_name:
+				mygame = True
+				if game.player1.GetName() == "" or game.player2.GetName() == "":
+					if game.player1.GetName() == "":
+						game.player1.name = self.scope['query_string'].decode().split('&')[1].split('=')[1]
+						game.player1.y = 1
+					else:
+						game.player2.name = self.scope['query_string'].decode().split('&')[1].split('=')[1]
+						game.player2.y = -1
 
-		if game.player1.GetName() == "" or game.player2.GetName() == "":
-			if game.player1.GetName() == "":
-				game.player1.name = self.scope['query_string'].decode().split('&')[1].split('=')[1]
-				game.player1.y = 1
-			else:
-				game.player2.name = self.scope['query_string'].decode().split('&')[1].split('=')[1]
-				game.player2.y = -1
+		if not mygame:
+			game = Games(self.room_name)
 			self.games.append(game)
+
+			if game.player1.GetName() == "" or game.player2.GetName() == "":
+				if game.player1.GetName() == "":
+					game.player1.name = self.scope['query_string'].decode().split('&')[1].split('=')[1]
+					game.player1.y = 1
+				else:
+					game.player2.name = self.scope['query_string'].decode().split('&')[1].split('=')[1]
+					game.player2.y = -1
 
 		# if self.player1.GetName() == "" or self.player2.GetName() == "":
 		# 	if self.player1.GetName() == "":
@@ -180,19 +193,18 @@ class GameConsumer(AsyncWebsocketConsumer):
 
 	async def receive(self, text_data):
 		data = json.loads(text_data)
-		if self.room_name == data["room"]:
-			for game in self.games:
-				if game.room == data["room"]:
-					if data["user"] != "ball":
-						print("TEST: ", data["user"])
-					if game.player1.name == data["user"]:
-						game.player1.Move(data["value"])
-					if game.player2.name == data["user"]:
-						game.player2.Move(data["value"])
-					if data["user"] == "ball":
-						game.ball.Move(game.player1, game.player2)
-					message = json.dumps(game.player1.__dict__) + "_" + json.dumps(game.player2.__dict__) + "_" + json.dumps(game.ball.__dict__)
-					await self.send_group_message(message)
+		#if self.room_name == data["room"]:
+		for game in self.games:
+			if game.room == data["room"]:
+				#print(text_data)
+				if game.player1.name == data["user"]:
+					game.player1.Move(data["value"])
+				if game.player2.name == data["user"]:
+					game.player2.Move(data["value"])
+				if data["user"] == "ball":
+					game.ball.Move(game.player1, game.player2)
+				message = json.dumps(game.player1.__dict__) + "_" + json.dumps(game.player2.__dict__) + "_" + json.dumps(game.ball.__dict__)
+				await self.send_group_message(message)
 
 		# incoming_user: str = text_data.split('_')[0]
 		# incoming_type: str = text_data.split('_')[1].split(':')[0]

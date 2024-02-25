@@ -16,9 +16,9 @@
 
 	const mode = $page.url.searchParams.get('mode');
 
-	userName.set($page.url.searchParams.get('user')?.toString());
-	rivalName.set($page.url.searchParams.get('rival')?.toString());
-	room.set($page.url.searchParams.get('room')?.toString());
+	$userName = $page.url.searchParams.get('user')?.toString();
+	$rivalName = $page.url.searchParams.get('rival')?.toString();
+	$room = $page.url.searchParams.get('room')?.toString();
 
 	console.log('user: ' + $page.url.searchParams.get('user')?.toString());
 	console.log('rival: ' + $page.url.searchParams.get('rival')?.toString());
@@ -27,7 +27,7 @@
 	let isWsInit: boolean = false;
     try {
         // Crea tu WebSocket
-        ws.set(new WebSocket("wss://localhost/ws/game/?room_code=" + $room + '&username=' + $page.url.searchParams.get('user')?.toString()));
+        ws.set(new WebSocket("wss://localhost:443/ws/game/?room_code=" + $room + '&username=' + $page.url.searchParams.get('user')?.toString()));
 
         if ($ws) {
             $ws.onopen = () => {
