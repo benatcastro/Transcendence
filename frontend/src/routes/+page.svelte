@@ -92,8 +92,10 @@
 	}
 
     onMount(async () => {
+        //$host = "192.168.1.52";
         //console.log($loginStorage);
         await loadProfile();
+        fetch(`https://${$host}:1024/matchmaking/delete?mode=casual&user=${$userName}`);
     });
 </script>
 

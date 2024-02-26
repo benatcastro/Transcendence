@@ -35,6 +35,7 @@
             $ws.onopen = () => {
                 console.log('WebSocket connection opened');
                 isWsInit = true;
+                deleteMatchmaking();
             };
             $ws.onmessage = async (event) => {
                 //console.log('WebSocket message received:', event.data);
@@ -52,7 +53,7 @@
                         {
                             const send_json = {"type": "get_tournament",
                                 "user": $userName,
-                                "t_name": t_Name,
+                                "t_name": tournamentName,
                             }
                             send_json.type = "leave_tournament";
                             send_json.t_name = $tournamentName;
@@ -85,6 +86,23 @@
     {
         console.log('Buen intento manin');
     }
+
+
+    onMount(async () => {
+        //$host = "192.168.1.52";
+        deleteMatchmaking();
+        await fetch(`https://${$host}:1024/matchmaking/delete?mode=casual&user=${$userName}`);
+    });
+
+    async function deleteMatchmaking() {
+		const res = await fetch(`https://${$host}:1024/matchmaking/delete?mode=casual&user=${user}`);
+		if (res.ok) {
+			console.error("Deleted from matchmaking");
+		}
+		else {
+			console.error("fetch request didn't resolve");
+		}
+	}
 
 </script>
 

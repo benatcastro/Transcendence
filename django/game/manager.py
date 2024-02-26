@@ -76,21 +76,8 @@ class TournamentManager(AsyncWebsocketConsumer):
 			await self.leave_tournaments(data["user"], data["t_name"])
 		if data["type"] == "start_tournament":
 			await self.start_tournaments(data["user"], data["t_name"])
-			for tournament in self.tournaments:
-				if tournament.name == data["t_name"]:
-					p1: str = ""
-					p2: str = ""
-					for i, player in enumerate(tournament.players):
-						if tournament.status[i] == 0:
-							if p1 == "":
-								p1 = player
-							elif p1 != "" and p2 == "":
-								p2 = player
-							if p1 != "" and p2 != "":
-								await self.send_group_message(p1 + "_" + p2)
-								p1 = ""
-								p2 = ""
-
+		if data["type"] == "find_match":
+			await self.find_match(data["t_name"])
 
 		await self.send_group_message(json.dumps(await self.get_tournaments()))
 
@@ -144,3 +131,19 @@ class TournamentManager(AsyncWebsocketConsumer):
 			if tournament.name == name and tournament.owner == user:
 				tournament.started = True
 				return
+
+	async def find_match(self, name: str):
+		for tournament in self.tournaments:
+			if tournament.name == name:
+				p1: str = ""
+				p2: str = ""
+				for i, player in enumerate(tournament.players):
+					if tournament.status[i] == 0:
+						if p1 == "":
+							p1 = player
+						elif p1 != "" and p2 == "":
+							p2 = player
+						if p1 != "" and p2 != "":
+							await self.send_group_message(p1 + "_" + p2)
+							p1 = ""
+							p2 = ""

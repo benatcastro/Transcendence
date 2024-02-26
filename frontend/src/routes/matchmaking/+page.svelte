@@ -16,7 +16,8 @@
 			response_json = await res.json();
 			rival = response_json['rival'];
 			room = response_json['room'];
-			goto(`../pong?user=${user}&rival=${rival}&room=${room}&mode=${mode}`);
+			//await fetch(`https://${$host}:1024/matchmaking/delete?mode=${mode}&user=${user}`);
+			await goto(`../pong?user=${user}&rival=${rival}&room=${room}&mode=${mode}`);
 		}
 		else {
 			console.error("fetch request didn't resolve");

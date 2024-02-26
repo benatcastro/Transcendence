@@ -276,6 +276,7 @@ CORS_ALLOWED_ORIGINS = [
 
 CSRF_TRUSTED_ORIGINS = [
     'https://localhost',
+    'https://localhost:1024',
     'https://'+env('IP_BACKEND'),
     'https://'+env('IP_BACKEND')+':1024'
 ]

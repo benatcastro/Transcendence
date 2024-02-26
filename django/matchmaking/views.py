@@ -61,11 +61,8 @@ def delete(request):
     # TODO: preguntar a Ander si quiere que se borre el usuario si ya se ha encontrado un rival o si quiere que se
     #  mantenga hasta quedar AFK en la partida
     user_id = str(request.GET.get('user'))
-    mode = request.GET.get('mode')
-    ids = casual_ids if mode == 'casual' else ranked_ids
-
-    if user_id in ids:
-        ids.remove(user_id)
+    if user_id in casual_ids:
+        casual_ids.remove(user_id)
     return JsonResponse({"ok": "ok"})
 
 
