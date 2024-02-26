@@ -39,6 +39,11 @@
 		if ($ws) {
 			$ws.onopen = () => {
 				console.log('WebSocket connection opened');
+				if ($ws)
+				{
+					send_json.type = "get_tournament";
+					$ws?.send(JSON.stringify(send_json));
+				}
 			};
 			$ws.onmessage = (event) => {
 				console.log('WebSocket message received:', event.data);

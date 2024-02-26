@@ -14,6 +14,7 @@
     import Player1 from './Player1.svelte'
     import Player2 from './Player2.svelte'
 	import {goto} from "$app/navigation";
+    import {tournamentName,  ws as tournament } from "../tournament/tournament";
 
 	const mode = $page.url.searchParams.get('mode');
 
@@ -47,6 +48,18 @@
                         }
                     } else if ($rival && $rival["winner"] == true) {
                         console.log("ha ganado el usuario " + $rival["name"]);
+                        if ($tournament)
+                        {
+                            const send_json = {"type": "get_tournament",
+                                "user": $userName,
+                                "t_name": t_Name,
+                            }
+                            send_json.type = "leave_tournament";
+                            send_json.t_name = $tournamentName;
+                            send_json.user = $userName;
+                            $tournament.send(JSON.stringify(send_json));
+                            $tournamentName = undefined;
+                        }
                         await goto("/");
                     }
                     $ws?.close()
