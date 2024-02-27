@@ -20,6 +20,7 @@
     import { userName, host } from '$lib/stores/stores';
     import {onMount} from "svelte";
 	import { ws, tournamentName } from './tournament';
+	import {ball, isPlayer1, room} from "../pong/store";
 
 	let t_Name: string = "";
 
@@ -30,6 +31,10 @@
 
 	let response_json: JSON | undefined = undefined;
 	let myTournament;
+
+	export let interval = 500;
+	let timer;
+
 
     onMount(async () => {
         console.log($userName);
@@ -46,7 +51,7 @@
 				}
 			};
 			$ws.onmessage = (event) => {
-				console.log('WebSocket message received:', event.data);
+				//console.log('WebSocket message received:', event.data);
 				try {
 					response_json = JSON.parse(event.data);
 
@@ -58,12 +63,8 @@
 					for (let i = 0; i < Object.values(response_json).length; i++)
 					{
 						let players: Array<string> = Object.values(response_json)[i].players;
-						//players[$userName]
-						//console.log("player2: " + Object.values(JSON.parse(players));
 						if (players.includes($userName))
-						{
 							myTournament = Object.values(response_json)[i];
-						}
 					}
 				}
 				catch (e) {
@@ -74,6 +75,16 @@
 				console.log('WebSocket connection closed');
 			};
 		}
+
+		timer = setInterval(() => {
+			if ($tournamentName != "" && myTournament && myTournament.started)
+			{
+				send_json.type = "find_match";
+				send_json.t_name = $tournamentName;
+				console.log(send_json);
+				$ws?.send(JSON.stringify(send_json));
+			}
+		}, interval);
     });
 
 	async function goToPong(msg: string) {
@@ -84,6 +95,7 @@
 				rival = msg.replace($userName + "_", "");
 			else
 				rival = msg.replace("_" + $userName, "");
+			//await $ws?.close();
 			await goto("/pong?user=" + $userName + "&rival=" + rival + "&room=" + msg);
 		}
 	}
@@ -152,6 +164,12 @@
 					<button type="button" class="btn btn-secondary" on:click={() => handleJoinClick(tournament.name)}>{tournament.name}</button>
 				{/each}
 			{/if}
+		</div>
+	</div>
+{:else if ($tournamentName != "" && myTournament && myTournament.started)}
+	<div class="modal-background">
+		<div class="modal-content" on:click|stopPropagation>
+
 		</div>
 	</div>
 {:else}

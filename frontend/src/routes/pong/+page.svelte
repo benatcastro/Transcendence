@@ -40,6 +40,7 @@
             $ws.onmessage = async (event) => {
                 //console.log('WebSocket message received:', event.data);
                 if (($user && $user["winner"] == true) || ($rival && $rival["winner"] == true)) {
+                    await $ws?.close()
                     if ($user && $user["winner"] == true) {
                         console.log("ha ganado el usuario " + $user["name"]);
                         if (mode === 'casual') {
@@ -63,7 +64,6 @@
                         }
                         await goto("/");
                     }
-                    $ws?.close()
                 }
                 if ($userName == JSON.parse(event.data.split('_')[0]).name) {
                     $user = JSON.parse(event.data.split('_')[0]);
@@ -97,7 +97,7 @@
     async function deleteMatchmaking() {
 		const res = await fetch(`https://${$host}:1024/matchmaking/delete?mode=casual&user=${user}`);
 		if (res.ok) {
-			console.error("Deleted from matchmaking");
+			console.log("Deleted from matchmaking");
 		}
 		else {
 			console.error("fetch request didn't resolve");

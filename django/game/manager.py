@@ -124,6 +124,7 @@ class TournamentManager(AsyncWebsocketConsumer):
 				tournament.remove_player(user)
 				if tournament.owner == user:
 					self.tournaments.remove(name)
+					del tournament
 				return
 
 	async def start_tournaments(self, user: str, name: str):
@@ -139,6 +140,7 @@ class TournamentManager(AsyncWebsocketConsumer):
 				p2: str = ""
 				for i, player in enumerate(tournament.players):
 					if tournament.status[i] == 0:
+						tournament.status[i] = 1
 						if p1 == "":
 							p1 = player
 						elif p1 != "" and p2 == "":

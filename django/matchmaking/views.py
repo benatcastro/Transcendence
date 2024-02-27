@@ -6,9 +6,8 @@ import os, environ
 
 env = environ.Env()
 environ.Env.read_env()
-GenericNames1 = ["Gatita", "Capitan", "Tiburon", "Humano", "Alienigena", "Boss", "Dragon", "WatashiWa", "Mamut"]
-GenericNames2 = ["Generico", "Sexy", "Badass", "Basado", "Magica", "Heteronormativo", "Ancestral", "Destroyer", "Fuerte"]
-GenericNames3 = ["69", "XD", "10/10", "Lvl100", "Amateur", "Facha", "Random", "CSM", "Legendario", "AndyString"]
+GenericNames1 = [ "Gatita", "Capitan", "Tiburon", "Humano", "Alien", "Boss", "Dragon", "YoSoy", "Mamut", "Ander", "Andy", "Aingeru", "Beniat", "Tonio" ]
+GenericNames2 = [ "Legendario", "Lvl100", "Amateur", "Facha", "69", "XD", "Generico", "Sexy", "Badass", "Basado", "Magica", "Heteronormativo", "Ancestral", "Destroyer", "Fuerte" ]
 
 casual_ids = []
 ranked_ids = []
@@ -25,7 +24,7 @@ def show(request):
 
 def create(request):
     mode = request.GET.get('mode')
-    user_id = request.GET.get('user') if mode == "ranked" else request.GET.get('user') or str(GenericNames1[randint(0, len(GenericNames1) - 1)] + GenericNames2[randint(0, len(GenericNames2) - 1)] + GenericNames3[randint(0, len(GenericNames3) - 1)])
+    user_id = request.GET.get('user') if mode == "ranked" else request.GET.get('user') or str(GenericNames1[randint(0, len(GenericNames1) - 1)] + GenericNames2[randint(0, len(GenericNames2) - 1)])
     ids = casual_ids if mode == 'casual' else ranked_ids
 
     if len(ids) == 0 or user_id not in ids:
