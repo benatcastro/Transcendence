@@ -68,6 +68,7 @@
 					}
 				}
 				catch (e) {
+					console.log('WebSocket message received:', event.data);
 					goToPong(event.data);
 				}
 			};
@@ -81,7 +82,6 @@
 			{
 				send_json.type = "find_match";
 				send_json.t_name = $tournamentName;
-				console.log(send_json);
 				$ws?.send(JSON.stringify(send_json));
 			}
 		}, interval);
@@ -115,7 +115,6 @@
 			send_json.t_name = t_Name;
 			$ws?.send(JSON.stringify(send_json));
 			$tournamentName = t_Name;
-			console.log("TEst");
 		}
 	}
 
@@ -169,7 +168,10 @@
 {:else if ($tournamentName != "" && myTournament && myTournament.started)}
 	<div class="modal-background">
 		<div class="modal-content" on:click|stopPropagation>
-
+			{#each myTournament.status as player}
+				{player}
+				<br>
+			{/each}
 		</div>
 	</div>
 {:else}
