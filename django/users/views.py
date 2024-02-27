@@ -1,11 +1,6 @@
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from rest_framework.filters import SearchFilter
-# from rest_framework.exceptions import MethodNotAllowed
-# from rest_framework.response import Response
-# from rest_framework import status
 from rest_framework.generics import RetrieveAPIView
-# from rest_framework.renderers import JSONRenderer
-# from rest_framework.decorators import api_view, renderer_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 
