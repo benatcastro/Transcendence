@@ -1,5 +1,5 @@
 <svelte:head>
-    <title>{data.user}'s profile</title>
+    <title>Profile</title>
     <link
             href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css"
             rel="stylesheet"
@@ -8,123 +8,197 @@
             href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.16.0/css/mdb.min.css"
             rel="stylesheet"
     />
+    <link
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+          rel="stylesheet"
+    />
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet"
+    />
 </svelte:head>
 
 <script lang="ts">
     import type {PageData} from './$types';
+    import {addFriends} from "$lib/utilities/utilities";
+    import {deleteFriends} from "$lib/utilities/utilities";
+    import {modifyUser} from "$lib/utilities/utilities";
 
     export let data: PageData;
-    const user = data.user;
+
+
+    let user = data.user;
+    let friends = data.friends.friends;
 
     console.log("status", data.status)
     console.log("user", user)
+    console.log("friends", data.friends.friends)
+    $: editing = false
 
-    let selectedFile;
-    let fileInput;
-    let newEmail: string = '';
-    let newPassword: string = '';
-    let newUsername: string = '';
+    let selectedFile: (string | Blob)[];
+    let fileInput: HTMLInputElement;
+    let newUsername: string = user.username;
+    let searchInput = "";
+    // let friends: any[] = []
+    let searchingUsers = "";
 
-    async function uploadImage() {
+    function formatImageData() {
+
         const formData = new FormData();
-        formData.append('image', selectedFile[0]);
+        formData.set("pfp", selectedFile[0])
+        // formData.append(selectedFile[0]);
+        // console.log(formData.);
+        
 
-        const response = await fetch('http://localhost:8000/users/uploadImage', {
-            method: 'POST',
-            body: formData
-        });
 
-        if (response.ok) {
-            const updatedUser = await response.json();
-            user.image = updatedUser.image;
-        }
+        return formData
     }
+
+    
 
     function triggerFileInput() {
         fileInput.click();
     }
 
-    async function changeEmail() {
-        const response = await fetch(`http://localhost:8000/api/users/${user.id}/`, {
-            method: 'PATCH',
+    async function updateSearchedUserList() {
+        if (searchInput === undefined)
+            return
+
+        let url = new URL("http://localhost:8000/users/?")
+        let params = new URLSearchParams(url)
+        params.append("search", searchInput)
+
+        console.log(url + params)
+        const response = await fetch(url + params, {
+            method: 'GET',
             credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email: newEmail })
         });
 
         if (response.ok) {
-            const updatedUser = await response.json();
-            $: {
-                user.email = updatedUser.email;
-                newEmail = '';
-            }
+            searchingUsers = await response.json();
         }
+        // console.log(response)
     }
 
-    async function changePassword() {
-        const response = await fetch(`http://localhost:8000/api/users/${user.id}/`, {
-            method: 'PATCH',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ password: newPassword })
-        });
 
-        if (response.ok) {
-            const updatedUser = await response.json();
-            $: {
-                user.password = updatedUser.password;
-                newPassword = '';
-            }
-        }
+    async function modifyAndUpdate(userID: string, newValues: any) {
+        const updatedUser = await modifyUser(userID, newValues);
+        console.log("Update:", updatedUser)
+        console.log("og:", user)
+        user = updatedUser;
+        console.log("after:", user)
     }
 
-    async function changeUsername() {
-        const response = await fetch(`http://localhost:8000/api/users/${user.id}/`, {
-            method: 'PATCH',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username: newUsername })
-        });
-
-        if (response.ok) {
-            const updatedUser = await response.json();
-            $: {
-                user.username = updatedUser.username;
-                newUsername = '';
-            }
-        }
+    async function addFriendWrapper(fromUser: string, toUser: any) {
+        const updatedFriends = await  addFriends(fromUser, toUser)
+        console.log("UpdateAddFriend:", updatedFriends)
+        console.log("data:", updatedFriends)
+        friends = updatedFriends.update.friends
     }
+
+    async function deleteFriendWrapper(fromUser: string, toUser: any) {
+        const updatedFriends = await  deleteFriends(fromUser, toUser)
+        console.log("Updatedeleteriend:", updatedFriends)
+        console.log("data:", updatedFriends)
+        friends = updatedFriends.update.friends
+    }
+    
+
 </script>
+{#if user !== "404"}
+<div class="wrapper">
+    <div class="d-flex center h-70 w-70 cyberpunk-container">
+        <div class="flex-column mt-5 mx-5">
 
-<div class="d-flex vh-100 flex-center">
-    <div class="d-flex h-75 w-75 cyberpunk-container">
-        <div class="d-flex flex-column mt-5 mx-5">
-            <img class="profile-image m-5" src={user.image || '/assets/blank_profile.jpg'} alt="Profile image" on:click={triggerFileInput}>
-            <span class="change-image-text">Change image</span>
-            <input type="file" bind:files={selectedFile} bind:this={fileInput} style="display: none;" on:change={uploadImage} />
+            <h1 class="cyber-text center">User Details</h1>
+            <div class="pfp-wrapper center">
+                <img class="profile-image m-5" src={user.pfp} alt="Profile image"> 
+            </div>
             <p class="placeholder p-2 m-2">{user.username}</p>
-            <p class="placeholder p-2 m-2">{user.points}</p>
-        </div>
-        <div class="d-flex flex-column mt-5 mx-5">
-            <input type="email" bind:value={newEmail} placeholder="New Email" class="form-control" />
-            <button on:click={changeEmail} class="btn btn-primary">Change Email</button>
-            <input type="password" bind:value={newPassword} placeholder="New Password" class="form-control mt-3" />
-            <button on:click={changePassword} class="btn btn-primary">Change Password</button>
-        </div>
-        <div class="d-flex flex-column mt-5 mx-5">
-            <input type="text" bind:value={newUsername} placeholder="New Username" class="form-control" />
-            <button on:click={changeUsername} class="btn btn-primary">Change Username</button>
+            <p class="placeholder p-2 m-2">{user.email}</p>
+            <p class="placeholder p-2 m-2">{user.score}</p>
         </div>
     </div>
+
+    <div class="d-flex center h-70 w-70 cyberpunk-container">
+        <div class="user-search">
+            <div class="flex-column mt-5 mx-5">
+                <h1 class="cyber-text">Friends With</h1>
+                <div class="friend-list">
+                    {#each friends as friend}
+                        <div class="user-search">
+                            <img class="user-search-pfp" src={friend.pfp} alt="pfp">
+                            <a href={"https://localhost/profile/" + friend.username}><h4>{friend.username}</h4></a>
+                        </div>
+                        <div class="center">
+                            <h5>{friend.status}</h5>
+                        </div>
+                    {/each}
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="d-flex center h-70 w-70 cyberpunk-container">
+        <div class="center mt-5 mx-5">
+           <h1 class="cyber-text">Match History</h1>
+       </div>
+    </div>
 </div>
+{:else}
+    <div class="center h-100">
+        <h1 class="cyber-text">User 404</h1>
+    </div>
+{/if}
 
 <style>
+    .user-search {
+        display: flex;
+        gap: 1em;
+        align-items: center;
+    }
+
+    .user-search-pfp {
+        border-radius: 50%;
+        width: 3em;
+        height: 3em;
+        object-fit: cover;
+
+    }
+
+    .cyber-text {
+        color: #0ff;
+        font-style: italic;
+        padding: 10px;
+        text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff, 0 0 40px #0ff;
+
+    }
+
+    .wrapper {
+        margin-top: 15em;
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        justify-items: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 5em;
+    }
+
+    .center {
+        display: flex;
+        justify-content: center;
+        justify-items: center;
+        align-items: center;
+    }
+
+    .edit-username-wrapper {
+        display: grid;
+        grid-template-columns: auto 8em;
+    }
+
     .placeholder {
         color: #0ff;
         font-style: italic;
@@ -136,8 +210,8 @@
     }
     .profile-image {
         border-radius: 50%;
-        width: 100px;
-        height: 100px;
+        width: 10em;
+        height: 10em;
         object-fit: cover;
     }
 
@@ -154,5 +228,6 @@
         background: linear-gradient(90deg, rgba(255,0,255,0.7) 0%, rgba(0,255,255,0.7) 50%, rgba(255,0,255,0.7) 100%);
         border: 7px solid;
         border-image: linear-gradient(90deg, rgb(146, 194, 208) 0%, rgb(69, 141, 210) 50%, rgb(137, 166, 175) 100%) 1;
+        min-width: 30%;
     }
 </style>

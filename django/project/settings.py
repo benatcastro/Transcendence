@@ -63,7 +63,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'matchmaking',
     'game',
-
+    'match_history'
 ]
 
 MIDDLEWARE = [

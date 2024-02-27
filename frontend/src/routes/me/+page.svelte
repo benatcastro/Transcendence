@@ -103,6 +103,11 @@
         console.log("data:", updatedFriends)
         friends = updatedFriends.update.friends
     }
+
+    function formatDate(dateString: string) {
+        const date = new Date(dateString);
+        return date.toLocaleString(); // You can use any date formatting method you prefer
+    }
     
 
 </script>
@@ -140,7 +145,7 @@
                     {#each friends as friend}
                         <div class="user-search">
                             <img class="user-search-pfp" src={friend.pfp} alt="pfp">
-                            <a href={"http://localhost:5173/profile/" + friend.username}><h4>{friend.username}</h4></a>
+                            <a href={"https://localhost/profile/" + friend.username}><h4>{friend.username}</h4></a>
                         </div>
                         <div class="center">
                             <h5>{friend.status}</h5>
@@ -154,7 +159,7 @@
                     <div>
                         <div class="user-search">
                             <img class="user-search-pfp" src={search_user.pfp} alt="pfp">
-                            <a href={"http://localhost:5173/profile/" + search_user.username}><h4>{search_user.username}</h4></a>
+                            <a href={"https://localhost/profile/" + search_user.username}><h4>{search_user.username}</h4></a>
                         </div>
                         <div class="user-search">
                             <h5>{search_user.status}</h5>
@@ -175,8 +180,28 @@
         </div>
     </div>
     <div class="d-flex center h-70 w-70 cyberpunk-container">
-        <div class="center mt-5 mx-5">
-           <h1 class="cyber-text">Match History</h1>
+        <div class="center mt-5 mx-5 match-history-container">
+            <h1 class="cyber-text">Match History</h1>
+            <!-- <div class="d-flex justify-content-center align-items-center vh-100"> -->
+            <!-- <div class="card w-75 h-75 shadow-lg"> -->
+                <div class="card-body">
+                <div class="container text-center">
+                    <div class="row">
+                    <div class="col list-group-item"><h2>Opponent</h2></div>
+                    <div class="col list-group-item"><h2>Result</h2></div>
+                    <div class="col list-group-item"><h2>Date</h2></div>
+                    </div>
+                    {#each user.history as match}
+                    <div class="row">
+                        <div class="col list-group-item"><a href={"https://localhost/profile/" + match.oponent}>{match.oponent}</a></div>
+                        <div class="col list-group-item">{match.result}</div>
+                        <div class="col list-group-item">{formatDate(match.date)}</div>
+                    </div>
+                    {/each}
+                </div>
+                </div>
+            <!-- </div> -->
+            <!-- </div> -->
        </div>
     </div>
 </div>
@@ -187,6 +212,58 @@
 {/if}
 
 <style>
+
+    .match-history-container {
+        flex-direction: column;;
+    }
+
+	@font-face {
+		font-family: 'xenotron';
+		src: url('/fonts/xenotron/XENOTRON.TTF') format('truetype');
+	}
+
+	.font-xe {
+		font-family: 'xenotron', sans-serif;
+	}
+
+	.card {
+		background-color: rgba(0,128,255,0.6);
+		border: 2px solid #80d4ff;
+		border-radius: 25px;
+		box-shadow: 0 2px 10px #80d4ff;
+	}
+
+	.card::before {
+		content: "";
+		position: absolute;
+		border-radius: 25px;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		background: linear-gradient(30deg, #ff0000, #00ff00, #0000ff);
+		mix-blend-mode: soft-light;
+		z-index: -1;
+	}
+
+	@media screen and (min-width: 992px){
+		.card .card-title {
+			font-size: 3rem;
+		}
+	}
+
+	@media screen and (min-width: 992px){
+		.card .list-group-item {
+			font-size: 1.5rem;
+		}
+	}
+
+	.list-group-item {
+		background-color: #104693;
+		border: 2px solid #80d4ff;
+		box-shadow: 0 2px 10px #80d4ff;
+	}
+n
     .user-search {
         display: flex;
         gap: 1em;
@@ -263,5 +340,20 @@
         border: 7px solid;
         border-image: linear-gradient(90deg, rgb(146, 194, 208) 0%, rgb(69, 141, 210) 50%, rgb(137, 166, 175) 100%) 1;
         min-width: 30%;
+    }
+    table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    }
+
+    td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+    }
+
+    tr:nth-child(even) {
+    background-color: #dddddd;
     }
 </style>

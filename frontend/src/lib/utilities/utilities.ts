@@ -1,4 +1,25 @@
-export async function get_user_and_refresh() {
+export async function get_user_and_refresh(username: string) {
+
+    const user = async () => {
+        const response = await fetch("http://localhost:8000/users/" + username, {
+            credentials: 'include',
+        });
+        const data = await response.json();
+        return {user: data, status: response.status};
+    }
+    try {
+        const u = await user()
+        if (u.status === 401) {
+            await refresh()
+            return await user()
+        }
+        return u;
+    } catch (e) {
+        return {user: '404', status: 'fetch error'};
+    }
+}
+
+export async function get_me_and_refresh(string) {
 
     const user = async () => {
         const response = await fetch("http://localhost:8000/users/me", {
@@ -18,6 +39,7 @@ export async function get_user_and_refresh() {
         return {user: '404', status: 'fetch error'};
     }
 }
+
 export async function refresh() {
     try {
         const response = await fetch("http://localhost:8000/auth/token/refresh/", {
