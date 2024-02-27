@@ -65,7 +65,7 @@
         if (searchInput === undefined)
             return
 
-        let url = new URL("http://localhost:8000/users/?")
+        let url = new URL("https://localhost:1024/users/?")
         let params = new URLSearchParams(url)
         params.append("search", searchInput)
 

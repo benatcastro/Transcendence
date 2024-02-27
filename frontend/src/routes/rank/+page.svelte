@@ -4,7 +4,7 @@
 	let users = [];
 
 	onMount(async () => {
-		const response = await fetch("http://localhost:8000/users/");
+		const response = await fetch("https://localhost:1024/users/");
 		users = await response.json();
 		users.sort((a, b) => a.username.localeCompare(b.username));
 	});

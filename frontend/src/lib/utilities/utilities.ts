@@ -1,7 +1,7 @@
 export async function get_user_and_refresh(username: string) {
 
     const user = async () => {
-        const response = await fetch("http://localhost:8000/users/" + username, {
+        const response = await fetch("https://localhost:1024/users/" + username, {
             credentials: 'include',
         });
         const data = await response.json();
@@ -19,10 +19,11 @@ export async function get_user_and_refresh(username: string) {
     }
 }
 
+
 export async function get_me_and_refresh(string) {
 
     const user = async () => {
-        const response = await fetch("http://localhost:8000/users/me", {
+        const response = await fetch("https://localhost:1024/users/me", {
             credentials: 'include',
         });
         const data = await response.json();
@@ -42,7 +43,7 @@ export async function get_me_and_refresh(string) {
 
 export async function refresh() {
     try {
-        const response = await fetch("http://localhost:8000/auth/token/refresh/", {
+        const response = await fetch("https://localhost:1024/auth/token/refresh/", {
             method: 'POST',
             credentials: "include"
         })
@@ -60,7 +61,7 @@ export async function refresh() {
 
 export async function getFriends(userID: string) {
     const response = async () => {
-        const data = await fetch(`http://localhost:8000/friends/${userID}/`, {
+        const data = await fetch(`https://localhost:1024/friends/${userID}/`, {
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -85,7 +86,7 @@ export async function getFriends(userID: string) {
 export async function deleteFriends(fromUser: string, toUser: string) {
     const response = async () => {
         const cookiePair = document.cookie.split("=")
-        const data = await fetch("http://localhost:8000/friends/" + fromUser + "/", {
+        const data = await fetch("https://localhost:1024/friends/" + fromUser + "/", {
             method: 'DELETE',
             credentials: 'include',
             headers: {
@@ -116,7 +117,7 @@ export async function deleteFriends(fromUser: string, toUser: string) {
 export async function addFriends(fromUser: string, toUser: string) {
     const response = async () => {
         const cookiePair = document.cookie.split("=")
-        const data = await fetch("http://localhost:8000/friends/", {
+        const data = await fetch("https://localhost:1024/friends/", {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -161,7 +162,7 @@ export async function modifyUser(user: string, newValues: any) {
         console.log("Request headers -> ", request_headers);
         
 
-        const data = await fetch("http://localhost:8000/users/" + user + "/" , {
+        const data = await fetch("https://localhost:1024/users/" + user + "/" , {
             method: 'PATCH',
             credentials: 'include',
             headers: request_headers,
