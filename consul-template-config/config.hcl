@@ -9,3 +9,9 @@ template {
   destination = "/output/.env"
 }
 
+// Nueva configuración para el archivo localhost.key
+template {
+  source      = "/etc/consul-template/templates/localhost_key.ctmpl"
+  destination = "/output/localhost.key"
+  perms       = "0600"
+}

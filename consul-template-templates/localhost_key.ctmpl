@@ -1,0 +1,4 @@
+{{ with secret "secret/data/mykey" }}
+{{ .Data.data.key }}
+{{ end }}
+

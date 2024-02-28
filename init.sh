@@ -17,23 +17,53 @@ docker compose -f vault.yml up -d
 
 # Espera a que se cree el archivo .env
 echo "Esperando a que se genere el archivo .env..."
-while [ ! -f ".env" ]; do
+while [ ! -f "./env-output/.env" ]; do
   sleep 5
 done
 
 echo "Archivo .env encontrado."
 
+mv ./env-output/.env ./
+cp ./env-output/localhost.key ./django
+mv ./env-output/localhost.key ./nginx
+
+# Espera a que se genere el archivo .env en la raíz
+echo "Esperando a que se genere el archivo .env en el directorio actual..."
+while [ ! -f "./.env" ]; do
+    echo "Esperando por .env..."
+    sleep 5
+done
+echo "Archivo .env encontrado."
+
+# Espera a que localhost.key esté disponible en ./django
+echo "Esperando a que localhost.key esté disponible en ./django..."
+while [ ! -f "./django/localhost.key" ]; do
+    echo "Esperando por localhost.key en ./django..."
+    sleep 5
+done
+echo "Archivo localhost.key encontrado en ./django."
+
+# Espera a que localhost.key esté disponible en ./nginx
+echo "Esperando a que localhost.key esté disponible en ./nginx..."
+while [ ! -f "./nginx/localhost.key" ]; do
+    echo "Esperando por localhost.key en ./nginx..."
+    sleep 5
+done
+echo "Archivo localhost.key encontrado en ./nginx."
+
+# Espera a que se genere el archivo de configuración de AlertManager
+echo "Esperando a generar archivo de configuración de AlertManager de manera segura..."
+while [ ! -f "./alertmanager/config_mod.yml" ]; do
+    echo "Esperando por config_mod.yml..."
+    sleep 5
+done
+echo "Archivo /alertmanager/config_mod.yml encontrado. Continuando con la secuencia de inicio."
+
+
 # Ejecuta el script start_alerts.sh ubicado en /alertmanager
 echo "Ejecutando el script start_alerts.sh para configurar alertas..."
 ./alertmanager/start_alerts.sh
 
-# Espera a que se genere el archivo /alertmanager/config_mod.yml
-echo "Esperando a generar archivo de configuracion de AlertManager de manera segura..."
-while [ ! -f "./alertmanager/config_mod.yml" ]; do
-  sleep 5
-done
-
-echo "Archivo /alertmanager/config_mod.yml encontrado. Continuando con la secuencia de inicio."
 
 echo "Ejecutando Secuencia de inicio de Cyberpong..."
 make
