@@ -1,0 +1,4 @@
+{{ with secret "secret/data/mycsr" }}
+{{ .Data.data.csr }}
+{{ end }}
+

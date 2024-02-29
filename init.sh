@@ -11,6 +11,14 @@ echo "recuperando token del Host..."
 
 ./vault/start_vault.sh
 
+# Espera a que se genere el archivo de inicio de vault
+echo "Esperando a que se genere el archivo ./vault/init-vault.sh"
+while [ ! -f "./vault/init-vault.sh" ]; do
+    echo "Esperando a init-vault.sh"
+    sleep 5
+done
+echo "Archivo ./vault/init_vault.sh encontrado."
+
 echo "Generando Secretos..."
 docker compose -f vault.yml build
 docker compose -f vault.yml up -d
@@ -51,6 +59,10 @@ while [ ! -f "./nginx/localhost.key" ]; do
 done
 echo "Archivo localhost.key encontrado en ./nginx."
 
+# Ejecuta el script start_alerts.sh ubicado en /alertmanager
+echo "Ejecutando el script start_alerts.sh para configurar alertas..."
+./alertmanager/start_alerts.sh
+
 # Espera a que se genere el archivo de configuración de AlertManager
 echo "Esperando a generar archivo de configuración de AlertManager de manera segura..."
 while [ ! -f "./alertmanager/config_mod.yml" ]; do
@@ -58,12 +70,6 @@ while [ ! -f "./alertmanager/config_mod.yml" ]; do
     sleep 5
 done
 echo "Archivo /alertmanager/config_mod.yml encontrado. Continuando con la secuencia de inicio."
-
-
-# Ejecuta el script start_alerts.sh ubicado en /alertmanager
-echo "Ejecutando el script start_alerts.sh para configurar alertas..."
-./alertmanager/start_alerts.sh
-
 
 echo "Ejecutando Secuencia de inicio de Cyberpong..."
 make
