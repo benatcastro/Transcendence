@@ -60,10 +60,6 @@
 	<slot />
 </div>
 
-<footer class="fixed-bottom text-center py-3 font-cr">
-	<a href="/meet">Meet the team</a>
-</footer>
-
 <style>
 	.btn-extra-lg {
 		font-size: 2em;

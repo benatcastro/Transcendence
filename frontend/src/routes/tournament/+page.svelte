@@ -176,7 +176,7 @@
 
 </script>
 
-{#if ($tournamentName == "" || $tournamentName == undefined)}
+{#if ($tournamentName === "" || $tournamentName === undefined)}
 	<div class="modal-background">
 		<div class="modal-content" on:click|stopPropagation>
 			<h1 class="modal-title">Create Tournament</h1>
@@ -191,13 +191,29 @@
 			{/if}
 		</div>
 	</div>
-{:else if ($tournamentName != "" && myTournament && myTournament.started)}
-	<div class="modal-background">
-		<div class="modal-content" on:click|stopPropagation>
-			{#each myTournament.status as player}
-				{player}
-				<br>
-			{/each}
+{:else if ($tournamentName !== "" && myTournament && myTournament.started)}
+	<div class="flex flex-center">
+		<div class="flex flex-center container cyber-container h-75">
+			<div class="row">
+				{#each myTournament.status as status, index}
+					<div class="col-sm-4 mb-3">
+						<div class="card cyber-card">
+							<div class="card-body">
+								<h5 class="card-title cyber-title">Player {index + 1}</h5>
+								<p class="card-text">
+									{#if status === 1}
+									<span class="badge badge-success cyber-badge">In Game</span>
+									{:else if status === -1}
+									<span class="badge badge-danger cyber-badge">Lost</span>
+									{:else}
+									<span class="badge badge-warning cyber-badge">In Waiting Room</span>
+									{/if}
+								</p>
+							</div>
+						</div>
+					</div>
+				{/each}
+			</div>
 		</div>
 	</div>
 {:else if (win)}
@@ -211,7 +227,7 @@
 		<div class="modal-content" on:click|stopPropagation>
 			{#if (response_json && myTournament)}
 				<h1 class="modal-title">Create Tournament</h1>
-				{#if (myTournament.owner == $userName && myTournament.players.length >= 4)}
+				{#if (myTournament.owner === $userName && myTournament.players.length >= 4)}
 					<button type="button" class="btn btn-secondary" on:click={() => handleStartClick()}>Start Tournament</button>
 				{/if}
 				<button type="button" class="btn btn-secondary" on:click={() => handleLeaveClick()}>Leave Tournaments</button>
@@ -226,6 +242,46 @@
 {/if}
 
 <style>
+	.container.cyber-container {
+	  background-color: rgba(255, 0, 255, 0.2);
+	  border: 2px solid #ff00ff;
+	  border-radius: 5px;
+	  box-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff, 0 0 40px #ff00ff;
+	}
+
+	.card.cyber-card {
+	  background-color: rgba(83, 155, 155, 0.8);
+	  border: 2px solid #62b4b4;
+	  border-radius: 5px;
+	  box-shadow: 0 0 10px #30a1a1, 0 0 20px #48c0c0, 0 0 30px #7bc9c9, 0 0 40px #7ddcdc;
+	}
+
+	.card-title.cyber-title {
+		color: #000000;
+		text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+	}
+
+	.card-text {
+		color: #00ffff;
+		text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+	}
+
+	.badge.cyber-badge {
+		border: 1px solid #00ffff;
+		box-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+	}
+
+	.badge-success {
+		background-color: #00ff00;
+	}
+
+	.badge-danger {
+		background-color: #ff0000;
+	}
+
+	.badge-warning {
+		background-color: #ffff00;
+	}
 
     .modal-background {
         background: white;

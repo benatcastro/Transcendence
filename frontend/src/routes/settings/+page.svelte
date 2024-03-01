@@ -2,7 +2,6 @@
 	import { goto } from '$app/navigation';
 	import {onMount} from "svelte";
 
-	let menuOpts: string[] = ['Volume', 'Graphics', 'Game'];
 	let volume: number = 1;
 
 	function handleVolumeChange(e: Event) {
@@ -36,16 +35,11 @@
 <div class="d-flex flex-column flex-center">
  <h2>Settings</h2>
  <menu class="d-flex flex-column p-2">
-  {#each menuOpts as opt}
    <div class="setting-container">
-    <h3>{opt}</h3>
-    {#if opt === 'Volume'}
+    <h3>Volume</h3>
      <label for="volume">Volume</label>
      <input id="volume" type="range" class="form-range" min="0" max="100" step="1" on:input={handleVolumeChange} />
-    {:else}
-    {/if}
    </div>
-  {/each}
  </menu>
 </div>
 <a on:click={() => goto('/')} href="/">&lt;</a>
