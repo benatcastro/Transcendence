@@ -178,6 +178,8 @@ class GameConsumer(AsyncWebsocketConsumer):
 		#if self.room_name == data["room"]:
 		for game in self.games:
 			if game.room == data["room"]:
+				if "disconnect" == data["user"]:
+					await self.disconnect(0)
 				if game.player1.name == data["user"]:
 					game.player1.Move(data["value"])
 				if game.player2.name == data["user"]:

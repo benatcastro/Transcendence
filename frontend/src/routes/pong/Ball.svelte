@@ -2,7 +2,7 @@
 	import * as Threlte from '@threlte/core'
 	import { useGltf } from '@threlte/extras';
 	import { onMount } from 'svelte';
-	import {ws, ball, isPlayer1, room} from './store';
+	import {ws, ball, isPlayer1, room, user, rival} from './store';
 
 	let ballX = 0;
 	let ballZ = 0;

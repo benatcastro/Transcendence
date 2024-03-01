@@ -78,6 +78,10 @@ class TournamentManager(AsyncWebsocketConsumer):
 			await self.start_tournaments(data["user"], data["t_name"])
 		if data["type"] == "find_match":
 			await self.find_match(data["t_name"])
+		if data["type"] == "set_status":
+			await self.set_status(data["t_name"], data["user"], data["value"])
+		if data["type"] == "disconnect":
+			await self.disconnect(0)
 
 		await self.send_group_message(json.dumps(await self.get_tournaments()))
 
@@ -140,12 +144,18 @@ class TournamentManager(AsyncWebsocketConsumer):
 				p2: str = ""
 				for i, player in enumerate(tournament.players):
 					if tournament.status[i] == 0:
-						tournament.status[i] = 1
 						if p1 == "":
 							p1 = player
-						elif p1 != "" and p2 == "":
+						elif p1 != "" and p2 == "" and p1 != player:
 							p2 = player
 						if p1 != "" and p2 != "":
+							await self.set_status(name, p1, 1)
+							await self.set_status(name, p2, 1)
 							await self.send_group_message(p1 + "_" + p2)
 							p1 = ""
 							p2 = ""
+
+	async def set_status(self, name: str, user: str, value: int):
+		for tournament in self.tournaments:
+			if tournament.name == name:
+				tournament.set_status(user, value)

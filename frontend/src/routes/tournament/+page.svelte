@@ -19,14 +19,15 @@
     import { browser } from '$app/environment';
     import { userName, host } from '$lib/stores/stores';
     import {onMount} from "svelte";
-	import { ws, tournamentName } from './tournament';
-	import {ball, isPlayer1, room} from "../pong/store";
+	import { ws, tournamentName, inGame } from './tournament';
+	import {ws as pong} from "../pong/store";
 
 	let t_Name: string = "";
 
 	const send_json = {"type": "get_tournament",
 		"user": $userName,
-		"t_name": t_Name,
+		"t_name": $tournamentName,
+		"value": 0,
 	}
 
 	let response_json: JSON | undefined = undefined;
@@ -38,7 +39,7 @@
 
     onMount(async () => {
         console.log($userName);
-
+		$inGame = false;
 		ws.set(new WebSocket("wss://" + $host + ":443/ws/tournament/"));
 
 		if ($ws) {
@@ -47,6 +48,10 @@
 				if ($ws)
 				{
 					send_json.type = "get_tournament";
+					$ws?.send(JSON.stringify(send_json));
+
+					send_json.type = "set_status";
+					send_json.t_name = $tournamentName;
 					$ws?.send(JSON.stringify(send_json));
 				}
 			};
@@ -77,15 +82,24 @@
 			};
 		}
 
-		timer = setInterval(() => {
-			if ($tournamentName != "" && myTournament && myTournament.started)
-			{
-				send_json.type = "find_match";
-				send_json.t_name = $tournamentName;
-				$ws?.send(JSON.stringify(send_json));
-			}
-		}, interval);
+		fetchData();
+
     });
+
+	timer = setInterval(async () => {
+		fetchData();
+	}, interval);
+
+	async function fetchData() {
+		//console.log("Find_Match: " + $tournamentName );
+		//console.log(myTournament);
+		if ($tournamentName != "" && myTournament && myTournament.started && $inGame == false)
+		{
+			send_json.type = "find_match";
+			send_json.t_name = $tournamentName;
+			$ws?.send(JSON.stringify(send_json));
+		}
+	}
 
 	async function goToPong(msg: string) {
 		if (msg.includes($userName))
@@ -95,7 +109,10 @@
 				rival = msg.replace($userName + "_", "");
 			else
 				rival = msg.replace("_" + $userName, "");
-			//await $ws?.close();
+			//$ws?.close();
+			$inGame = true;
+			send_json.type = "disconnect";
+			$ws?.send(JSON.stringify(send_json));
 			await goto("/pong?user=" + $userName + "&rival=" + rival + "&room=" + msg);
 		}
 	}
