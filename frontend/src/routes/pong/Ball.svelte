@@ -21,17 +21,9 @@
 		timer = setInterval(() => {
 			if ($ball && $ws)
 			{
-				if ($isPlayer1 == true)
-				{
-					$ws?.send(JSON.stringify(send_json))
-					ballX = $ball.x;
-					ballZ = $ball.z;
-				}
-				else
-				{
-					ballX = -$ball.x;
-					ballZ = -$ball.z;
-				}
+				$ws?.send(JSON.stringify(send_json))
+				ballX = $ball.x;
+				ballZ = $ball.z;
 			}
 		}, interval);
 

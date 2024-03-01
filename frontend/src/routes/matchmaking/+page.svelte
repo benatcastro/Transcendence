@@ -2,31 +2,41 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import { goto } from "$app/navigation";
-	import { host } from '$lib/stores/stores';
+	import { host, mode, userName, rival, room } from '$lib/stores/stores';
 
-	const mode = $page.url.searchParams.get('mode');
-	const user = $page.url.searchParams.get('user');
-	let rival: string;
-	let room: string;
+	//const mode = $page.url.searchParams.get('mode');
+	//const user = $page.url.searchParams.get('user');
+	//let rival: string;
+	//let room: string;
 	let response_json;
 
 	onMount(async () => {
-		const res = await fetch(`https://${$host}:1024/matchmaking/search?mode=${mode}&user=${user}`);
-		if (res.ok) {
-			response_json = await res.json();
-			rival = response_json['rival'];
-			room = response_json['room'];
-			//await fetch(`https://${$host}:1024/matchmaking/delete?mode=${mode}&user=${user}`);
-			await goto(`../pong?user=${user}&rival=${rival}&room=${room}&mode=${mode}`);
+		if ($userName)
+		{
+			const res = await fetch(`https://${$host}:1024/matchmaking/search`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({ "mode": $mode, "user": $userName }),
+				});
+			if (res.ok) {
+				response_json = await res.json();
+				$rival = response_json['rival'];
+				$room = response_json['room'];
+				await goto(`../pong`);
+			}
+			else {
+				console.error("fetch request didn't resolve: ");
+				throw new Error("Couldn't fetch rival");
+			}
 		}
-		else {
-			console.error("fetch request didn't resolve");
-			throw new Error("Couldn't fetch rival");
-		}
+		else
+			await goto(`/`);
 	});
 
 	addEventListener('beforeunload', () => {
-		fetch(`https://${$host}:1024/matchmaking/delete?mode=${mode}&user=${user}`);
+		fetch(`https://${$host}:1024/matchmaking/delete?mode=${$mode}&user=${$userName}`);
 	});
 </script>
 

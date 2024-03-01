@@ -119,6 +119,8 @@ class TournamentManager(AsyncWebsocketConsumer):
 		self.tournaments.append(Tournament(user, name))
 
 	async def join_tournaments(self, user: str, name: str):
+		if user == "":
+			return
 		for tournament in self.tournaments:
 			if tournament.name == name and not tournament.players.__contains__(user):
 				tournament.add_player(user)
@@ -128,8 +130,8 @@ class TournamentManager(AsyncWebsocketConsumer):
 		for tournament in self.tournaments:
 			if tournament.name == name and tournament.players.__contains__(user):
 				tournament.remove_player(user)
-				if tournament.owner == user:
-					self.tournaments.remove(name)
+				if tournament.owner == user and not tournament.started:
+					self.tournaments.remove(tournament)
 					del tournament
 				return
 

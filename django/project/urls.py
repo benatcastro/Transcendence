@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
+from matchmaking.views import search
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
@@ -27,6 +28,7 @@ urlpatterns = [
     path('friends/', include('friends.urls')),
     path('matches/', include('match_history.urls')),
     path('matchmaking/', include('matchmaking.urls')),
+#    path('matchmaking/search', search),
     path('watchman/', include('watchman.urls')),
     path("admin/", admin.site.urls),
     path('auth/', include('rest_auth.urls')),

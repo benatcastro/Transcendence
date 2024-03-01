@@ -1,7 +1,9 @@
 from django.shortcuts import redirect
+from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from random import randint
 import os, environ
+import json
 
 
 env = environ.Env()
@@ -25,16 +27,24 @@ def show(request):
 def create(request):
     mode = request.GET.get('mode')
     user_id = request.GET.get('user') if mode == "ranked" else request.GET.get('user') or str(GenericNames1[randint(0, len(GenericNames1) - 1)] + GenericNames2[randint(0, len(GenericNames2) - 1)])
-    ids = casual_ids if mode == 'casual' else ranked_ids
+    #ids = casual_ids if mode == 'casual' else ranked_ids
 
-    if len(ids) == 0 or user_id not in ids:
-        ids.append(user_id)
+    if mode == "casual":
+        if len(casual_ids) == 0 or user_id not in casual_ids:
+            casual_ids.append(user_id)
     return JsonResponse({"user": user_id})
 
-
+@csrf_exempt
 def search(request):
-    user_id = str(request.GET.get('user'))
-    mode = request.GET.get('mode')
+    if request.method == "GET":
+        return
+    body = json.loads(request.body.decode('utf-8'))
+    print(body)
+    user_id = body['user']
+    mode = body['mode']
+    print("\n\n", user_id, "\n\n", mode, "\n\n")
+
+    #mode = request.POST.get('mode')
     ids = casual_ids if mode == 'casual' else ranked_ids
 
     print("\n\n", casual_ids, "\n\n")

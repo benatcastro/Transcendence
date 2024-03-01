@@ -278,12 +278,12 @@ CSRF_TRUSTED_ORIGINS = [
     'https://localhost',
     'https://localhost:1024',
     'https://'+env('IP_BACKEND'),
-    'https://'+env('IP_BACKEND')+':1024'
+    'https://'+env('IP_BACKEND')+':1024',
 ]
 
 CORS_ALLOWED_HOSTS = ["*"]
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_ALL_ORIGINS = True
+#CORS_ORIGIN_ALLOW_ALL = True
+#CORS_ALLOW_ALL_ORIGINS = True
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
@@ -293,10 +293,16 @@ CHANNEL_LAYERS = {
     },
 }
 
+CORS_ORIGIN_WHITELIST = [
+    'https://' + env('IP_BACKEND'),
+    'https://' + env('IP_BACKEND') + ':1024',
+]
+
 SESSION_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

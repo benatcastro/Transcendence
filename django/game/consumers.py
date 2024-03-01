@@ -15,7 +15,7 @@ class Player:
 		self.right: bool = False
 		self.winner: bool = False
 		self.points: int = 0
-		self.speed: float = 0.5
+		self.speed: float = 1
 		self.dirX: int = 1
 		self.limit: int = 10
 
@@ -44,7 +44,7 @@ class Ball:
 		self.name: str = "ball"
 		self.x: float = 0
 		self.z: float = 0
-		self.speed: float = 0.25
+		self.speed: float = 0.5
 		self.SetNewDirection()
 
 	def SetNewDirection(self):

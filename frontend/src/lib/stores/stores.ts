@@ -4,4 +4,7 @@ import type { Writable } from 'svelte/store';
 export const loginStorage: Writable<string | undefined> = writable('');
 export const loginType: Writable<string | undefined> = writable('');
 export const userName: Writable<string | undefined> = writable('');
-export const host: Writable<string | undefined> = writable("localhost");
+export const rival: Writable<string | undefined> = writable('');
+export const room: Writable<string | undefined> = writable('');
+export const host: Writable<string | undefined> = writable("10.14.4.1");
+export const mode: Writable<string | undefined> = writable("");

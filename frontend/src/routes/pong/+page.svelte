@@ -6,7 +6,7 @@
 	import { onMount } from 'svelte';
     import { page } from '$app/stores';
 	import { ws, userName, rivalName, room, ball, user, rival, isPlayer1    } from './store';
-    import { host } from '$lib/stores/stores';
+    import { host, userName as user_name, room as room_name, rival as rival_name, mode } from '$lib/stores/stores';
 
     import Scene from './Scene.svelte'
     import Ball from './Ball.svelte'
@@ -16,21 +16,22 @@
 	import {goto} from "$app/navigation";
     import {tournamentName,  ws as tournament } from "../tournament/tournament";
 
-	const mode = $page.url.searchParams.get('mode');
+	$userName = $user_name;
+	$rivalName = $rival_name;
+	$room = $room_name;
+	$user = null;
+	$rival = null;
+	$ball = null;
 
-	$userName = $page.url.searchParams.get('user')?.toString();
-	$rivalName = $page.url.searchParams.get('rival')?.toString();
-	$room = $page.url.searchParams.get('room')?.toString();
-
-	console.log('user: ' + $page.url.searchParams.get('user')?.toString());
-	console.log('rival: ' + $page.url.searchParams.get('rival')?.toString());
+	console.log('user: ' + $userName);
+	console.log('rival: ' + $rivalName);
 	console.log('room: ' + $room);
 
 	let isWsInit: boolean = false;
 	let status: number = -1;
     try {
         // Crea tu WebSocket
-        ws.set(new WebSocket("wss://" + $host + ":443/ws/game/?room_code=" + $room + '&username=' + $page.url.searchParams.get('user')?.toString()));
+        ws.set(new WebSocket("wss://" + $host + ":443/ws/game/?room_code=" + $room + "&username=" + $user_name));
 
         if ($ws) {
             $ws.onopen = () => {
@@ -53,13 +54,13 @@
                     if ($user && $user["winner"] == true) {
                         status = 0;
                         console.log("ha ganado el usuario " + $user["name"]);
-                        if (mode != 'casual') {
-                            const send_json = {"type": "set_status",
-                                "user": $userName,
-                                "t_name": $tournamentName,
-                                "value": 0,
-                            }
-                            await $tournament?.send(JSON.stringify(send_json));
+                        if ($mode != 'casual') {
+                            // const send_json = {"type": "set_status",
+                            //     "user": $userName,
+                            //     "t_name": $tournamentName,
+                            //     "value": 0,
+                            // }
+                            // await $tournament?.send(JSON.stringify(send_json));
                             goBack();
                         }
                     }
@@ -68,7 +69,7 @@
                         console.log("ha ganado el usuario " + $rival["name"]);
                         if ($tournament)
                         {
-                            const send_json = {"type": "set_status",
+                            const send_json = {"type": "leave_tournament",
                                 "user": $userName,
                                 "t_name": $tournamentName,
                                 "value": -1,
@@ -93,7 +94,7 @@
                 $ball = JSON.parse(event.data.split('_')[2]);
             };
             $ws.onclose = () => {
-
+                $ws = null;
                 console.log('WebSocket connection closed');
             };
         }
@@ -112,7 +113,7 @@
     });
 
     async function deleteMatchmaking() {
-		const res = await fetch(`https://${$host}:1024/matchmaking/delete?mode=casual&user=${user}`);
+		const res = await fetch(`https://${$host}:1024/matchmaking/delete?mode=casual&user=${$userName}`);
 		if (res.ok) {
 			//console.log("Deleted from matchmaking");
 		}
@@ -122,7 +123,7 @@
 	}
 
     async function goBack() {
-        if (mode === 'casual') {
+        if ($mode === 'casual') {
             await goto("/");
         }
         else {

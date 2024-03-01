@@ -17,13 +17,15 @@
 <script lang="ts">
     import { goto } from '$app/navigation';
     import { browser } from '$app/environment';
-    import { loginStorage, userName, host } from '$lib/stores/stores';
+    import { loginStorage, userName, host, mode, rival, room } from '$lib/stores/stores';
+    import { ws } from './tournament/tournament';
     import {onMount} from "svelte";
 
     let playModal: boolean = false;
     let logInModal: boolean = false;
     let isLoggedIn: boolean = false;
-    let username: string = '';
+    //let username: string = '';
+    //let mode: string = "";
 
     loginStorage.subscribe((loginSelection) => {
         if (browser && loginSelection) {
@@ -44,26 +46,27 @@
 
 	async function getUser() {
 		if (!isLoggedIn) {
-			const res = await fetch(`https://${$host}:1024/matchmaking/create-usr?mode=casual`);
+			const res = await fetch(`https://${$host}:1024/matchmaking/create-usr?mode=${$mode}`);
 			if (!res.ok) {
 				throw new Error('Error while creating user');
 			}
-			username = (await res.json()).user;
+			$userName = (await res.json()).user;
 		}
-		return username;
+		return userName;
 	}
 
 	async function handlePlayClick(option: string) {
 		try {
+		    $mode = option;
             if (option === 'tournament')
             {
                 await getUser();
-                userName.set(username);
+                //userName.set(username);
                 await goto(`/tournament`);
             }
 			else if (option !== 'tournament' || isLoggedIn) {
 				await getUser();
-				await goto(`/matchmaking?mode=${option}&user=${username}`);
+				await goto(`/matchmaking`);
 			}
 		} catch (e) {
 			console.error(e.message);
@@ -85,17 +88,32 @@
 		});
         if (response.ok) {
             const data = await response.json();
-            username = data.username;
+            //userName = data.username;
             $userName = data.username;
             isLoggedIn = true;
         }
 	}
 
     onMount(async () => {
-        //$host = "192.168.1.52";
-        //console.log($loginStorage);
+        if ($userName)
+            fetch(`https://${$host}:1024/matchmaking/delete?mode=casual&user=${$userName}`);
+        if ($rival)
+            $rival = "";
+        if ($room)
+            $room = "";
+        if ($mode)
+            $mode = "";
+        if ($userName)
+            $userName = "";
+        if ($ws)
+        {
+            const send_json = {"type": "disconnect",
+                        "user": "disconnect",
+                        "code": "disconnect",
+            }
+            $ws?.send(JSON.stringify(send_json));
+        }
         await loadProfile();
-        fetch(`https://${$host}:1024/matchmaking/delete?mode=casual&user=${$userName}`);
     });
 </script>
 

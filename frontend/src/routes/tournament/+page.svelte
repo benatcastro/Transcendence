@@ -37,6 +37,8 @@
 	export let interval = 500;
 	let timer;
 
+	// if ($userName == null || $userName == undefined || $userName == "")
+	// 	goto('/');
 
     onMount(async () => {
         console.log($userName);
@@ -88,6 +90,7 @@
 			};
 			$ws.onclose = () => {
 				console.log('WebSocket connection closed');
+				$ws = null;
 			};
 		}
 
@@ -135,7 +138,7 @@
 	}
 
 	async function handleCreateClick() {
-		if ($ws && t_Name != "")
+		if ($ws && t_Name != "" && $userName != "")
 		{
 			send_json.type = "create_tournament";
 			send_json.t_name = t_Name;
@@ -174,6 +177,11 @@
 		}
 	}
 
+	// addEventListener('beforeunload', () => {
+	// 	if ($userName)
+	// 		handleLeaveClick();
+	// });
+
 </script>
 
 {#if ($tournamentName === "" || $tournamentName === undefined)}
@@ -186,7 +194,9 @@
 			-------------------------------------------------------------------
 			{#if (response_json)}
 				{#each Object.values(response_json) as tournament}
-					<button type="button" class="btn btn-secondary" on:click={() => handleJoinClick(tournament.name)}>{tournament.name}</button>
+					{#if (!tournament.started)}
+						<button type="button" class="btn btn-secondary" on:click={() => handleJoinClick(tournament.name)}>{tournament.name}</button>
+					{/if}
 				{/each}
 			{/if}
 		</div>
@@ -199,7 +209,7 @@
 					<div class="col-sm-4 mb-3">
 						<div class="card cyber-card">
 							<div class="card-body">
-								<h5 class="card-title cyber-title">Player {index + 1}</h5>
+								<h5 class="card-title cyber-title">{myTournament.players[index]}</h5>
 								<p class="card-text">
 									{#if status === 1}
 									<span class="badge badge-success cyber-badge">In Game</span>
