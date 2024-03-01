@@ -60,6 +60,7 @@
                                 "value": 0,
                             }
                             await $tournament?.send(JSON.stringify(send_json));
+                            goBack();
                         }
                     }
                     else if ($rival && $rival["winner"] == true) {
@@ -73,6 +74,9 @@
                                 "value": -1,
                             }
                             await $tournament?.send(JSON.stringify(send_json));
+                            goBack();
+                            // send_json.type = "leave_tournament"
+                            // await $tournament?.send(JSON.stringify(send_json));
                             //$tournamentName = undefined;
                         }
                     }

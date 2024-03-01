@@ -23,6 +23,7 @@
 	import {ws as pong} from "../pong/store";
 
 	let t_Name: string = "";
+	let win: boolean = false;
 
 	const send_json = {"type": "get_tournament",
 		"user": $userName,
@@ -70,6 +71,14 @@
 						let players: Array<string> = Object.values(response_json)[i].players;
 						if (players.includes($userName))
 							myTournament = Object.values(response_json)[i];
+					}
+
+					if (myTournament.started && myTournament.players.length == 1 && myTournament.players[0] == $userName)
+					{
+						send_json.type = "end_tournament";
+						send_json.t_name = $tournamentName;
+						$ws?.send(JSON.stringify(send_json));
+						win = true;
 					}
 				}
 				catch (e) {
@@ -189,6 +198,12 @@
 				{player}
 				<br>
 			{/each}
+		</div>
+	</div>
+{:else if (win)}
+	<div class="modal-background">
+		<div class="modal-content" on:click|stopPropagation>
+			<h1> class="modal-title">WIN</h1>
 		</div>
 	</div>
 {:else}

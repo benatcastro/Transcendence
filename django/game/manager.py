@@ -76,6 +76,8 @@ class TournamentManager(AsyncWebsocketConsumer):
 			await self.leave_tournaments(data["user"], data["t_name"])
 		if data["type"] == "start_tournament":
 			await self.start_tournaments(data["user"], data["t_name"])
+		if data["type"] == "end_tournament":
+			await self.end_tournaments(data["t_name"])
 		if data["type"] == "find_match":
 			await self.find_match(data["t_name"])
 		if data["type"] == "set_status":
@@ -135,6 +137,12 @@ class TournamentManager(AsyncWebsocketConsumer):
 		for tournament in self.tournaments:
 			if tournament.name == name and tournament.owner == user:
 				tournament.started = True
+				return
+
+	async def end_tournaments(self, name: str):
+		for tournament in self.tournaments:
+			if tournament.name == name:
+				self.tournaments.remove(tournament)
 				return
 
 	async def find_match(self, name: str):
