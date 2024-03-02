@@ -117,8 +117,13 @@ services:
       - "6000"
     volumes:
       - ./data/grafana-data:/var/lib/grafana
+      - ./grafana/config_data_sources.yml:/etc/grafana/provisioning/datasources/config_data_sources.yml
+      - ./grafana/default.yml/:/etc/grafana/provisioning/dashboards/default.yml
+      - ./grafana/dashboards/.:/usr/share/grafana/public/mydashboards    
     user: "${UID}:${GID}"
     env_file: .env
+    environment:
+        - GF_SERVER_HTTP_PORT=6000
 
     restart: always
   prometheus:
@@ -126,11 +131,37 @@ services:
     restart: always
     image: prom/prometheus
     volumes: 
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/rules.yml:/etc/prometheus/rules.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus/'
+      - '--storage.tsdb.retention.time=30d'    
     expose:
-      - "9090"
-
+      - "9090:9090"
+  alertmanager:
+    container_name: alertmanager
+    image: prom/alertmanager
+    volumes:
+      - ./alertmanager/config_mod.yml:/etc/alertmanager/config_mod.yml
+    ports:
+      - "9093:9093"
+    env_file:
+      - .env
+    command:
+      - '--config.file=/etc/alertmanager/config_mod.yml'
+    restart: always
+  blackbox_exporter:
+    image: prom/blackbox-exporter:latest
+    volumes:
+      - ./blackbox_exporter/config.yml:/etc/blackbox_exporter/config.yml
+    ports:
+      - "9115:9115"
 volumes:
   postgres_data:
   static_volume:
   grafana-data:
+  prometheus_data:
+
+
