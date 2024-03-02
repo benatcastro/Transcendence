@@ -8,7 +8,7 @@ import json
 
 env = environ.Env()
 environ.Env.read_env()
-GenericNames1 = [ "Gatita", "Capitan", "Tiburon", "Humano", "Alien", "Boss", "Dragon", "YoSoy", "Mamut", "Ander", "Andy", "Aingeru", "Beniat", "Tonio" ]
+GenericNames1 = [ "Gatita", "Capitan", "Tiburon", "Humano", "Alien", "Boss", "Dragon", "YoSoy", "Mamut", "Ander", "Andy", "Aingeru", "Beniat", "Tonio", "JesuCristian" ]
 GenericNames2 = [ "Legendario", "Lvl100", "Amateur", "Facha", "69", "XD", "Generico", "Sexy", "Badass", "Basado", "Magica", "Heteronormativo", "Ancestral", "Destroyer", "Fuerte" ]
 
 casual_ids = []

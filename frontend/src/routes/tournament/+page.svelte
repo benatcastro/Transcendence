@@ -17,7 +17,7 @@
 <script lang="ts">
     import { goto } from '$app/navigation';
     import { browser } from '$app/environment';
-    import { userName, host } from '$lib/stores/stores';
+    import { userName, host, rival, room, mode } from '$lib/stores/stores';
     import {onMount} from "svelte";
 	import { ws, tournamentName, inGame } from './tournament';
 	import {ws as pong} from "../pong/store";
@@ -53,9 +53,12 @@
 					send_json.type = "get_tournament";
 					$ws?.send(JSON.stringify(send_json));
 
-					send_json.type = "set_status";
-					send_json.t_name = $tournamentName;
-					$ws?.send(JSON.stringify(send_json));
+					if ($tournamentName != "")
+					{
+						send_json.type = "set_status";
+						send_json.t_name = $tournamentName;
+						$ws?.send(JSON.stringify(send_json));
+					}
 				}
 			};
 			$ws.onmessage = (event) => {
@@ -77,9 +80,9 @@
 
 					if (myTournament.started && myTournament.players.length == 1 && myTournament.players[0] == $userName)
 					{
-						send_json.type = "end_tournament";
-						send_json.t_name = $tournamentName;
-						$ws?.send(JSON.stringify(send_json));
+						// send_json.type = "end_tournament";
+						// send_json.t_name = $tournamentName;
+						// $ws?.send(JSON.stringify(send_json));
 						win = true;
 					}
 				}
@@ -95,7 +98,6 @@
 		}
 
 		fetchData();
-
     });
 
 	timer = setInterval(async () => {
@@ -114,19 +116,22 @@
 	}
 
 	async function goToPong(msg: string) {
-		if (msg.includes($userName))
+		if (msg.includes($userName) && $userName!= "")
 		{
-			let rival = "";
 			if (msg.startsWith($userName))
-				rival = msg.replace($userName + "_", "");
+				$rival = msg.replace($userName + "_", "");
 			else
-				rival = msg.replace("_" + $userName, "");
+				$rival = msg.replace("_" + $userName, "");
+			$room = msg;
+			$mode = "tournament";
 			//$ws?.close();
 			$inGame = true;
-			send_json.type = "disconnect";
-			$ws?.send(JSON.stringify(send_json));
-			await goto("/pong?user=" + $userName + "&rival=" + rival + "&room=" + msg);
+			// send_json.type = "disconnect";
+			// $ws?.send(JSON.stringify(send_json));
+			await goto("/pong");
 		}
+		else if ($userName == "" || $userName == null || $userName == undefined)
+			await goto("/");
 	}
 
 	async function handleSearchClick() {
@@ -201,6 +206,14 @@
 			{/if}
 		</div>
 	</div>
+{:else if (win)}
+	<div class="modal-background">
+    	<div class="modal-content victory-content" on:click|stopPropagation />
+		<h1 class="modal-title victory-title">Victory Achieved</h1>
+        <p class="tournament-name victory-tournament-name">Cybernetic Clash Tournament</p>
+        <p class="subtext victory-subtext">Congratulations on your triumph in the cybernetic arena!</p>
+        <a href="/" class="btn btn-cyberpunk victory-btn">Go Home</a>
+    </div>
 {:else if ($tournamentName !== "" && myTournament && myTournament.started)}
 	<div class="flex flex-center">
 		<div class="flex flex-center container cyber-container h-75">
@@ -226,21 +239,15 @@
 			</div>
 		</div>
 	</div>
-{:else if (win)}
-	<div class="modal-background">
-		<div class="modal-content" on:click|stopPropagation>
-			<h1> class="modal-title">WIN</h1>
-		</div>
-	</div>
 {:else}
 	<div class="modal-background">
 		<div class="modal-content" on:click|stopPropagation>
 			{#if (response_json && myTournament)}
 				<h1 class="modal-title">Create Tournament</h1>
-				{#if (myTournament.owner === $userName && myTournament.players.length >= 4)}
+				{#if (myTournament.owner === $userName && myTournament.players.length >= 4 && myTournament.players.length % 2 === 0)}
 					<button type="button" class="btn btn-secondary" on:click={() => handleStartClick()}>Start Tournament</button>
 				{/if}
-				<button type="button" class="btn btn-secondary" on:click={() => handleLeaveClick()}>Leave Tournaments</button>
+					<button type="button" class="btn btn-secondary" on:click={() => handleLeaveClick()}>Leave Tournaments</button>
 				-------------------------------------------------------------------<br>
 				{#each myTournament.players as player}
 					{player}
@@ -252,6 +259,98 @@
 {/if}
 
 <style>
+	.victory-content {
+    	background-color: rgba(0, 0, 0, 0.5);
+    	border-radius: 10px;
+    	padding: 20px;
+    	text-align: center;
+	}
+
+	.victory-title {
+    	font-size: 3rem;
+    	text-transform: uppercase;
+    	letter-spacing: 3px;
+    	margin: 0;
+    	color: #ff00ff; /* Cyberpunk pink */
+	}
+
+	.victory-tournament-name {
+    	font-size: 1.5rem;
+    	margin-top: 20px;
+    	color: #ff00ff; /* Cyberpunk pink */
+	}
+
+	.victory-subtext {
+    	font-size: 1rem;
+    	margin-top: 20px;
+    	color: #ff00ff; /* Cyberpunk pink */
+	}
+
+.victory-btn {
+    background-color: transparent;
+    border: 1px solid #00ffff; /* Cyberpunk blue */
+    color: #00ffff; /* Cyberpunk blue */
+    text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+    margin-top: 20px;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.victory-btn:hover {
+    background-color: rgba(0, 255, 255, 0.5); /* Lighter shade of Cyberpunk blue */
+    border-color: #00ffff; /* Cyberpunk blue */
+    box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff, 0 0 40px #00ffff;
+}
+
+.victory-btn:active {
+    transform: translateY(2px);
+}
+
+.victory-btn {
+    background-color: transparent;
+    border: 1px solid #00ffff;
+    color: #00ffff;
+    text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+    margin-top: 20px;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.victory-btn:hover {
+    background-color: rgba(0, 255, 255, 0.5);
+    border-color: #00ffff;
+    box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff, 0 0 40px #00ffff;
+}
+
+.victory-btn:active {
+    transform: translateY(2px);
+}
+	.btn.btn-cyberpunk {
+		background-color: transparent;
+		border: 1px solid #00ffff;
+		color: #00ffff;
+		text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+		margin-top: 20px;
+		padding: 10px 20px;
+		text-decoration: none;
+		display: inline-block;
+		border-radius: 5px;
+    	transition: all 0.3s ease;
+	}
+
+	.btn.btn-cyberpunk:hover {
+		background-color: rgba(0, 255, 255, 0.5);
+   	 	border-color: #00ffff;
+		box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff, 0 0 40px #00ffff;
+	}
+
+	.btn.btn-cyberpunk:active {
+    	transform: translateY(2px);
+	}
 	.container.cyber-container {
 	  background-color: rgba(255, 0, 255, 0.2);
 	  border: 2px solid #ff00ff;
@@ -332,9 +431,5 @@
 	@font-face {
 		font-family: 'xenotron';
 		src: url('/fonts/xenotron/XENOTRON.TTF') format('truetype');
-	}
-
-	.font-xe {
-		font-family: 'xenotron', sans-serif;
 	}
 </style>
