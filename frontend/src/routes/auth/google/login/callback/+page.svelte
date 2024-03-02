@@ -9,15 +9,14 @@
 
     onMount(async () => {
         const code = $page.url.searchParams.get('code');
-
         const cookiePair = document.cookie.split("=")
-        await getToken(cookiePair[1], code);
+        getToken(cookiePair[1], code);
 
     })
 
     async function getToken(csrf: string, code: string) {
         try {
-            const response = await fetch(`https://${$host}:1024/auth/42intra/`, {
+            const response = await fetch(`http://${$host}:1024/auth/google/`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
