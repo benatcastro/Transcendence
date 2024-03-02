@@ -24,6 +24,7 @@
     import {addFriends} from "$lib/utilities/utilities";
     import {deleteFriends} from "$lib/utilities/utilities";
     import {modifyUser} from "$lib/utilities/utilities";
+    import { host } from '$lib/stores/stores';
 
     export let data: PageData;
 
@@ -65,7 +66,7 @@
         if (searchInput === undefined)
             return
 
-        let url = new URL("http://localhost:/users/?")
+        let url = new URL(`https://${$host}:1024/users/?`)
         let params = new URLSearchParams(url)
         params.append("search", searchInput)
 
@@ -145,7 +146,7 @@
                     {#each friends as friend}
                         <div class="user-search">
                             <img class="user-search-pfp" src={friend.pfp} alt="pfp">
-                            <a href={"https://localhost/profile/" + friend.username}><h4>{friend.username}</h4></a>
+                            <a href={`https://${$host}/profile/` + friend.username}><h4>{friend.username}</h4></a>
                         </div>
                         <div class="center">
                             <h5>{friend.status}</h5>
@@ -222,36 +223,6 @@
 		src: url('/fonts/xenotron/XENOTRON.TTF') format('truetype');
 	}
 
-	.font-xe {
-		font-family: 'xenotron', sans-serif;
-	}
-
-	.card {
-		background-color: rgba(0,128,255,0.6);
-		border: 2px solid #80d4ff;
-		border-radius: 25px;
-		box-shadow: 0 2px 10px #80d4ff;
-	}
-
-	.card::before {
-		content: "";
-		position: absolute;
-		border-radius: 25px;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		background: linear-gradient(30deg, #ff0000, #00ff00, #0000ff);
-		mix-blend-mode: soft-light;
-		z-index: -1;
-	}
-
-	@media screen and (min-width: 992px){
-		.card .card-title {
-			font-size: 3rem;
-		}
-	}
-
 	@media screen and (min-width: 992px){
 		.card .list-group-item {
 			font-size: 1.5rem;
@@ -263,12 +234,6 @@
 		border: 2px solid #80d4ff;
 		box-shadow: 0 2px 10px #80d4ff;
 	}
-n
-    .user-search {
-        display: flex;
-        gap: 1em;
-        align-items: center;
-    }
 
     .user-search-pfp {
         border-radius: 50%;

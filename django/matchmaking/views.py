@@ -12,11 +12,10 @@ GenericNames1 = [ "Gatita", "Capitan", "Tiburon", "Humano", "Alien", "Boss", "Dr
 GenericNames2 = [ "Legendario", "Lvl100", "Amateur", "Facha", "69", "XD", "Generico", "Sexy", "Badass", "Basado", "Magica", "Heteronormativo", "Ancestral", "Destroyer", "Fuerte" ]
 
 casual_ids = []
-ranked_ids = []
 
 
 def make_response():
-    response = {"Casual_ids": casual_ids, "Ranked_ids": ranked_ids}
+    response = {"Casual_ids": casual_ids}
     return JsonResponse(response)
 
 
@@ -42,10 +41,13 @@ def search(request):
     print(body)
     user_id = body['user']
     mode = body['mode']
+    print(user_id)
+    if not casual_ids.__contains__(user_id):
+        casual_ids.append(user_id)
     print("\n\n", user_id, "\n\n", mode, "\n\n")
 
     #mode = request.POST.get('mode')
-    ids = casual_ids if mode == 'casual' else ranked_ids
+    ids = casual_ids
 
     print("\n\n", casual_ids, "\n\n")
     if len(ids) == 0 or user_id not in ids:
@@ -77,5 +79,4 @@ def delete(request):
 
 def clear(request):
     casual_ids.clear()
-    ranked_ids.clear()
     return redirect("https://" + env('IP_BACKEND') + "/1024/matchmaking/")

@@ -62,8 +62,8 @@ INSTALLED_APPS = [
     'django_prometheus',
     'drf_yasg',
     'matchmaking',
+    'match_history',
     'game',
-    'match_history'
 ]
 
 MIDDLEWARE = [
@@ -300,7 +300,6 @@ CORS_ORIGIN_WHITELIST = [
 
 SESSION_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_SAMESITE = 'None'
-SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_HTTPONLY = True
 

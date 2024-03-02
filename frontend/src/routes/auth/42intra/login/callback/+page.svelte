@@ -8,13 +8,14 @@
     export let data: PageData;
 
     onMount(async () => {
+        const code = $page.url.searchParams.get('code');
+
         const cookiePair = document.cookie.split("=")
-        getToken(cookiePair[1]);
+        await getToken(cookiePair[1], code);
 
     })
 
-    const code = $page.url.searchParams.get('code');
-    async function getToken(csrf: string) {
+    async function getToken(csrf: string, code) {
         try {
             const response = await fetch(`https://${$host}:1024/auth/42intra/`, {
                 method: 'POST',

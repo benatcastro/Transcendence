@@ -52,7 +52,7 @@
 			}
 			$userName = (await res.json()).user;
 		}
-		return userName;
+		return $userName;
 	}
 
 	async function handlePlayClick(option: string) {
@@ -60,12 +60,14 @@
 		    $mode = option;
             if (option === 'tournament')
             {
-                await getUser();
+                if ($userName == "")
+                    await getUser();
                 //userName.set(username);
                 await goto(`/tournament`);
             }
 			else if (option !== 'tournament' || isLoggedIn) {
-				await getUser();
+                if ($userName == "")
+                    await getUser();
 				await goto(`/matchmaking`);
 			}
 		} catch (e) {
@@ -103,8 +105,8 @@
             $room = "";
         if ($mode)
             $mode = "";
-        if ($userName)
-            $userName = "";
+        // if ($userName)
+        //     $userName = "";
         if ($ws)
         {
             const send_json = {"type": "disconnect",

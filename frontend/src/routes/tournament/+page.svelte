@@ -68,7 +68,7 @@
 
 					if (Object.values(response_json)[0] == undefined)
 					{
-						$tournamentName = undefined;
+						$tournamentName = "";
 						myTournament = undefined;
 					}
 					for (let i = 0; i < Object.values(response_json).length; i++)
@@ -170,7 +170,7 @@
 			$ws?.send(JSON.stringify(send_json));
 
 			myTournament = undefined;
-			$tournamentName = undefined;
+			$tournamentName = "";
 		}
 	}
 	async function handleStartClick() {
@@ -182,10 +182,10 @@
 		}
 	}
 
-	// addEventListener('beforeunload', () => {
-	// 	if ($userName)
-	// 		handleLeaveClick();
-	// });
+	addEventListener('beforeunload', () => {
+		if ($userName && myTournament && !myTournament.started)
+			handleLeaveClick();
+	});
 
 </script>
 
