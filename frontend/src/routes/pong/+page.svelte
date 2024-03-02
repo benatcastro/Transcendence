@@ -22,6 +22,7 @@
 	$user = null;
 	$rival = null;
 	$ball = null;
+	$isPlayer1 = false;
 
 	console.log('user: ' + $userName);
 	console.log('rival: ' + $rivalName);
@@ -42,26 +43,23 @@
             $ws.onmessage = async (event) => {
                 //console.log('WebSocket message received:', event.data);
                 if (($user && $user["winner"] == true) || ($rival && $rival["winner"] == true)) {
-                    //await $ws?.close()
+                    console.log("Player 1 es: " + $isPlayer1);
                     const send_json = {"room": $room,
-                        "user": "disconnect",
-                        "code": "disconnect",
+                        "user": $userName,
+                        "value": "disconnect",
                     }
                     $ws?.send(JSON.stringify(send_json))
 
-                    $ws = undefined;
+
+                    $room = "";
+                    $isPlayer1 = false;
 
                     if ($user && $user["winner"] == true) {
                         status = 0;
                         console.log("ha ganado el usuario " + $user["name"]);
                         if ($mode != 'casual') {
-                            // const send_json = {"type": "set_status",
-                            //     "user": $userName,
-                            //     "t_name": $tournamentName,
-                            //     "value": 0,
-                            // }
-                            // await $tournament?.send(JSON.stringify(send_json));
-                            goBack();
+                            $ws = undefined;
+                            await goBack();
                         }
                     }
                     else if ($rival && $rival["winner"] == true) {
@@ -75,7 +73,8 @@
                                 "value": -1,
                             }
                             await $tournament?.send(JSON.stringify(send_json));
-                            goBack();
+                            $ws = undefined;
+                            await goBack();
                             // send_json.type = "leave_tournament"
                             // await $tournament?.send(JSON.stringify(send_json));
                             //$tournamentName = undefined;
@@ -123,6 +122,11 @@
 	}
 
     async function goBack() {
+        $room = "";
+        $user = null;
+        $ball = null;
+        $rival = null;
+        $isPlayer1 = false;
         if ($mode === 'casual') {
             await goto("/");
         }
@@ -133,6 +137,16 @@
                 await goto("/");
         }
 	}
+
+    addEventListener('beforeunload', () => {
+        console.log("Paso por aqui");
+        const send_json = {"room": $room,
+            "user": $userName,
+            "value": "disconnect",
+        }
+        $isPlayer1 = false;
+        $ws?.send(JSON.stringify(send_json))
+	});
 
 </script>
 

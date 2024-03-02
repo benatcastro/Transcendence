@@ -188,14 +188,28 @@ class GameConsumer(AsyncWebsocketConsumer):
             if game.room == data["room"]:
                 message = json.dumps(game.player1.__dict__) + "_" + json.dumps(
                     game.player2.__dict__) + "_" + json.dumps(game.ball.__dict__)
-                if "disconnect" == data["user"]:
+                if "disconnect" == data["value"]:
+                    if data["user"] == game.player1.name:
+                        game.player2.winner = True
+                    if data["user"] == game.player2.name:
+                        game.player1.winner = True
+                    await self.send_group_message(message)
                     await self.disconnect(0)
+                    if self.games.__contains__(game):
+                        self.games.remove(game)
+                        del game
+                    print("\n\nPartida Eliminada\n\n")
+                    return
                 if game.player1.name == data["user"]:
                     game.player1.Move(data["value"])
                 if game.player2.name == data["user"]:
                     game.player2.Move(data["value"])
                 if data["user"] == "ball":
                     game.ball.Move(game.player1, game.player2)
+
+                message = json.dumps(game.player1.__dict__) + "_" + json.dumps(
+                    game.player2.__dict__) + "_" + json.dumps(game.ball.__dict__)
+
                 if game.player1.points >= 7 or game.player2.points >= 7:
                     winner_player = None
                     loser_player = None
@@ -222,8 +236,11 @@ class GameConsumer(AsyncWebsocketConsumer):
                         match = await sync_to_async(MatchEntry)(winner=winner, loser=loser)
                         await sync_to_async(match.save)()
                     print("\n\n", message, "\n\n")
-                    self.games.remove(game)
-                    #del game
+                    await self.send_group_message(message)
+                    if self.games.__contains__(game):
+                        self.games.remove(game)
+                        del game.ball
+                        del game
                 await self.send_group_message(message)
 
     async def send_group_message(self, message):
