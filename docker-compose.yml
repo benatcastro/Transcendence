@@ -68,7 +68,7 @@ services:
   cadvisor:
     privileged: true
     container_name: cadvisor
-    image: gcr.io/cadvisor/cadvisor:0.44
+    image: gcr.io/cadvisor/cadvisor:latest
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw

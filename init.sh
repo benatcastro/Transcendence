@@ -1,4 +1,8 @@
 #!/bin/bash
+SECRETS_URL="https://raw.githubusercontent.com/adelcor/secret/main/secrets.txt"
+GITHUB_TOKEN="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"
+
+
 
 # Define una función para esperar la existencia de un archivo con tiempo máximo de espera
 espera_archivo() {
@@ -109,19 +113,9 @@ espera_archivo "./env-output/.env" 60
 
 # Mueve y copia los archivos necesarios
 mv ./env-output/.env ./
-cp ./env-output/localhost.key ./django
-cp ./env-output/localhost.crt ./django
-mv ./env-output/localhost.key ./nginx
-mv ./env-output/localhost.crt ./nginx
-mv ./env-output/localhost.csr ./nginx
 
 # Espera a que se generen los archivos en los directorios correspondientes
 espera_archivo "./.env" 60
-espera_archivo "./django/localhost.key" 60
-espera_archivo "./django/localhost.crt" 60
-espera_archivo "./nginx/localhost.key" 60
-espera_archivo "./nginx/localhost.crt" 60
-espera_archivo "./nginx/localhost.csr" 60
 
 # Ejecuta el script start_alerts.sh ubicado en /alertmanager
 echo "Ejecutando el script start_alerts.sh para configurar alertas..."

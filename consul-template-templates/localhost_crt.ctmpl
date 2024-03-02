@@ -1,4 +1,0 @@
-{{ with secret "secret/data/mycrt" }}
-{{ .Data.data.crt }}
-{{ end }}
-

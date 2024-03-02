@@ -20,8 +20,7 @@ export VAULT_ADDR='http://127.0.0.1:8200'
 export VAULT_TOKEN='myroot'
 
 SECRETS_URL="https://raw.githubusercontent.com/adelcor/secret/main/secrets.txt"
-GITHUB_TOKEN="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"
-
+GITHUB_TOKEN="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"
 # Agrega secretos desde un archivo de texto (solo para corrección)
 apk add --no-cache curl
 curl -H "Authorization: token $GITHUB_TOKEN" -o secrets.txt  "$SECRETS_URL"

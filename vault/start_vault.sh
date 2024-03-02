@@ -1,5 +1,9 @@
 #!/bin/bash
 
+
+SECRETS_URL="https://raw.githubusercontent.com/adelcor/secret/main/secrets.txt"
+GITHUB_TOKEN="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"
+
 # El archivo de entrada que contiene el texto a ser modificado
 ARCHIVO_ENTRADA="./vault/init-vault-template.sh"
 # El archivo de salida donde se guardará el resultado
