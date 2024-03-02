@@ -1,6 +1,5 @@
 #!/bin/bash
 SECRETS_URL="https://raw.githubusercontent.com/adelcor/secret/main/secrets.txt"
-GITHUB_TOKEN="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"
 
 
 
@@ -28,13 +27,13 @@ espera_archivo() {
 # cd /path/to/your/vault/directory
 
 # Descarga los archivos de entorno
-curl -H "Authorization: token $GITHUB_TOKEN" -o vault.env  "https://raw.githubusercontent.com/adelcor/secret/main/vault.env"
+curl "https://raw.githubusercontent.com/adelcor/secret/main/vault.env" -o vault.env
 if [ $? -ne 0 ]; then
   echo "Error descargando vault.env"
   exit 1
 fi
 
-curl -H "Authorization: token $GITHUB_TOKEN" -o consul.env  "https://raw.githubusercontent.com/adelcor/secret/main/consul.env"
+curl "https://raw.githubusercontent.com/adelcor/secret/main/consul.env" -o consul.env
 if [ $? -ne 0 ]; then
   echo "Error descargando consul.env"
   exit 1
@@ -109,7 +108,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Espera a que se genere el archivo .env
-espera_archivo "./env-output/.env" 60
+# espera_archivo "./env-output/.env" 60
 
 # Mueve y copia los archivos necesarios
 mv ./env-output/.env ./

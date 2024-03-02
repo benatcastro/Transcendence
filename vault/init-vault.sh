@@ -22,7 +22,7 @@ export VAULT_TOKEN='myroot'
 SECRETS_URL="https://raw.githubusercontent.com/adelcor/secret/main/secrets.txt"
 # Agrega secretos desde un archivo de texto (solo para corrección)
 apk add --no-cache curl
-curl "$SECRETS_URL" -o secrets.txt
+curl "https://raw.githubusercontent.com/adelcor/secret/main/secrets.txt" -o secrets.txt
 
 while IFS='=' read -r key value; do
     vault kv put secret/myapp/$key value="$value"

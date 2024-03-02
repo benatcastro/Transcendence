@@ -16,7 +16,6 @@ services:
     container_name: nginx
     build: ./nginx
     ports:
-      - "8080:8080"
       - "443:443"
       - "1024:1024"
     volumes:
@@ -74,7 +73,7 @@ services:
   cadvisor:
     privileged: true
     container_name: cadvisor
-    image: gcr.io/cadvisor/cadvisor:latest
+    image: gcr.io/cadvisor/cadvisor-amd64:v0.47.2
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
@@ -113,6 +112,8 @@ services:
   grafana:
     container_name: grafana
     image: grafana/grafana:latest
+    ports:
+      - "6001:6000"
     expose:
       - "6000"
     volumes:
