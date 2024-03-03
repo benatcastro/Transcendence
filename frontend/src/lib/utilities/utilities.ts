@@ -1,4 +1,4 @@
-import { hostmanual as host } from '../stores/stores';
+import { host } from '../stores/stores';
 
 export async function get_user_and_refresh(username: string) {
 

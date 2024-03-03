@@ -18,7 +18,8 @@
     import { goto } from '$app/navigation';
     import { browser } from '$app/environment';
     import { loginStorage, userName, host, mode, rival, room } from '$lib/stores/stores';
-    import { ws } from './tournament/tournament';
+    import { ws, tournamentName } from './tournament/tournament';
+    import { ws as pong_ws, user as pong_user, rival as pong_rival, ball } from './pong/store';
     import {onMount} from "svelte";
 
     let playModal: boolean = false;
@@ -29,7 +30,7 @@
 
     loginStorage.subscribe((loginSelection) => {
         if (browser && loginSelection) {
-            window.location = `https://${$host}:1024/auth/${loginSelection}/login`;
+            window.location = `https://${host}:1024/auth/${loginSelection}/login`;
         }
     });
 
@@ -46,7 +47,7 @@
 
 	async function getUser() {
 		if (!isLoggedIn) {
-			const res = await fetch(`https://${$host}:1024/matchmaking/create-usr?mode=${$mode}`);
+			const res = await fetch(`https://${host}:1024/matchmaking/create-usr?mode=${$mode}`);
 			if (!res.ok) {
 				throw new Error('Error while creating user');
 			}
@@ -77,7 +78,7 @@
 
     async function handleLoginClick(option: string) {
         try {
-            window.location = `https://${$host}:1024/auth/${option}/login`;
+            window.location = `https://${host}:1024/auth/${option}/login`;
         }
         catch (e) {
             console.error(e.message);
@@ -85,7 +86,7 @@
     }
 
     async function loadProfile() {
-		const response = await fetch(`https://${$host}:1024/users/me`, {
+		const response = await fetch(`https://${host}:1024/users/me`, {
 			credentials: 'include',
 		});
         if (response.ok) {
@@ -98,23 +99,32 @@
 
     onMount(async () => {
         if ($userName)
-            fetch(`https://${$host}:1024/matchmaking/delete?mode=casual&user=${$userName}`);
+            fetch(`https://${host}:1024/matchmaking/delete?mode=casual&user=${$userName}`);
         if ($rival)
             $rival = "";
         if ($room)
             $room = "";
         if ($mode)
             $mode = "";
-        // if ($userName)
-        //     $userName = "";
-        if ($ws)
-        {
-            const send_json = {"type": "disconnect",
-                        "user": "disconnect",
-                        "code": "disconnect",
-            }
-            $ws?.send(JSON.stringify(send_json));
-        }
+        if ($tournamentName)
+            $tournamentName = "";
+        if ($pong_rival)
+            $pong_rival = null;
+        if ($pong_user)
+            $pong_user = null;
+        // if ($pong_ws)
+        // {
+        //     $pong_ws = null;
+        // }
+        // if ($ws)
+        // {
+        //     const send_json = {"type": "disconnect",
+        //                 "user": "disconnect",
+        //                 "code": "disconnect",
+        //     }
+        //     $ws?.send(JSON.stringify(send_json));
+        //     $ws = null;
+        // }
         await loadProfile();
     });
 </script>

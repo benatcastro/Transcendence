@@ -13,7 +13,7 @@
 	onMount(async () => {
 		if ($userName)
 		{
-			const res = await fetch(`https://${$host}:1024/matchmaking/search`, {
+			const res = await fetch(`https://${host}:1024/matchmaking/search`, {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
@@ -36,7 +36,7 @@
 	});
 
 	addEventListener('beforeunload', () => {
-		fetch(`https://${$host}:1024/matchmaking/delete?mode=${$mode}&user=${$userName}`);
+		fetch(`https://${host}:1024/matchmaking/delete?mode=${$mode}&user=${$userName}`);
 	});
 </script>
 

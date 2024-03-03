@@ -183,7 +183,6 @@ class GameConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         data = json.loads(text_data)
-        # if self.room_name == data["room"]:
         for game in self.games:
             if game.room == data["room"]:
                 message = json.dumps(game.player1.__dict__) + "_" + json.dumps(
@@ -193,12 +192,13 @@ class GameConsumer(AsyncWebsocketConsumer):
                         game.player2.winner = True
                     if data["user"] == game.player2.name:
                         game.player1.winner = True
-                    await self.send_group_message(message)
-                    await self.disconnect(0)
                     if self.games.__contains__(game):
                         self.games.remove(game)
+                        del game.ball
+                        del game.player1
+                        del game.player2
                         del game
-                    print("\n\nPartida Eliminada\n\n")
+                    await self.disconnect(0)
                     return
                 if game.player1.name == data["user"]:
                     game.player1.Move(data["value"])
@@ -235,12 +235,8 @@ class GameConsumer(AsyncWebsocketConsumer):
                     if winner is not None and loser is not None:
                         match = await sync_to_async(MatchEntry)(winner=winner, loser=loser)
                         await sync_to_async(match.save)()
-                    print("\n\n", message, "\n\n")
                     await self.send_group_message(message)
-                    if self.games.__contains__(game):
-                        self.games.remove(game)
-                        del game.ball
-                        del game
+                    return
                 await self.send_group_message(message)
 
     async def send_group_message(self, message):

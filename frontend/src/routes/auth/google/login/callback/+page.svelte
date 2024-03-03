@@ -16,7 +16,7 @@
 
     async function getToken(csrf: string, code: string) {
         try {
-            const response = await fetch(`http://${$host}:1024/auth/google/`, {
+            const response = await fetch(`https://${host}:1024/auth/google/`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {

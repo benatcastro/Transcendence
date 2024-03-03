@@ -8,7 +8,7 @@ import type { Writable } from 'svelte/store';
 type WebSocketType = WebSocket | null;
 
 // Crea un store writable para el WebSocket
-export const ws: Writable<WebSocketType> = writable(null);
+export const ws: Writable<WebSocketType | null> = writable(null);
 
 export const userName: Writable<string | undefined> = writable('UserName');
 export const rivalName: Writable<string | undefined> = writable('RivalName');

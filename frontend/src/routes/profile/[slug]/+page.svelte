@@ -66,7 +66,7 @@
         if (searchInput === undefined)
             return
 
-        let url = new URL(`https://${$host}:1024/users/?`)
+        let url = new URL(`https://${host}:1024/users/?`)
         let params = new URLSearchParams(url)
         params.append("search", searchInput)
 
@@ -130,7 +130,7 @@
                     {#each friends as friend}
                         <div class="user-search">
                             <img class="user-search-pfp" src={friend.pfp} alt="pfp">
-                            <a href={`https://${$host}/profile/` + friend.username}><h4>{friend.username}</h4></a>
+                            <a href={`https://${host}/profile/` + friend.username}><h4>{friend.username}</h4></a>
                         </div>
                         <div class="center">
                             <h5>{friend.status}</h5>

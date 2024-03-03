@@ -16,7 +16,7 @@
     const code = $page.url.searchParams.get('code');
     async function getToken(csrf: string) {
         try {
-            const response = await fetch(`https://${$host}:1024/auth/42intra/`, {
+            const response = await fetch(`https://${host}:1024/auth/42intra/`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {

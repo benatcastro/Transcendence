@@ -66,7 +66,7 @@
         if (searchInput === undefined)
             return
 
-        let url = new URL(`https://${$host}:1024/users/?`)
+        let url = new URL(`https://${host}:1024/users/?`)
         let params = new URLSearchParams(url)
         params.append("search", searchInput)
 
@@ -146,7 +146,7 @@
                     {#each friends as friend}
                         <div class="user-search">
                             <img class="user-search-pfp" src={friend.pfp} alt="pfp">
-                            <a href={`https://${$host}/profile/` + friend.username}><h4>{friend.username}</h4></a>
+                            <a href={`https://${host}/profile/` + friend.username}><h4>{friend.username}</h4></a>
                         </div>
                         <div class="center">
                             <h5>{friend.status}</h5>
@@ -160,7 +160,7 @@
                     <div>
                         <div class="user-search">
                             <img class="user-search-pfp" src={search_user.pfp} alt="pfp">
-                            <a href={`https://${$host}:1024/` + search_user.username}><h4>{search_user.username}</h4></a>
+                            <a href={`https://${host}:1024/` + search_user.username}><h4>{search_user.username}</h4></a>
                         </div>
                         <div class="user-search">
                             <h5>{search_user.status}</h5>
@@ -194,7 +194,7 @@
                     </div>
                     {#each user.history as match}
                     <div class="row">
-                        <div class="col list-group-item"><a href={`https://${$host}:1024/` + match.oponent}>{match.oponent}</a></div>
+                        <div class="col list-group-item"><a href={`https://${host}:1024/` + match.oponent}>{match.oponent}</a></div>
                         <div class="col list-group-item">{match.result}</div>
                         <div class="col list-group-item">{formatDate(match.date)}</div>
                     </div>

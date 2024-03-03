@@ -83,6 +83,7 @@ class TournamentManager(AsyncWebsocketConsumer):
 		if data["type"] == "set_status":
 			await self.set_status(data["t_name"], data["user"], data["value"])
 		if data["type"] == "disconnect":
+			await self.leave_tournaments(data["user"], data["t_name"])
 			await self.disconnect(0)
 
 		await self.send_group_message(json.dumps(await self.get_tournaments()))
@@ -115,6 +116,7 @@ class TournamentManager(AsyncWebsocketConsumer):
 	async def create_tournaments(self, user: str, name: str):
 		for tournament in self.tournaments:
 			if tournament.name == name:
+				tournament.add_player(user)
 				return
 		self.tournaments.append(Tournament(user, name))
 
@@ -147,6 +149,7 @@ class TournamentManager(AsyncWebsocketConsumer):
 		for tournament in self.tournaments:
 			if tournament.name == name:
 				self.tournaments.remove(tournament)
+				del tournament
 				return
 
 	async def find_match(self, name: str):

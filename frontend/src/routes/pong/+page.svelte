@@ -16,71 +16,31 @@
 	import {goto} from "$app/navigation";
     import {tournamentName,  ws as tournament } from "../tournament/tournament";
 
-	$userName = $user_name;
-	$rivalName = $rival_name;
-	$room = $room_name;
-	$user = null;
-	$rival = null;
-	$ball = null;
-	$isPlayer1 = false;
+    Reset();
 
 	console.log('user: ' + $userName);
 	console.log('rival: ' + $rivalName);
 	console.log('room: ' + $room);
 
+	let closed: boolean = false;
+
 	let isWsInit: boolean = false;
 	let status: number = -1;
     try {
         // Crea tu WebSocket
-        ws.set(new WebSocket("wss://" + $host + ":443/ws/game/?room_code=" + $room + "&username=" + $user_name));
+        ws.set(new WebSocket("wss://" + host + ":443/ws/game/?room_code=" + $room + "&username=" + $user_name));
 
         if ($ws) {
             $ws.onopen = () => {
                 console.log('WebSocket connection opened');
+                if($rival)
+                    $rival = null;
+                if($user)
+                    $user = null;
                 isWsInit = true;
                 deleteMatchmaking();
             };
             $ws.onmessage = async (event) => {
-                //console.log('WebSocket message received:', event.data);
-                if (($user && $user["winner"] == true) || ($rival && $rival["winner"] == true)) {
-                    console.log("Player 1 es: " + $isPlayer1);
-                    const send_json = {"room": $room,
-                        "user": $userName,
-                        "value": "disconnect",
-                    }
-                    $ws?.send(JSON.stringify(send_json))
-
-
-                    $room = "";
-                    $isPlayer1 = false;
-
-                    if ($user && $user["winner"] == true) {
-                        status = 0;
-                        console.log("ha ganado el usuario " + $user["name"]);
-                        if ($mode != 'casual') {
-                            $ws = undefined;
-                            await goBack();
-                        }
-                    }
-                    else if ($rival && $rival["winner"] == true) {
-                        status = 1;
-                        console.log("ha ganado el usuario " + $rival["name"]);
-                        if ($tournament)
-                        {
-                            const send_json = {"type": "leave_tournament",
-                                "user": $userName,
-                                "t_name": $tournamentName,
-                                "value": -1,
-                            }
-                            await $tournament?.send(JSON.stringify(send_json));
-                            $ws = undefined;
-                            await goBack();
-                            // send_json.type = "leave_tournament"
-                            // await $tournament?.send(JSON.stringify(send_json));
-                            //$tournamentName = undefined;
-                        }
-                    }
-                }
                 if ($userName == JSON.parse(event.data.split('_')[0]).name) {
                     $user = JSON.parse(event.data.split('_')[0]);
                     $rival = JSON.parse(event.data.split('_')[1]);
@@ -91,10 +51,12 @@
                     $isPlayer1 = false;
                 }
                 $ball = JSON.parse(event.data.split('_')[2]);
+
+                checkWinner();
             };
             $ws.onclose = () => {
-                $ws = null;
                 console.log('WebSocket connection closed');
+                //$ws = null;
             };
         }
     }
@@ -103,16 +65,62 @@
         console.log('Buen intento manin');
     }
 
-
-    onMount(async () => {
-        //$host = "192.168.1.52";
-        //$tournament?.close();
+    onMount(() => {
         deleteMatchmaking();
-        await fetch(`https://${$host}:1024/matchmaking/delete?mode=casual&user=${$userName}`);
+        fetch(`https://${host}:1024/matchmaking/delete?mode=casual&user=${$userName}`);
     });
 
+    async function checkWinner()
+    {
+        if (($user && $user["winner"] == true) || ($rival && $rival["winner"] == true)) {
+            sendDisconnect()
+            if (!closed && $ws.readyState == WebSocket.OPEN)
+            {
+                closed = true;
+                $ws?.close();
+            }
+            $room = "";
+
+            if ($user && $user["winner"] == true) {
+                status = 0;
+                console.log("ha ganado el usuario " + $user["name"]);
+                if ($mode != 'casual')
+                    goBack();
+            }
+            else if ($rival && $rival["winner"] == true) {
+                status = 1;
+                console.log("ha ganado el usuario " + $rival["name"]);
+                if ($mode != 'casual')
+                {
+                    const send_json = {"type": "leave_tournament",
+                        "user": $userName,
+                        "t_name": $tournamentName,
+                        "value": 0,
+                    }
+                    send_json.type = "leave_tournament";
+                    $tournament?.send(JSON.stringify(send_json));
+                    goBack()
+                }
+            }
+        }
+    }
+
+    async function Reset(){
+        $userName = $user_name;
+        $rivalName = $rival_name;
+        $room = $room_name;
+        if($ball)
+            $ball = null;
+        if($rival)
+            $rival = null;
+        if($user)
+            $user = null;
+        await deleteMatchmaking();
+        await fetch(`https://${host}:1024/matchmaking/delete?mode=casual&user=${$userName}`);
+    }
+
     async function deleteMatchmaking() {
-		const res = await fetch(`https://${$host}:1024/matchmaking/delete?mode=casual&user=${$userName}`);
+		const res = await fetch(`https://${host}:1024/matchmaking/delete?mode=casual&user=${$userName}`);
 		if (res.ok) {
 			//console.log("Deleted from matchmaking");
 		}
@@ -123,29 +131,45 @@
 
     async function goBack() {
         $room = "";
-        $user = null;
-        $ball = null;
-        $rival = null;
-        $isPlayer1 = false;
+        if($ws)
+            $ws = null;
+        if($ball)
+            $ball = null;
+        if($rival)
+            $rival = null;
+        if($user)
+            $user = null;
         if ($mode === 'casual') {
             await goto("/");
         }
         else {
             if (status == 0)
+            {
+                const send_json = {"type": "set_status",
+                    "user": $userName,
+                    "t_name": $tournamentName,
+                    "value": 0,
+                }
+                $tournament?.send(JSON.stringify(send_json));
                 await goto("/tournament");
+            }
             else
                 await goto("/");
         }
 	}
 
-    addEventListener('beforeunload', () => {
-        console.log("Paso por aqui");
+	async function sendDisconnect() {
         const send_json = {"room": $room,
             "user": $userName,
             "value": "disconnect",
         }
         $isPlayer1 = false;
-        $ws?.send(JSON.stringify(send_json))
+        await $ws?.send(JSON.stringify(send_json))
+    }
+
+    addEventListener('beforeunload', () => {
+        console.log("Paso por aqui");
+        sendDisconnect()
 	});
 
 </script>

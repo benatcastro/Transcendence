@@ -10,7 +10,7 @@
 	export let interval = 50;
 	let timer;
 
-	const send_json = {"room": $room,
+	let send_json = {"room": $room,
 		"user": "ball",
 		"value": "move",
 	}
@@ -32,6 +32,7 @@
 					ballX = -$ball.x;
 					ballZ = -$ball.z;
 				}
+
 			}
 		}, interval);
 

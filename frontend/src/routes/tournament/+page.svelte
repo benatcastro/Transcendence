@@ -32,7 +32,7 @@
 	}
 
 	let response_json: JSON | undefined = undefined;
-	let myTournament;
+	let myTournament = undefined;
 
 	export let interval = 500;
 	let timer;
@@ -43,7 +43,7 @@
     onMount(async () => {
         console.log($userName);
 		$inGame = false;
-		ws.set(new WebSocket("wss://" + $host + ":443/ws/tournament/"));
+		ws.set(new WebSocket("wss://" + host + ":443/ws/tournament/"));
 
 		if ($ws) {
 			$ws.onopen = () => {
@@ -59,6 +59,8 @@
 						send_json.t_name = $tournamentName;
 						$ws?.send(JSON.stringify(send_json));
 					}
+					else
+						myTournament = undefined;
 				}
 			};
 			$ws.onmessage = (event) => {
@@ -79,12 +81,7 @@
 					}
 
 					if (myTournament.started && myTournament.players.length == 1 && myTournament.players[0] == $userName)
-					{
-						// send_json.type = "end_tournament";
-						// send_json.t_name = $tournamentName;
-						// $ws?.send(JSON.stringify(send_json));
 						win = true;
-					}
 				}
 				catch (e) {
 					console.log('WebSocket message received:', event.data);
@@ -181,6 +178,14 @@
 			$ws?.send(JSON.stringify(send_json));
 		}
 	}
+	async function winButton() {
+		send_json.type = "end_tournament";
+		send_json.t_name = $tournamentName;
+		$ws?.send(JSON.stringify(send_json));
+		myTournament = undefined;
+		$tournamentName = "";
+		await goto("/");
+	}
 
 	addEventListener('beforeunload', () => {
 		if ($userName && myTournament && !myTournament.started)
@@ -189,7 +194,15 @@
 
 </script>
 
-{#if ($tournamentName === "" || $tournamentName === undefined)}
+{#if (win)}
+	<div class="modal-background">
+    	<div class="modal-content victory-content" on:click|stopPropagation />
+		<h1 class="modal-title victory-title">Victory Achieved</h1>
+        <p class="tournament-name victory-tournament-name">Cybernetic Clash Tournament</p>
+        <p class="subtext victory-subtext">Congratulations on your triumph in the cybernetic arena!</p>
+        <button type="button" class="btn btn-secondary" on:click={() => winButton()}>Go Home</button>
+    </div>
+{:else if ($tournamentName === "" || $tournamentName === undefined)}
 	<div class="modal-background">
 		<div class="modal-content" on:click|stopPropagation>
 			<h1 class="modal-title">Create Tournament</h1>
@@ -206,27 +219,19 @@
 			{/if}
 		</div>
 	</div>
-{:else if (win)}
-	<div class="modal-background">
-    	<div class="modal-content victory-content" on:click|stopPropagation />
-		<h1 class="modal-title victory-title">Victory Achieved</h1>
-        <p class="tournament-name victory-tournament-name">Cybernetic Clash Tournament</p>
-        <p class="subtext victory-subtext">Congratulations on your triumph in the cybernetic arena!</p>
-        <a href="/" class="btn btn-cyberpunk victory-btn">Go Home</a>
-    </div>
 {:else if ($tournamentName !== "" && myTournament && myTournament.started)}
 	<div class="flex flex-center">
 		<div class="flex flex-center container cyber-container h-75">
 			<div class="row">
-				{#each myTournament.status as status, index}
+				{#each myTournament.players as player, index}
 					<div class="col-sm-4 mb-3">
 						<div class="card cyber-card">
 							<div class="card-body">
-								<h5 class="card-title cyber-title">{myTournament.players[index]}</h5>
+								<h5 class="card-title cyber-title">{player}</h5>
 								<p class="card-text">
-									{#if status === 1}
+									{#if myTournament.status[index] === 1}
 									<span class="badge badge-success cyber-badge">In Game</span>
-									{:else if status === -1}
+									{:else if myTournament.status[index] === -1}
 									<span class="badge badge-danger cyber-badge">Lost</span>
 									{:else}
 									<span class="badge badge-warning cyber-badge">In Waiting Room</span>
