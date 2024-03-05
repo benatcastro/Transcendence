@@ -1,6 +1,9 @@
 #!/bin/bash
 SECRETS_URL="https://raw.githubusercontent.com/adelcor/secret/main/secrets.txt"
 
+#borra un .env antiguo en caso de que exista
+
+rm ./env-output/.env
 
 
 # Define una función para esperar la existencia de un archivo con tiempo máximo de espera
