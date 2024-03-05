@@ -1,0 +1,45 @@
+global:
+  scrape_interval:      10s
+  evaluation_interval:  10s
+
+rule_files:
+  - rules.yml
+
+alerting:
+  alertmanagers:
+    - static_configs:
+      - targets:
+        - alertmanager:9093
+
+
+scrape_configs:
+  - job_name: 'node'
+    static_configs:
+      - targets: ['node_exporter:9100']
+
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres_exporter:9187']
+
+  - job_name: 'cadvisor'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['cadvisor:8080']
+  - job_name: 'django'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['django:8000']
+  - job_name: 'blackbox'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]  # Usa el módulo definido en la configuración de Blackbox Exporter
+    static_configs:
+        - targets: ['django:8000', 'frontend:3000'] # Reemplaza esto con la URL de tu servicio Django
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox_exporter:9115  # El host y puerto de Blackbox Exporter
+
