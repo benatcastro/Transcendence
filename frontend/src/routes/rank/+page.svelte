@@ -1,13 +1,29 @@
 <script lang="ts">
-	import {onMount} from "svelte";
+    import {onMount} from "svelte";
+    import {host} from "$lib/stores/stores";
 
-	let users = [];
+    let users = [];
 
-	onMount(async () => {
-		const response = await fetch("https://localhost:1024/users/");
-		users = await response.json();
-		users.sort((a, b) => a.username.localeCompare(b.username));
-	});
+    onMount(async () => {
+        try {
+            const response = await fetch(`https://${host}:1024/users/`);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (!Array.isArray(data)) {
+                throw new Error("Data is not an array");
+            }
+
+            users = data;
+            users.sort((a, b) => a.username.localeCompare(b.username));
+        } catch (error) {
+            console.error("Fetch error: ", error);
+        }
+    });
 </script>
 
 <svelte:head>
@@ -36,13 +52,15 @@
           <div class="col list-group-item"><h2>Username</h2></div>
           <div class="col list-group-item"><h2>Points</h2></div>
         </div>
-        {#each users as user}
-          <div class="row">
-            <div class="col list-group-item">{user.id}</div>
-            <div class="col list-group-item">{user.username}</div>
-            <div class="col list-group-item">{user.score}</div>
-          </div>
-        {/each}
+          {#if users.length !== 0}
+            {#each users as user}
+              <div class="row">
+                <div class="col list-group-item">{user.id}</div>
+                <div class="col list-group-item">{user.username}</div>
+                <div class="col list-group-item">{user.score}</div>
+              </div>
+            {/each}
+          {/if}
       </div>
     </div>
   </div>
