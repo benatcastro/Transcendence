@@ -34,7 +34,7 @@ scrape_configs:
     params:
       module: [http_2xx]  # Usa el módulo definido en la configuración de Blackbox Exporter
     static_configs:
-        - targets: ['django:8000', 'frontend:3000'] # Reemplaza esto con la URL de tu servicio Django
+        - targets: ['frontend:3000'] # Reemplaza esto con la URL de tu servicio Django
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
