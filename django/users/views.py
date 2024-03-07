@@ -1,7 +1,9 @@
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ModelViewSet
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import RetrieveAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.shortcuts import get_object_or_404
 
 from .models import TranscendenceUser
@@ -57,3 +59,10 @@ class MeView(RetrieveAPIView):
         obj = get_object_or_404(self.queryset, email=self.request.user.email)
         print("\n\n", obj, "\n\n")
         return obj
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def all_users(request):
+    users = TranscendenceUser.objects.all()
+    serializer = TranscendenceUserSerializer(users, many=True)
+    return Response(serializer.data)

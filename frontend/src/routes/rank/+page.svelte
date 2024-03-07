@@ -6,7 +6,8 @@
 
     onMount(async () => {
         try {
-            const response = await fetch(`https://${host}:1024/users/`);
+            const response = await fetch(`https://${host}:1024/users/all`);
+            console.log(`https://${host}:1024/users/all`);
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
