@@ -164,12 +164,9 @@
                     </div>
                 {:else}
                     <div class="card mb-3 p-5 m-3 btn cyberpunk-background" role="button" on:click={() => toggleModal('login')}>
-                        <button class="btn btn-link border-0"><span>Login</span></button>
+                        <button class="btn btn-link border-0"><span>Login / Sign Up</span></button>
                     </div>
                 {/if}
-                <div class="card mb-3 p-5 m-3 btn cyberpunk-background" role="button" on:click={() => goto('/rank')}>
-                    <button class="btn btn-link border-0"><span>Leaderboard</span></button>
-                </div>
             </li>
         </ul>
     </nav>

@@ -36,16 +36,7 @@
 		CYBERPONG
 	</button>
 	<div class="ml-auto">
-		<button class="btn shadow-none px-0 py-3" on:click={() => goto('/me')}>
-			<img
-				loading="lazy"
-				src={'/assets/icons/profile.svg'}
-				alt="Log in/out button"
-				class="w-header h-auto"
-			/>
-		</button>
 		<button class="btn shadow-none px-0 py-3" on:click={() => goto('/settings')}>
-			<!-- Change to dropdown when on game -->
 			<img
 				loading="lazy"
 				src={'/assets/icons/settings.svg'}
