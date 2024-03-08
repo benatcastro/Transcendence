@@ -1,6 +1,6 @@
 .idea
 .data/grafana-data/
-
+data/djangoFiles/pfp
 .DS_Store
 
 node_modules

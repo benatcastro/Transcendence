@@ -35,4 +35,4 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('', include('django_prometheus.urls')),
     path('transcendence/', include('transcendence.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static("media/", document_root=settings.MEDIA_ROOT)

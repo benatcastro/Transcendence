@@ -224,8 +224,11 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = 'users.TranscendenceUser'
 
 # Images
-MEDIA_URL = '/media/'
+MEDIA_URL = "https://" + env("IP_BACKEND") + ":1024/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+print(f"MEDIA URL: {MEDIA_URL}")
+print(f"MEDIA ROOT: {MEDIA_ROOT}")
 
 USER_AWAY_THRESHOLD_MINUTES = 5
 

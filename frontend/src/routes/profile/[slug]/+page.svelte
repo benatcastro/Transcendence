@@ -25,7 +25,7 @@
     import {deleteFriends} from "$lib/utilities/utilities";
     import {modifyUser} from "$lib/utilities/utilities";
     import { host } from '$lib/stores/stores';
-
+    import { goto } from '$app/navigation';
     export let data: PageData;
 
 
@@ -41,70 +41,13 @@
     let fileInput: HTMLInputElement;
     let newUsername: string = user.username;
     let searchInput = "";
-    // let friends: any[] = []
     let searchingUsers = "";
 
-    function formatImageData() {
+    function formatDate(dateString: string) {
+        const date = new Date(dateString);
+        return date.toLocaleString(); // You can use any date formatting method you prefer
+    } 
 
-        const formData = new FormData();
-        formData.set("pfp", selectedFile[0])
-        // formData.append(selectedFile[0]);
-        // console.log(formData.);
-        
-
-
-        return formData
-    }
-
-    
-
-    function triggerFileInput() {
-        fileInput.click();
-    }
-
-    async function updateSearchedUserList() {
-        if (searchInput === undefined)
-            return
-
-        let url = new URL(`https://${host}:1024/users/?`)
-        let params = new URLSearchParams(url)
-        params.append("search", searchInput)
-
-        console.log(url + params)
-        const response = await fetch(url + params, {
-            method: 'GET',
-            credentials: 'include',
-        });
-
-        if (response.ok) {
-            searchingUsers = await response.json();
-        }
-        // console.log(response)
-    }
-
-
-    async function modifyAndUpdate(userID: string, newValues: any) {
-        const updatedUser = await modifyUser(userID, newValues);
-        console.log("Update:", updatedUser)
-        console.log("og:", user)
-        user = updatedUser;
-        console.log("after:", user)
-    }
-
-    async function addFriendWrapper(fromUser: string, toUser: any) {
-        const updatedFriends = await  addFriends(fromUser, toUser)
-        console.log("UpdateAddFriend:", updatedFriends)
-        console.log("data:", updatedFriends)
-        friends = updatedFriends.update.friends
-    }
-
-    async function deleteFriendWrapper(fromUser: string, toUser: any) {
-        const updatedFriends = await  deleteFriends(fromUser, toUser)
-        console.log("Updatedeleteriend:", updatedFriends)
-        console.log("data:", updatedFriends)
-        friends = updatedFriends.update.friends
-    }
-    
 
 </script>
 {#if user !== "404"}
@@ -130,7 +73,7 @@
                     {#each friends as friend}
                         <div class="user-search">
                             <img class="user-search-pfp" src={friend.pfp} alt="pfp">
-                            <a href={`https://${host}/profile/` + friend.username}><h4>{friend.username}</h4></a>
+                            <a data-sveltekit-reload href={`https://${host}/profile/${friend.username}`}><h4>{friend.username}</h4></a>
                         </div>
                         <div class="center">
                             <h5>{friend.status}</h5>
@@ -141,9 +84,23 @@
 
         </div>
     </div>
-    <div class="d-flex center h-70 w-70 cyberpunk-container">
-        <div class="center mt-5 mx-5">
-           <h1 class="cyber-text">Match History</h1>
+    <div class="d-flex center h-70 w-70 cyberpunk-container ">
+        <div style="flex-direction: column">
+            <h1 class="cyber-text">Match History</h1>
+                <div class="card-body mt-10 match-history-container">
+                    <div class="row text-center">
+                        <div class="col list-group-item"><h2>Opponent</h2></div>
+                        <div class="col list-group-item"><h2>Result</h2></div>
+                        <div class="col list-group-item"><h2>Date</h2></div>
+                    </div>
+                    {#each user.history as match}
+                    <div class="row">
+                        <div class="col list-group-item"><a data-sveltekit-reload href={`https://${host}/profile/${match.oponent}`}>{match.oponent}</a></div>
+                        <div class="col list-group-item">{match.result}</div>
+                        <div class="col list-group-item">{formatDate(match.date)}</div>
+                    </div>
+                    {/each}
+                </div>
        </div>
     </div>
 </div>
@@ -154,6 +111,34 @@
 {/if}
 
 <style>
+    .user-search-container {
+        overflow-y: scroll;
+        max-height: 20rem;
+    }
+
+    .match-history-container {
+        margin-top: -5rem;
+        overflow-y: scroll;
+        height: 20rem;
+    }
+
+	@font-face {
+		font-family: 'xenotron';
+		src: url('/fonts/xenotron/XENOTRON.TTF') format('truetype');
+	}
+
+	@media screen and (min-width: 992px){
+		.card .list-group-item {
+			font-size: 1.5rem;
+		}
+	}
+
+	.list-group-item {
+		background-color: #104693;
+		border: 2px solid #80d4ff;
+		box-shadow: 0 2px 10px #80d4ff;
+	}
+
     .user-search {
         display: flex;
         gap: 1em;

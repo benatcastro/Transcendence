@@ -43,9 +43,16 @@ class TranscendenceUserFriendViewSet(GenericViewSet, RetrieveModelMixin, Destroy
                             status=status.HTTP_400_BAD_REQUEST)
 
         to_user.friends.add(from_user)
-        serializer = self.get_serializer(from_user)
+        from_user_serializer = self.get_serializer(from_user)
+        to_user_serializer = self.get_serializer(to_user)
 
-        return Response(data={'message': f'{from_user} and {to_user} friendship added succesfully', "update": serializer.data}, status=status.HTTP_200_OK)
+        return Response(data={
+                            'message': f'{from_user} and {to_user} friendship added succesfully',
+                            "update": from_user_serializer.data,
+                            "new_friend": to_user_serializer.data
+                            },
+                            status=status.HTTP_200_OK
+                            )
 
     def destroy(self, request, *args, **kwargs):
         """

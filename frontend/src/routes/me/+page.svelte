@@ -30,7 +30,7 @@
 
 
     let user = data.user;
-    let friends = data.friends.friends;
+    $: friends = data.friends.friends;
 
     console.log("status", data.status)
     console.log("user", user)
@@ -41,22 +41,17 @@
     let fileInput: HTMLInputElement;
     let newUsername: string = user.username;
     let searchInput = "";
-    // let friends: any[] = []
-    let searchingUsers = "";
+    $: searchingUsers = [];
 
-    function formatImageData() {
-
-        const formData = new FormData();
-        formData.set("pfp", selectedFile[0])
-        // formData.append(selectedFile[0]);
-        // console.log(formData.);
+    $: {
         
-
-
-        return formData
     }
 
-    
+    function formatImageData() {
+        const formData = new FormData();
+        formData.set("pfp", selectedFile[0])
+        return formData
+    }
 
     function triggerFileInput() {
         fileInput.click();
@@ -79,7 +74,6 @@
         if (response.ok) {
             searchingUsers = await response.json();
         }
-        // console.log(response)
     }
 
 
@@ -95,7 +89,8 @@
         const updatedFriends = await  addFriends(fromUser, toUser)
         console.log("UpdateAddFriend:", updatedFriends)
         console.log("data:", updatedFriends)
-        friends = updatedFriends.update.friends
+        friends = [...friends, updatedFriends.new_friend]
+        searchingUsers = searchingUsers.filter(friend => friend.id !==  updatedFriends.new_friend.id);
     }
 
     async function deleteFriendWrapper(fromUser: string, toUser: any) {
@@ -103,11 +98,12 @@
         console.log("Updatedeleteriend:", updatedFriends)
         console.log("data:", updatedFriends)
         friends = updatedFriends.update.friends
+        await updateSearchedUserList()
     }
 
     function formatDate(dateString: string) {
         const date = new Date(dateString);
-        return date.toLocaleString(); // You can use any date formatting method you prefer
+        return date.toLocaleString();
     }
     
 
@@ -146,7 +142,7 @@
                     {#each friends as friend}
                         <div class="user-search">
                             <img class="user-search-pfp" src={friend.pfp} alt="pfp">
-                            <a href={`https://${host}/profile/` + friend.username}><h4>{friend.username}</h4></a>
+                            <a data-sveltekit-reload href={`https://${host}/profile/${friend.username}`}><h4>{friend.username}</h4></a>
                         </div>
                         <div class="center">
                             <h5>{friend.status}</h5>
@@ -154,55 +150,46 @@
                         </div>
                     {/each}
                 </div>
-                <input type="text"  placeholder="Search new Friends" bind:value={searchInput} on:input={updateSearchedUserList} class="placeholder p-2 m-2">
-                {#each searchingUsers as search_user}
-                    {#if user.username !== search_user.username}
-                    <div>
-                        <div class="user-search">
-                            <img class="user-search-pfp" src={search_user.pfp} alt="pfp">
-                            <a href={`https://${host}:1024/` + search_user.username}><h4>{search_user.username}</h4></a>
-                        </div>
-                        <div class="user-search">
-                            <h5>{search_user.status}</h5>
-                            {#if !(user.friends.includes(search_user.id))}
-                                <button type="button" class="btn btn-primary btn-sm" on:click={() => addFriendWrapper(user.username, search_user.username)}>Add Friend</button>
-                            {:else}
-                                <p>Already friends</p>
-                            {/if}
-
-                        </div>
-
-                    </div>
+                <input type="text" placeholder="Search new Friends" bind:value={searchInput} on:input={updateSearchedUserList} class="placeholder p-2 m-2">
+                <div class="user-search-container">
+                    {#each searchingUsers as search_user}
+                        {#if user.username !== search_user.username}
+                            <div class="user-search">
+                                <img class="user-search-pfp" src={search_user.pfp} alt="pfp">
+                                <a data-sveltekit-reload href={`https://${host}/profile/${search_user.username}`}><h4>{search_user.username}</h4></a>
+                            </div>
+                            <div class="user-search">
+                                <h5>{search_user.status}</h5>
+                                {#if !(user.friends.includes(search_user.id))}
+                                    <button type="button" class="btn btn-primary btn-sm" on:click={() => addFriendWrapper(user.username, search_user.username)}>Add Friend</button>
+                                {:else}
+                                    <p>Already friends</p>
+                                {/if}
+                            </div>
                         {/if}
-                {/each}
-
+                    {/each}
+                </div>
             </div>
 
         </div>
     </div>
-    <div class="d-flex center h-70 w-70 cyberpunk-container">
-        <div class="center mt-5 mx-5 match-history-container">
+    <div class="d-flex center h-70 w-70 cyberpunk-container ">
+        <div style="flex-direction: column">
             <h1 class="cyber-text">Match History</h1>
-            <!-- <div class="d-flex justify-content-center align-items-center vh-100"> -->
-            <!-- <div class="card w-75 h-75 shadow-lg"> -->
-                <div class="card-body">
-                <div class="container text-center">
-                    <div class="row">
-                    <div class="col list-group-item"><h2>Opponent</h2></div>
-                    <div class="col list-group-item"><h2>Result</h2></div>
-                    <div class="col list-group-item"><h2>Date</h2></div>
+                <div class="card-body mt-10 match-history-container">
+                    <div class="row text-center">
+                        <div class="col list-group-item"><h2>Opponent</h2></div>
+                        <div class="col list-group-item"><h2>Result</h2></div>
+                        <div class="col list-group-item"><h2>Date</h2></div>
                     </div>
                     {#each user.history as match}
                     <div class="row">
-                        <div class="col list-group-item"><a href={`https://${host}:1024/` + match.oponent}>{match.oponent}</a></div>
+                        <div class="col list-group-item"><a data-sveltekit-reload href={`https://${host}/profile/${match.oponent}`}>{match.oponent}</a></div>
                         <div class="col list-group-item">{match.result}</div>
                         <div class="col list-group-item">{formatDate(match.date)}</div>
                     </div>
                     {/each}
                 </div>
-                </div>
-            <!-- </div> -->
-            <!-- </div> -->
        </div>
     </div>
 </div>
@@ -214,8 +201,14 @@
 
 <style>
 
+    .user-search-container {
+        overflow-y: scroll;
+        max-height: 20rem;
+    }
     .match-history-container {
-        flex-direction: column;;
+        margin-top: -5rem;
+        overflow-y: scroll;
+        height: 20rem;
     }
 
 	@font-face {
@@ -305,20 +298,5 @@
         border: 7px solid;
         border-image: linear-gradient(90deg, rgb(146, 194, 208) 0%, rgb(69, 141, 210) 50%, rgb(137, 166, 175) 100%) 1;
         min-width: 30%;
-    }
-    table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-    }
-
-    td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-    }
-
-    tr:nth-child(even) {
-    background-color: #dddddd;
     }
 </style>
