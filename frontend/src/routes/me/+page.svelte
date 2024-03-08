@@ -119,7 +119,7 @@
 
             <h1 class="cyber-text center">User Details</h1>
             <div class="pfp-wrapper center">
-                <img class="profile-image m-5" src={user.pfp} alt="Profile image" on:click={triggerFileInput}>
+                <img class="profile-image m-5" src={user.pfp} alt="Profile image"> <!-- on:click={triggerFileInput}-->
                 <span class="change-image-text">Change image</span>
             </div>
             <input type="file" bind:files={selectedFile} bind:this={fileInput} style="display: none;" on:change={() => modifyAndUpdate(user.username, formatImageData())} />
