@@ -70,6 +70,7 @@
     onMount(() => {
         deleteMatchmaking();
         fetch(`https://${host}:1024/matchmaking/delete?mode=casual&user=${$userName}`);
+        fetch(`https://${host}:1024/matchmaking/delete?mode=casual&user=${$rivalName}`);
     });
 
     async function checkWinner()
@@ -119,11 +120,19 @@
             $user = null;
         await deleteMatchmaking();
         await fetch(`https://${host}:1024/matchmaking/delete?mode=casual&user=${$userName}`);
+        await fetch(`https://${host}:1024/matchmaking/delete?mode=casual&user=${$rivalName}`);
     }
 
     async function deleteMatchmaking() {
 		const res = await fetch(`https://${host}:1024/matchmaking/delete?mode=casual&user=${$userName}`);
 		if (res.ok) {
+			//console.log("Deleted from matchmaking");
+		}
+		else {
+			console.error("fetch request didn't resolve");
+		}
+		const res2 = await fetch(`https://${host}:1024/matchmaking/delete?mode=casual&user=${$rivalName}`);
+		if (res2.ok) {
 			//console.log("Deleted from matchmaking");
 		}
 		else {
