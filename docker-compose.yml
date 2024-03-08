@@ -39,10 +39,12 @@ services:
     container_name: django
     build: ./django
     command: sh -c "python manage.py makemigrations &&
+                    python manage.py makemigrations match_history &&
                     python manage.py migrate &&
                     daphne project.asgi:application -b 0.0.0.0  -e ssl:442:privateKey=localhost.pem:certKey=localhostkey.pem || tail -f" #https://github.com/django/daphne
     volumes:
       - ./static_volume:/home/app/microservice/static
+      - ./data/djangoFiles:/home/app/webapp/media
     env_file: .env
     image: trascendence_app
     expose:

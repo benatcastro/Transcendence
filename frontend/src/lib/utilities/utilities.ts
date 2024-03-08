@@ -175,6 +175,7 @@ export async function modifyUser(user: string, newValues: any) {
     }
     try {
         const r = await response()
+        console.log("Modify user response:", r)
         if (r.status === 401) {
             await refresh()
             return await response()
