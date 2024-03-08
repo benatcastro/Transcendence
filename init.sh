@@ -151,6 +151,10 @@ echo "Ejecutando Secuencia de inicio de Cyberpong..."
 make
 if [ $? -ne 0 ]; then
   echo "Error ejecutando make"
-  exit 1
+  echo "Cyberpong IA (patentado) procede a activar el modo reconstruccion..."
+  echo "Esto lo pones en Ingles y la gente lo flipa..."
+  docker-compose down
+  docker-compose up --build 
+  
 fi
 
