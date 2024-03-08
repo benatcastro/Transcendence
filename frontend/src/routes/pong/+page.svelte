@@ -37,8 +37,10 @@
                     $rival = null;
                 if($user)
                     $user = null;
-                isWsInit = true;
                 deleteMatchmaking();
+                setTimeout(() => {
+                    isWsInit = true;
+                }, 5000)
             };
             $ws.onmessage = async (event) => {
                 if ($userName == JSON.parse(event.data.split('_')[0]).name) {
@@ -224,6 +226,13 @@
         </Threlte.Canvas>
     {:else}
         <h1>Ander mariquita hihi</h1>
+        <div class="intro d-flex flex-center">
+            <h1>{$userName}</h1>
+            <br>
+            <h1>VS</h1>
+            <br>
+            <h1>{$rivalName}</h1>
+        </div>
     {/if}
 {:else if (status == 0)}
     <div class="modal-background">
@@ -248,6 +257,10 @@
 		margin: 1%;
 		margin-top: 80px;
 		font-family: 'xenotron', sans-serif;
+    }
+
+    .intro{
+        color: white;
     }
 
     .modal-content {
