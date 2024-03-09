@@ -151,7 +151,6 @@
                         <div class="modal-content" on:click|stopPropagation>
                             <button class="close-button" on:click={() => toggleModal('login')}>X</button>
                             <p class="modal-title">Login</p>
-                            <button type="button" class="btn btn-primary" on:click={() => handleLoginClick('google')}>Google</button>
                             <button type="button" class="btn btn-secondary" on:click={() => handleLoginClick('42intra')}>42Intranet</button>
                         </div>
                     </div>

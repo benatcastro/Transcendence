@@ -40,6 +40,7 @@ services:
     build: ./django
     command: sh -c "python manage.py makemigrations &&
                     python manage.py makemigrations match_history &&
+                    python manage.py makemigrations friends &&
                     python manage.py migrate &&
                     daphne project.asgi:application -b 0.0.0.0  -e ssl:442:privateKey=localhost.pem:certKey=localhostkey.pem || tail -f" #https://github.com/django/daphne
     volumes:

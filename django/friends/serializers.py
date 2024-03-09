@@ -8,4 +8,4 @@ class TranscendenceUserFriendSerializer(ModelSerializer):
 
     class Meta:
         model = TranscendenceUser
-        fields = ("id", "username", "friends")
+        fields = ("id", "username", "friends", "pfp")
