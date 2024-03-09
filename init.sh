@@ -119,6 +119,8 @@ mv ./env-output/.env ./
 # Espera a que se generen los archivos en los directorios correspondientes
 espera_archivo "./.env" 60
 
+docker compose -f vault.yml down
+
 # Ejecuta el script start_alerts.sh ubicado en /alertmanager
 echo "Ejecutando el script start_alerts.sh para configurar alertas..."
 ./alertmanager/start_alerts.sh
@@ -147,10 +149,12 @@ ________   __    ___ ______ _____ _          _____ ___________
 
 EOF
 
-echo "Ejecutando Secuencia de inicio de Cyberpong..."
 make
 if [ $? -ne 0 ]; then
   echo "Error ejecutando make"
-  exit 1
+  echo "Cyberpong IA (patentado) procede a activar el modo reconstruccion..."
+  echo "Esto lo pones en Ingles y la gente lo flipa..."
+  docker compose down
+  docker compose up --build 
+  
 fi
-
